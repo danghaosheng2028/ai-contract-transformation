@@ -4,7 +4,7 @@ Lucas Dang
 RCF Experimental School, Beijing
 July 2026
 
-*Code and simulation scripts reproducing all figures and calibration results in this paper are publicly available at: `[INSERT GITHUB REPO URL]`*
+*Code and simulation scripts reproducing all figures and calibration results in this paper are publicly available at: https://github.com/danghaosheng2028/ai-contract-transformation*
 
 ---
 
@@ -59,7 +59,7 @@ $$
 
 derive closed‑form expressions for optimal effort and incentives, and show that a unique transformation threshold $A^*$ exists. Comparative statics reveal how noise, risk aversion, and human–AI complementarity shape this threshold. We further incorporate China's minimum‑wage regulation and show that binding wage floors systematically delay contract transformation.
 
-The remainder of the paper proceeds as follows. Section 2 reviews the related literature. Section 3 presents stylized facts and parameter calibration. Section 4 introduces the model. Section 5 derives equilibrium outcomes. Section 6 presents the main theoretical results. Section 7 provides numerical simulations. Section 8 concludes with policy implications. Appendices contain additional proofs and calibration details.
+The remainder of the paper proceeds as follows. Section 2 reviews the related literature. Section 3 presents stylized facts and parameter calibration, together with suggestive evidence from independent Chinese firm-panel data supporting the threshold mechanism. Section 4 introduces the model. Section 5 derives equilibrium outcomes. Section 6 presents the main theoretical results. Section 7 provides numerical simulations, including a sector-heterogeneity analysis across occupations. Section 8 concludes with policy implications. Appendices contain additional proofs and calibration details.
 
 ---
 
@@ -97,6 +97,9 @@ Relative to these three strands, the paper makes three contributions:
 
 3. **Integration of Chinese labor regulation.**
    By incorporating minimum‑wage constraints, we provide a theoretical explanation for regulatory frictions that delay contract transformation in China's rapidly digitalizing labor markets.
+
+4. **Sector heterogeneity linked to independent empirical evidence, with open, reproducible code.**
+   We show that $A^*$ differs systematically across occupations with different monitorability and AI complementarity (Section 7.5), and we relate this ordering to independent Chinese firm-panel evidence on digitalization and wage growth (Section 3.5). All calibration and simulation code is publicly released for reproducibility.
 
 # 3. Stylized Facts and Parameter Calibration
 
@@ -590,6 +593,18 @@ $\blacksquare$
 
 ## 6.2 Comparative Statics of the Transformation Threshold
 
+### **Theorem 2 (Comparative statics of $A^*$).**
+
+The threshold $A^*$ satisfies:
+
+$$
+\frac{\partial A^*}{\partial \sigma^2} > 0, \qquad \frac{\partial A^*}{\partial r} > 0, \qquad \frac{\partial A^*}{\partial C} < 0
+$$
+
+That is, $A^*$ rises with output noise and worker risk aversion, and falls with human–AI complementarity.
+
+### Proof
+
 Using the implicit function theorem:
 
 $$
@@ -740,7 +755,7 @@ $$
 A^* \approx 0.65
 $$
 
-**Figure 1: Contract transformation threshold.** Plots calibrated time-rate profit $\Pi_T(A)$ against piece-rate profit $\Pi_P^*(A)$ for $A \in [0, 3]$. Time-rate profit rises only linearly because a fixed wage cannot capture the convex incentive gains AI-augmented effort makes possible; piece-rate profit rises convexly because higher $A$ raises effective human capital $\tilde{H}$, compounding through the $\tilde{H}^4$ term in $\Pi_P^*(A)$. The curves cross exactly once, at $A^* \approx 0.65$ under baseline calibration. Below the threshold, monitoring cost $F$ outweighs incentive gains and firms retain fixed wages; above it, convex gains dominate and output risk shifts onto workers. *(See `fig1_threshold.png` in the code repository.)*
+**Figure 1: Contract transformation threshold.** Plots calibrated time-rate profit $\Pi_T(A)$ against piece-rate profit $\Pi_P^*(A)$ for $A \in [0, 3]$. Time-rate profit rises only linearly because a fixed wage cannot capture the convex incentive gains AI-augmented effort makes possible; piece-rate profit rises convexly because higher $A$ raises effective human capital $\tilde{H}$, compounding through the $\tilde{H}^4$ term in $\Pi_P^*(A)$. The curves cross exactly once, at $A^* \approx 0.65$ under baseline calibration. Below the threshold, monitoring cost $F$ outweighs incentive gains and firms retain fixed wages; above it, convex gains dominate and output risk shifts onto workers. *(See `simulation/fig1_threshold.png` in the code repository.)*
 
 ### Interpretation
 
@@ -846,7 +861,7 @@ Because $A^*$ depends on $(C,\sigma^2,r)$, occupations differ systematically in 
 | Designers / knowledge workers | 1.3 | 1.3 | 1.5 | 0.591 |
 | Manufacturing line workers | 0.4 | 0.7 | 1.0 | 1.516 |
 
-*Note: only $(C, \sigma^2, r)$ vary by row; all other parameters use the Section 3.4 baseline. Calibrations are illustrative rather than estimated from worker-level data (see Section 8.2). See `fig3_heterogeneity.png` and `simulate.py` in the code repository for the full computation.*
+*Note: only $(C, \sigma^2, r)$ vary by row; all other parameters use the Section 3.4 baseline. Calibrations are illustrative rather than estimated from worker-level data (see Section 8.2). See `simulation/fig3_heterogeneity.png` and `simulation/simulate.py` in the code repository for the full computation.*
 
 Riders and livestream hosts, whose tasks are both highly monitorable (low $\sigma^2$) and strongly complemented by AI routing or recommendation algorithms (high $C$), cross the threshold at roughly two-thirds of the baseline AI intensity — consistent with the empirical observation (Section 3.5) that these occupations are already overwhelmingly piece-rate. Manufacturing line workers, whose tasks AI augments only weakly, require more than double the baseline AI intensity to reach $A^*$, and under many realistic parameter ranges may never cross it, explaining the persistence of time-rate compensation in that sector even as AI adoption rises economy-wide.
 
@@ -1146,7 +1161,7 @@ This value lies within the mid‑range of observed AI adoption levels in digital
 
 ## B.6 Sector Heterogeneity Calibration
 
-Table 2 (Section 7.5) varies $(C, \sigma^2, r)$ by occupation while holding $(h, \theta, k, a_0, \bar{U}, F)$ at their Section 3.4 baseline values. The direction of each adjustment — higher $C$ and lower $\sigma^2$ for platform-mediated, algorithmically-routed tasks; lower $C$ for tasks AI augments only weakly — follows directly from the task characteristics discussed in Sections 2.3 and 3.5, but the specific magnitudes are illustrative rather than estimated. Full reproduction code and numerical output are provided in `simulate.py` and `results.json` in the accompanying code repository.
+Table 2 (Section 7.5) varies $(C, \sigma^2, r)$ by occupation while holding $(h, \theta, k, a_0, \bar{U}, F)$ at their Section 3.4 baseline values. The direction of each adjustment — higher $C$ and lower $\sigma^2$ for platform-mediated, algorithmically-routed tasks; lower $C$ for tasks AI augments only weakly — follows directly from the task characteristics discussed in Sections 2.3 and 3.5, but the specific magnitudes are illustrative rather than estimated. Full reproduction code and numerical output are provided in `simulation/simulate.py` and `simulation/results.json` in the accompanying code repository.
 
 # References
 
