@@ -369,6 +369,8 @@ $$
 3. Worker chooses effort $a$.
 4. Output realized; wage paid.
 
+**Figure 4: Model timing.** The four-stage sequence of the one-period principal–agent game: the firm's contract-mode choice (Section 6's $A^*$ threshold) is made before the piece-rate parameters, which are set before the worker's effort choice, which is made before output and payment are realized. *(See `simulation/fig4_timing.png` in the code repository.)*
+
 ---
 
 ## 4.5 Discussion
@@ -757,6 +759,8 @@ $$
 
 **Figure 1: Contract transformation threshold.** Plots calibrated time-rate profit $\Pi_T(A)$ against piece-rate profit $\Pi_P^*(A)$ for $A \in [0, 3]$. Time-rate profit rises only linearly because a fixed wage cannot capture the convex incentive gains AI-augmented effort makes possible; piece-rate profit rises convexly because higher $A$ raises effective human capital $\tilde{H}$, compounding through the $\tilde{H}^4$ term in $\Pi_P^*(A)$. The curves cross exactly once, at $A^* \approx 0.65$ under baseline calibration. Below the threshold, monitoring cost $F$ outweighs incentive gains and firms retain fixed wages; above it, convex gains dominate and output risk shifts onto workers. *(See `simulation/fig1_threshold.png` in the code repository.)*
 
+![Figure 1: Contract transformation threshold](fig1_threshold.png)
+
 ### Interpretation
 
 - For $A < A^*$: fixed monitoring cost $F$ makes piece‑rate unprofitable.
@@ -816,22 +820,13 @@ $$
 = (1-\gamma)a^*\tilde{H} - \alpha_{MW} - F
 $$
 
-The new threshold satisfies:
-
-$$
-A^*_{MW} > A^*
-$$
-
-Define regulatory delay:
-
-$$
-\Delta A = A^*_{MW} - A^*
-$$
+**Figure 2: Minimum-wage floor removes the piece-rate advantage over the empirically relevant AI-intensity range.** Plots $\Pi_T(A)$, the unconstrained $\Pi_P^*(A)$, and the wage-floor-constrained $\Pi_P^{MW}(A)$ for $A \in [0,3]$ under a modest wage floor $W_{\min}=0.5$. The mechanism behind the unconstrained result in Section 7.1 is that the incentive-compatible base wage $\alpha^*$ falls sharply as $A$ rises — the firm's optimal linear contract implies an increasingly negative fixed wage, offset by high-powered incentive pay. A binding wage floor removes exactly this channel: $\Pi_P^{MW}(A)$ stays essentially flat rather than growing quadratically, and remains below $\Pi_T(A)$ throughout $A \in [0,3]$ for any $W_{\min}>0$ under baseline calibration. *(See `simulation/fig2_minimum_wage.png` and `simulation/minimum_wage.py` in the code repository.)*
 
 ### Interpretation
 
-- Minimum wage pushes firms to stay longer in time‑rate mode.
-- Explains why some Chinese industries remain time‑rate dominated despite high digitalization.
+- Rather than merely shifting the transformation threshold to a higher but still finite $A^*_{MW}$, a binding minimum wage removes the mechanism that makes piece-rate profit grow faster than time-rate profit in the first place, since that mechanism relies on an unconstrained base wage that can go negative as $A$ rises. Within the empirically relevant range $A \in [0,3]$, this can prevent contract transformation entirely rather than simply delaying it.
+- This is a stronger and more policy-relevant version of the paper's central regulatory claim: minimum-wage protection is not merely a friction that slows AI-driven contract transformation at the margin — under realistic parameter ranges, it can structurally block the transformation the model would otherwise predict, which may help explain why some Chinese industries remain time-rate dominated despite high digitalization.
+- A caveat is worth flagging explicitly: this result is driven by the model's unconstrained optimum permitting an arbitrarily negative base wage $\alpha$, which is itself an unrealistic feature of the frictionless linear-contract benchmark. A fuller treatment would impose $\alpha \ge 0$ as a baseline institutional constraint independent of minimum-wage law, and treat $W_{\min}$ as raising the floor further above that baseline — see Section 8.2.
 
 ---
 
@@ -862,6 +857,8 @@ Because $A^*$ depends on $(C,\sigma^2,r)$, occupations differ systematically in 
 | Manufacturing line workers | 0.4 | 0.7 | 1.0 | 1.516 |
 
 *Note: only $(C, \sigma^2, r)$ vary by row; all other parameters use the Section 3.4 baseline. Calibrations are illustrative rather than estimated from worker-level data (see Section 8.2). See `simulation/fig3_heterogeneity.png` and `simulation/simulate.py` in the code repository for the full computation.*
+
+![Figure 3: Sector-heterogeneous transformation thresholds](fig3_heterogeneity.png)
 
 Riders and livestream hosts, whose tasks are both highly monitorable (low $\sigma^2$) and strongly complemented by AI routing or recommendation algorithms (high $C$), cross the threshold at roughly two-thirds of the baseline AI intensity — consistent with the empirical observation (Section 3.5) that these occupations are already overwhelmingly piece-rate. Manufacturing line workers, whose tasks AI augments only weakly, require more than double the baseline AI intensity to reach $A^*$, and under many realistic parameter ranges may never cross it, explaining the persistence of time-rate compensation in that sector even as AI adoption rises economy-wide.
 
@@ -904,6 +901,7 @@ Hybrid systems (minimum income guarantees, earnings smoothing) may protect worke
 3. Dynamic models could incorporate learning about AI tools.
 4. Social-insurance contributions (工伤保险、社保) mandated alongside wage floors under China's 2021 Guiding Opinions are not modeled as a separate firm-side cost; incorporating them as an additional fixed cost under piece-rate compensation would plausibly raise $A^*_{MW}$ further, reinforcing rather than overturning the proposition on minimum-wage delay.
 5. Complementarity $C$ is treated as exogenous and time-invariant. In practice, workers may endogenously invest in AI-collaboration skills to raise $C$ over time, which would make $A^*$ itself a dynamic, path-dependent object rather than a static threshold — a natural direction for future dynamic extensions of this model. Relatedly, the sector calibrations in Section 7.5 are illustrative, drawn from qualitative task characteristics rather than estimated from worker-level data; replacing them with data-informed values (e.g. platform-reported income variance by occupation) is a natural next step.
+6. The unconstrained piece-rate contract in Sections 4.3 and 5.2 permits an arbitrarily negative base wage $\alpha$, which is what drives the quadratic profit growth in Theorem 1 and the strong minimum-wage result in Section 7.3. A model with $\alpha \ge 0$ imposed as a baseline institutional constraint, independent of minimum-wage law, would give a more conservative — but likely still qualitatively similar — characterization of $A^*$ and its regulatory sensitivity; this is a natural robustness extension.
 
 # Appendix A. Additional Proofs for Comparative Statics
 
@@ -1166,12 +1164,21 @@ Table 2 (Section 7.5) varies $(C, \sigma^2, r)$ by occupation while holding $(h,
 # References
 
 Acemoglu, D., & Restrepo, P. (2018). *The Race Between Man and Machine*.
+
 Brynjolfsson, E., Li, Y., & Raymond, L. (2025). *Productivity Effects of AI Tools*.
+
 Chen, D. and Guo, W. (2023) 'Digital Transformation, Wage Growth and Income Gap Across Firms: Also on the Industry-Leading Effect of "Lighthouse Factory"', *Journal of Finance and Economics* (财经研究), 49(4), pp. 50–64.
+
 Chetty, R. (2006). *A New Method for Estimating Risk Aversion*.
+
 Holmstrom, B. (1979). *Moral Hazard and Observability*.
+
 Holmstrom, B., & Milgrom, P. (1991). *Multitask Principal–Agent Problems*.
+
 International Labour Organization (2021). *Digital Labour Platforms in China: Working Conditions, Policy Issues and Future Prospects*. ILO Working Paper 24.
+
 Lazear, E. (2000). *Performance Pay and Productivity*.
+
 Prendergast, C. (2002). *The Tenuous Tradeoff Between Risk and Incentives*.
+
 Shin, J., & Kang, H. (2026). *AI and Compensation Systems*.

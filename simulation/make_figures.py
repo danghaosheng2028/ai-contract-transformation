@@ -1,8 +1,11 @@
+import os
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 from simulate import Pi_T, Pi_P_star, baseline, sectors, solve_A_star
+
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 11})
 NAVY, GOLD, GREY, RED = "#1F3864", "#C9A227", "#8C8C8C", "#B44646"
@@ -31,7 +34,7 @@ ax.set_title("Figure 1. Contract transformation threshold\n(baseline calibration
 ax.legend(loc="upper left", frameon=False, fontsize=9)
 ax.spines[["top", "right"]].set_visible(False)
 plt.tight_layout()
-plt.savefig("/home/claude/farm-repo/fig1_threshold.png", transparent=True)
+plt.savefig(os.path.join(HERE, "fig1_threshold.png"), transparent=True)
 plt.close()
 
 # ---------- Figure 3: sector heterogeneity ----------
@@ -55,7 +58,7 @@ ax.set_ylim(0, 3)
 ax.set_title("Figure 3. Sector-heterogeneous transformation thresholds\n(lower = firms switch to piece-rate at lower AI intensity)", fontsize=10.5)
 ax.spines[["top", "right"]].set_visible(False)
 plt.tight_layout()
-plt.savefig("/home/claude/farm-repo/fig3_heterogeneity.png", transparent=True)
+plt.savefig(os.path.join(HERE, "fig3_heterogeneity.png"), transparent=True)
 plt.close()
 
-print("figures saved")
+print("figures saved:", os.path.join(HERE, "fig1_threshold.png"), "and", os.path.join(HERE, "fig3_heterogeneity.png"))

@@ -18,9 +18,19 @@ Platform Economy."*
 ## Usage
 ```bash
 pip install numpy scipy matplotlib
-python simulate.py        # prints A* for baseline + all sectors
-python make_figures.py    # writes fig1_threshold.png, fig3_heterogeneity.png
+python simulate.py         # prints A* for baseline + all sectors -> fig1_threshold.png, fig3_heterogeneity.png (via make_figures.py)
+python make_figures.py     # writes fig1_threshold.png, fig3_heterogeneity.png
+python minimum_wage.py     # prints A*_MW for a range of W_min values (Section 7.3)
+python make_figures2.py    # writes fig2_minimum_wage.png, fig4_timing.png
 ```
+
+## Figures
+| File | Paper location | What it shows |
+|---|---|---|
+| `fig1_threshold.png` | Section 7.1, Figure 1 | Baseline Π_T(A) vs Π_P*(A) crossing at A*≈0.65 |
+| `fig2_minimum_wage.png` | Section 7.3, Figure 2 | Under a binding minimum wage, Π_P^MW(A) stays flat and never overtakes Π_T(A) for A∈[0,3] — a stronger finding than a simple threshold shift (see paper text) |
+| `fig3_heterogeneity.png` | Section 7.5, Figure 3 | A* by occupation (riders, livestream hosts, designers, manufacturing workers) |
+| `fig4_timing.png` | Section 4.4, Figure 4 | Four-stage timing of the principal–agent game |
 
 ## Baseline calibration
 | Parameter | Value | Source |

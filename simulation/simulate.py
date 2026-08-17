@@ -3,8 +3,21 @@ From Hours to Output -- simulation code
 Computes the AI-intensity contract-transformation threshold A*
 under baseline and sector-heterogeneous calibrations.
 """
+import sys
+import os
+import json
 import numpy as np
 from scipy.optimize import brentq
+
+# Make console output UTF-8 safe (fixes garbled Chinese text on Windows terminals)
+try:
+    sys.stdout.reconfigure(encoding="utf-8")
+except AttributeError:
+    pass  # Python < 3.7 fallback, not expected here
+
+# Always resolve paths relative to this script's own folder,
+# so the code works no matter what directory it's run from.
+HERE = os.path.dirname(os.path.abspath(__file__))
 
 def Htilde(A, h, theta, C):
     return h + theta * A * C
@@ -31,7 +44,6 @@ def solve_A_star(params, A_max=10.0):
 baseline = dict(a0=1.0, h=2.0, theta=1.5, C=1.0, k=1.0, Ubar=1.0, r=1.0, sigma2=1.0, F=1.5)
 base_params = tuple(baseline.values())
 A_star_base = solve_A_star(base_params)
-print(f"Baseline A* = {A_star_base:.4f}")
 
 # ---- Sector heterogeneity ----
 sectors = {
@@ -41,20 +53,29 @@ sectors = {
     "传统制造业产线工人 (Manufacturing line workers)": dict(C=0.4, sigma2=0.7, r=1.0),
 }
 
-print("\nSector heterogeneity (baseline h, theta, k, a0, Ubar, F unchanged):")
-results = {}
-for name, ov in sectors.items():
-    p = dict(baseline)
-    p.update(ov)
-    params = tuple(p.values())
-    A_star = solve_A_star(params, A_max=10.0)
-    results[name] = A_star
-    if A_star is None:
-        print(f"  {name}: C={ov['C']}, sigma2={ov['sigma2']}, r={ov['r']}  ->  A* > 10 (effectively never transforms)")
-    else:
-        print(f"  {name}: C={ov['C']}, sigma2={ov['sigma2']}, r={ov['r']}  ->  A* = {A_star:.3f}")
+def _compute_sector_results():
+    results = {}
+    for name, ov in sectors.items():
+        p = dict(baseline)
+        p.update(ov)
+        params = tuple(p.values())
+        results[name] = solve_A_star(params, A_max=10.0)
+    return results
 
-import json
-with open("/home/claude/farm-repo/results.json", "w") as f:
-    json.dump({"baseline_A_star": A_star_base,
-               "sectors": {k: (v if v is None else round(v,4)) for k,v in results.items()}}, f, ensure_ascii=False, indent=2)
+if __name__ == "__main__":
+    print(f"Baseline A* = {A_star_base:.4f}")
+    print("\nSector heterogeneity (baseline h, theta, k, a0, Ubar, F unchanged):")
+    results = _compute_sector_results()
+    for name, ov in sectors.items():
+        A_star = results[name]
+        if A_star is None:
+            print(f"  {name}: C={ov['C']}, sigma2={ov['sigma2']}, r={ov['r']}  ->  A* > 10 (effectively never transforms)")
+        else:
+            print(f"  {name}: C={ov['C']}, sigma2={ov['sigma2']}, r={ov['r']}  ->  A* = {A_star:.3f}")
+
+    out_path = os.path.join(HERE, "results.json")
+    with open(out_path, "w", encoding="utf-8") as f:
+        json.dump({"baseline_A_star": A_star_base,
+                   "sectors": {k: (v if v is None else round(v, 4)) for k, v in results.items()}},
+                  f, ensure_ascii=False, indent=2)
+    print(f"\nWrote {out_path}")
