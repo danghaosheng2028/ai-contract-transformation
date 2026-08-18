@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI-Driven Contract Transformation: Interactive Simulation</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  body { font-family: -apple-system, Helvetica, Arial, sans-serif; max-width: 900px; margin: 30px auto; padding: 0 16px; color: #222; }
+  h1 { font-size: 1.4em; }
+  .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 32px; margin: 24px 0; }
+  .control label { display: block; font-size: 0.9em; margin-bottom: 4px; }
+  .control input[type=range] { width: 100%; }
+  .control .val { font-weight: bold; color: #1a5fb4; }
+  #chart-wrap { position: relative; height: 420px; }
+  #threshold { margin-top: 14px; padding: 12px 16px; background: #f2f6fc; border-left: 4px solid #1a5fb4; font-size: 0.95em; }
+  .note { font-size: 0.82em; color: #666; margin-top: 20px; }
+</style>
+</head>
+<body>
+
+<h1>Interactive Principal–Agent Simulation</h1>
+<p>Adjust output noise (&sigma;<sup>2</sup>), risk aversion (r), human&ndash;AI complementarity (C), and the minimum-wage floor (W<sub>min</sub>) to see how the contract transformation threshold A* shifts. Baseline values match Section 3.4 of the paper.</p>
+
+<div class="controls">
+  <div class="control">
+    <label>Output noise &sigma;&sup2;: <span class="val" id="sigma2_val">1.00</span></label>
+    <input type="range" id="sigma2" min="0.1" max="3" step="0.05" value="1.0">
+  </div>
+  <div class="control">
+    <label>Risk aversion r: <span class="val" id="r_val">1.00</span></label>
+    <input type="range" id="r" min="0.1" max="3" step="0.05" value="1.0">
+  </div>
+  <div class="control">
+    <label>Complementarity C: <span class="val" id="C_val">1.00</span></label>
+    <input type="range" id="C" min="0.1" max="3" step="0.05" value="1.0">
+  </div>
+  <div class="control">
+    <label>Minimum wage floor W<sub>min</sub>: <span class="val" id="Wmin_val">0.00</span></label>
+    <input type="range" id="Wmin" min="0" max="2" step="0.05" value="0.0">
+  </div>
+</div>
+
+<div id="chart-wrap">
+  <canvas id="chart"></canvas>
+</div>
+
+<div id="threshold"></div>
+
+<p class="note">
+  Fixed parameters (Section 3.4 baseline): h = 2.0, &theta; = 1.5, k = 1.0, a<sub>0</sub> = 1.0,
+  &Ubar; = 1.0, F = 1.5. Formulas follow Sections 4.2, 4.3, and 7.3 of
+  <em>From Hours to Output: A Principal&ndash;Agent Theory of AI-Driven Contract Transformation and the Limits of Minimum-Wage Protection in China's Platform Economy</em>.
+  This tool is for illustrative exploration of the calibrated model and does not re-estimate any parameter from data.
+</p>
+
+<script>
+// ---- fixed baseline parameters (Section 3.4) ----
+const h = 2.0, theta = 1.5, k = 1.0, a0 = 1.0, Ubar = 1.0, F = 1.5;
+
+function Htilde(A, C) { return h + theta * A * C; }
+
+// Time-rate profit, Section 4.2
+function PiT(A, C) {
+  return a0 * Htilde(A, C) - Ubar - 0.5 * k * a0 * a0;
+}
+
+// Unconstrained piece-rate profit, Section 4.3
+function PiPstar(A, C, r, sigma2) {
+  const Ht = Htilde(A, C);
+  return (Ht ** 4) / (2 * k * (Ht ** 2 + r * k * sigma2)) - Ubar - F;
+}
+
+// Optimal gamma, Section 4.3 (needed for the minimum-wage-constrained profit, Section 7.3)
+function gammaStar(A, C, r, sigma2) {
+  const Ht = Htilde(A, C);
+  return (Ht ** 2) / (Ht ** 2 + r * k * sigma2);
+}
+
+// Minimum-wage-constrained piece-rate profit, Section 7.3
+function PiP_MW(A, C, r, sigma2, Wmin) {
+  const Ht = Htilde(A, C);
+  const gamma = gammaStar(A, C, r, sigma2);
+  const aStar = gamma * Ht / k;
+  const alphaUnconstrained = Ubar + 0.5 * r * gamma * gamma * sigma2 - 0.5 * gamma * gamma * Ht * Ht / k;
+  const alphaMW = Math.max(Wmin, alphaUnconstrained);
+  return (1 - gamma) * aStar * Ht - alphaMW - F;
+}
+
+// Find A* by bisection on G(A) = PiPstar(A) - PiT(A) over [0, Amax]
+function findThreshold(C, r, sigma2, Amax = 10, useMW = false, Wmin = 0) {
+  const G = (A) => (useMW ? PiP_MW(A, C, r, sigma2, Wmin) : PiPstar(A, C, r, sigma2)) - PiT(A, C);
+  let lo = 0, hi = Amax;
+  if (G(lo) >= 0) return 0; // already crosses at 0 (edge case)
+  if (G(hi) < 0) return null; // no crossing found within range
+  for (let i = 0; i < 60; i++) {
+    const mid = (lo + hi) / 2;
+    if (G(mid) < 0) lo = mid; else hi = mid;
+  }
+  return (lo + hi) / 2;
+}
+
+const ctx = document.getElementById('chart').getContext('2d');
+let chart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [
+      { label: 'Π_T(A)  (time-rate)', data: [], borderColor: '#1a5fb4', borderWidth: 2, pointRadius: 0 },
+      { label: 'Π_P*(A)  (piece-rate, unconstrained)', data: [], borderColor: '#c01c28', borderWidth: 2, pointRadius: 0 },
+      { label: 'Π_P^MW(A)  (piece-rate, wage floor)', data: [], borderColor: '#2ec27e', borderWidth: 2, borderDash: [6,4], pointRadius: 0 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: { x: { title: { display: true, text: 'AI intensity A' } },
+              y: { title: { display: true, text: 'Firm profit' } } },
+    animation: false
+  }
+});
+
+function update() {
+  const sigma2 = parseFloat(document.getElementById('sigma2').value);
+  const r = parseFloat(document.getElementById('r').value);
+  const C = parseFloat(document.getElementById('C').value);
+  const Wmin = parseFloat(document.getElementById('Wmin').value);
+
+  document.getElementById('sigma2_val').textContent = sigma2.toFixed(2);
+  document.getElementById('r_val').textContent = r.toFixed(2);
+  document.getElementById('C_val').textContent = C.toFixed(2);
+  document.getElementById('Wmin_val').textContent = Wmin.toFixed(2);
+
+  const Amax = 3, steps = 60;
+  const labels = [], dT = [], dP = [], dMW = [];
+  for (let i = 0; i <= steps; i++) {
+    const A = (Amax * i) / steps;
+    labels.push(A.toFixed(2));
+    dT.push(PiT(A, C));
+    dP.push(PiPstar(A, C, r, sigma2));
+    dMW.push(PiP_MW(A, C, r, sigma2, Wmin));
+  }
+  chart.data.labels = labels;
+  chart.data.datasets[0].data = dT;
+  chart.data.datasets[1].data = dP;
+  chart.data.datasets[2].data = dMW;
+  chart.update();
+
+  const Astar = findThreshold(C, r, sigma2, 10, false, 0);
+  const AstarMW = findThreshold(C, r, sigma2, 50, true, Wmin);
+
+  let msg = '';
+  msg += Astar === null
+    ? '<b>A* (unconstrained):</b> no crossing found in [0,10] — piece-rate never overtakes time-rate at these parameters.<br>'
+    : `<b>A* (unconstrained):</b> ${Astar.toFixed(3)}<br>`;
+  msg += AstarMW === null
+    ? `<b>A*_MW (with wage floor W_min = ${Wmin.toFixed(2)}):</b> no crossing found in [0,50] — the wage floor blocks transformation within any empirically plausible range.`
+    : `<b>A*_MW (with wage floor W_min = ${Wmin.toFixed(2)}):</b> ${AstarMW.toFixed(3)}`;
+  document.getElementById('threshold').innerHTML = msg;
+}
+
+['sigma2', 'r', 'C', 'Wmin'].forEach(id => document.getElementById(id).addEventListener('input', update));
+update();
+</script>
+
+</body>
+</html>
