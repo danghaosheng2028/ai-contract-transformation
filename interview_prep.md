@@ -11,7 +11,9 @@ floor — see Section 7.3's revised text). Q3 is also rewritten: the model does 
 "directly" handle hybrid base-pay-plus-commission contracts the way the old answer claimed;
 Appendix C's Proposition 1 shows the opposite, and that tension is now stated honestly. Two
 new questions (Q8, Q9) cover findings from later verification passes, and Q10 covers the most
-recent — and most structural — unresolved critique.
+recent — and most structural — unresolved critique. Q11–Q13 cover the latest revision pass:
+the 7.5 external-corroboration paragraph, the 8.2 multitasking sketch, and the appendix
+restructuring into a main paper plus Extended Online Appendix.
 
 ---
 
@@ -162,3 +164,51 @@ shift from "redesign the incentive contract" toward "automate the task entirely,
 qualitatively different regime the paper's $A^*$ threshold does not speak to at all. This
 is now listed as new point 9 in Section 8.2's Limitations, and is the honest answer if
 pressed on "what would a stronger version of this model need to do."
+
+**Q11. How strong is the new "external corroboration" evidence in Section 7.5, really?**
+
+Weaker than a real estimate, but honestly framed as such — don't overstate it if asked.
+It's two pieces of descriptive, secondary evidence, not a test of the model. First, Chen
+and Guo's (2023) industry-heterogeneity coefficients (labor/knowledge-intensive ≈0.03,
+capital-intensive ≈0.01, only marginally significant) match the *direction* of Table 2's
+manufacturing-vs-other-sectors ordering, but their industry classification is built from
+listed-company balance sheets, not gig-economy occupations — a real classification
+mismatch the paper states explicitly. Second, Zhang (2023) and the China Association of
+Performing Arts (2023) give a genuine, verified quote-level source for "riders' earnings
+are approximately normal, streamers' are extremely right-skewed" — but that skew, per
+Rosen's (1981) superstar-effect explanation Zhang invokes, is largely a cross-worker
+audience-reach story, not the within-worker output-noise story $\sigma^2$ is meant to
+capture. The paper flags this distinction directly in the same paragraph rather than
+letting it pass. If pressed further: no, this is not a substitute for worker-level data,
+and the paper never claims it is — it's directional corroboration only.
+
+**Q12. Section 8.2's multitasking point now includes a "sketch" with an actual cost
+function $\psi(a_1,a_2)$ — why isn't this fully derived if you've gone that far?**
+
+Because a full derivation would require re-solving the firm's optimal $\gamma$ under a
+*joint* two-task effort allocation, and with a substitutable cost function
+$\psi(a_1,a_2)=\tfrac12 k(a_1^2+a_2^2)+\lambda a_1 a_2$, the worker's two first-order
+conditions are coupled — solving them, then re-deriving $\gamma^*$, then re-deriving
+$A^*$ in this extended setting, is a materially larger undertaking than anything else
+in the paper's appendix, not a small addition. The sketch is there to establish the
+*direction* of the effect (piece-rate pay pulls effort away from $a_2$) with confidence,
+without overclaiming a closed form the paper doesn't actually derive. This is stated
+explicitly as "informal, not a full derivation" in the text — if asked "so what is $a_2$
+as a function of $A$," the honest answer is "the sketch doesn't tell you that; it only
+tells you the sign."
+
+**Q13. Why does the paper now point to an "Extended Online Appendix" instead of keeping
+everything in one document?**
+
+Purely a readability decision, not a rigor one — nothing was deleted, only relocated.
+Appendices A.5–A.7, C, and D originally ran to several thousand words of proof and
+robustness tables; every one of those results was independently re-verified numerically
+(symbolic differentiation and root-finding, matching the paper's stated values to at
+least four decimal places). Moving the full derivations to a public, linked GitHub file
+while keeping the *stated results and one-line justification* in the main paper means a
+reader — or a judge with limited reading time — gets the complete logical chain without
+wading through pages of restated algebra, while anyone who wants to check a specific
+derivation can still do so. If asked why this matters: several of the paper's own
+reference gold-medal papers keep their appendices short or absent entirely; a bloated
+appendix risks looking padded rather than rigorous, which was the actual reason for the
+restructuring.

@@ -4,25 +4,19 @@ Lucas Dang
 RCF Experimental School, Beijing
 July 2026
 
-*Code and simulation scripts reproducing all figures and calibration results in this paper are publicly available at: https://github.com/danghaosheng2028/ai-contract-transformation. An interactive version of the core simulation — allowing readers to vary output noise $\sigma^2$, risk aversion $r$, human–AI complementarity $C$, and the minimum-wage floor $W_{\min}$ in real time — is available at https://danghaosheng2028.github.io/ai-contract-transformation/ (source: `docs/index.html` in the same repository).*
+*Code and simulation scripts reproducing all figures and calibration results in this paper are publicly available at: https://github.com/danghaosheng2028/ai-contract-transformation, which also hosts an Extended Online Appendix with full derivations condensed in Appendices A.5–A.7, C, and D below. An interactive version of the core simulation — allowing readers to vary output noise $\sigma^2$, risk aversion $r$, human–AI complementarity $C$, and the minimum-wage floor $W_{\min}$ in real time — is available at https://danghaosheng2028.github.io/ai-contract-transformation/ (source: `docs/index.html` in the same repository).*
 
 ---
 
 ## Abstract
 
-Rapid advances in artificial intelligence (AI) have transformed how firms allocate tasks, monitor performance, and design compensation systems. While AI increases productivity, it also amplifies output volatility and reshapes the allocation of risk between firms and workers. This paper develops a principal–agent model of AI‑augmented production in which effective human capital is:
+Why do some AI-augmented jobs shift to piece-rate pay while others stay on fixed wages — and why does China's minimum-wage system seem to slow, but not stop, that shift? This paper develops a principal–agent model in which AI augments a worker's effective human capital, $\tilde H = h+\theta AC$, and firms choose between a time-rate contract (fixed wage, enforced minimum effort) and a piece-rate contract (output-linked pay, digitally monitored, riskier for the worker).
 
-$$
-\tilde{H} = h + \theta AC
-$$
+We derive closed-form optimal contracts under each mode and prove there is a unique AI-intensity threshold $A^*$ above which firms switch from time-rate to piece-rate pay — because piece-rate profit grows convexly in AI intensity while time-rate profit only grows linearly. The threshold rises with output noise and worker risk aversion, falls with AI-augmentation effectiveness, and is provably unaffected by how the worker's outside option is specified or by any AI-driven automation gains common to both contract modes.
 
-where $A$ denotes AI utilization intensity and $C$ captures the task-specific marginal effectiveness of AI augmentation. Firms choose between a time‑rate contract with enforceable minimum effort and a piece‑rate contract that requires digital monitoring and exposes workers to output risk.
+Numerically, a binding minimum wage roughly doubles to triples the AI intensity needed to trigger this switch, without blocking it outright; and the threshold is markedly lower for highly monitorable, AI-augmented occupations (e.g. platform delivery) than for occupations AI augments only weakly (e.g. manufacturing), a pattern broadly consistent with independent evidence on digitalization and wage growth in Chinese firms.
 
-We derive closed‑form expressions for optimal effort, optimal piece‑rate incentives, and firm profit under each contract. A central theoretical result is the existence of a unique contract transformation threshold $A^*$ such that firms optimally switch from time‑rate to piece‑rate compensation once AI intensity exceeds this level. The threshold arises because time‑rate profit grows linearly in $A$, whereas piece‑rate profit grows convexly due to incentive amplification and AI‑enhanced productivity.
-
-Using the implicit function theorem, we characterize the comparative statics of $A^*$; we further show that this threshold is inversely and exactly proportional to the product of the AI amplification coefficient $\theta$ and the augmentation-effectiveness parameter $C$, and that this threshold is provably invariant to the specification of worker reservation utility and to the presence of any effort-independent automation channel common to both contract modes. The threshold increases in output noise and worker risk aversion—reflecting the cost of risk exposure under piece‑rate pay, with output noise and risk aversion entering the threshold with identical elasticity—and decreases in AI-augmentation effectiveness, which strengthens incentive effectiveness. Numerical simulations confirm these results and show that China's minimum‑wage regulation substantially delays contract transformation: even a modest, strictly enforced wage floor roughly doubles to triples the AI intensity required before piece-rate compensation becomes optimal, by curbing (though not eliminating) the negative-base-wage channel that drives piece-rate profit's fastest growth — though transformation is delayed rather than categorically prevented within the empirically relevant AI-intensity range. We further show that the transformation threshold is highly sector‑heterogeneous: occupations with high monitorability and strong AI-augmentation effectiveness (e.g. platform delivery and livestreaming) cross the threshold at far lower AI intensity than occupations AI augments only weakly (e.g. manufacturing line work), and this ordering is broadly consistent with independent Chinese firm-panel evidence on digitalization and wage growth.
-
-The model provides a unified explanation for heterogeneous adoption of output‑based pay across industries and offers policy insights on labor regulation, AI‑skills training, and the future of incentive design in AI‑enabled workplaces.
+The model offers a unified account of why output-based pay is spreading unevenly across AI-exposed industries, with implications for labor regulation and AI-skills policy.
 
 ---
 
@@ -92,7 +86,7 @@ $$
 
 derive closed‑form expressions for optimal effort and incentives, and show that a unique transformation threshold $A^*$ exists. Comparative statics reveal how noise, risk aversion, and AI-augmentation effectiveness shape this threshold. We further incorporate China's minimum‑wage regulation and show that binding wage floors substantially delay — roughly doubling to tripling the required AI intensity, though not categorically preventing — contract transformation within the empirically relevant AI-intensity range.
 
-The remainder of the paper proceeds as follows. Section 2 reviews the related literature. Section 3 presents stylized facts and parameter calibration, together with suggestive evidence from independent Chinese firm-panel data supporting the threshold mechanism. Section 4 introduces the model. Section 5 derives equilibrium outcomes. Section 6 presents the main theoretical results. Section 7 provides numerical simulations, including a sensitivity and sector-heterogeneity analysis. Section 8 concludes with policy implications. Appendices contain additional proofs, calibration details, a formal unification of the two contract modes, and a robustness check against an unmodeled automation channel.
+The remainder of the paper proceeds as follows. Section 2 reviews the related literature. Section 3 presents stylized facts and parameter calibration, together with suggestive evidence from independent Chinese firm-panel data supporting the threshold mechanism. Section 4 introduces the model. Section 5 derives equilibrium outcomes. Section 6 presents the main theoretical results. Section 7 provides numerical simulations, including a sensitivity and sector-heterogeneity analysis. Section 8 concludes with policy implications. Appendix A completes the proofs of Theorems 1 and 2; Appendices C and D summarize a formal unification of the two contract modes and a robustness check against an unmodeled automation channel, with full derivations in the accompanying Extended Online Appendix.
 
 ---
 
@@ -106,9 +100,7 @@ Subsequent work has refined these insights. Lazear (2000) documents empirically 
 
 This paper contributes to this literature by embedding AI‑augmented production into the Holmstrom–Milgrom framework. By modeling effective human capital as $\tilde{H}=h+\theta AC$, we show that AI amplifies the incentive effect of piece‑rate contracts and generates a unique transformation threshold $A^*$ at which firms optimally switch from time‑rate to piece‑rate compensation.
 
-**On the specific functional form $\tilde H = h + \theta AC$.** We adopt an additively separable, linear-in-$A$ augmentation of human capital rather than alternative forms considered in adjacent literatures — e.g., a multiplicative form $\tilde H = h\cdot(1+\theta A)^C$, or a CES-aggregator combining human and AI-derived effective labor as in task-based automation models (Acemoglu and Restrepo, 2018). Three considerations motivate this choice. First, tractability: the additive form keeps $\tilde H$ linear in $A$, which is what allows $\Pi_T(A)$ to remain exactly linear (Section 4.2) — the source of the linear-versus-convex asymmetry driving Theorem 1's existence result; a multiplicative or CES form would make both branches nonlinear in $A$, obscuring the clean mechanism this paper isolates. Second, interpretability: $\theta C$ has a direct reading as "the marginal human-capital return to a unit of AI intensity, scaled by task-specific effectiveness" — closer to an elasticity than the corresponding parameter under a CES specification. Third, this scope boundary matters for what the paper does *not* claim: because Theorem 1 rests on a linear-versus-convex profit comparison, robustness of the qualitative existence-and-uniqueness result to alternative augmentation functions is an open question we do not resolve here. We conjecture, but do not prove, that any augmentation function increasing and unbounded in $A$ would preserve existence of some threshold; the exact elasticity results of Appendix A.5, which rely specifically on the additive-linear form, would not carry over unchanged to a multiplicative specification. We flag this as a scope boundary rather than resolve it (see also Section 8.2, point 5, on endogenizing $C$).
-
-**A note on terminology.** We refer to $C$ throughout as governing "human–AI complementarity" in the loose, colloquial sense of "how effectively AI augments this particular task," not in the classical production-theory sense of a *low elasticity of substitution* (e.g., Leontief-style $\min(h,\theta AC)$, where AI would be unproductive without a baseline of human input). The additive-linear form $h+\theta AC$ in fact implies an *infinite* elasticity of substitution between baseline human capital $h$ and AI-augmented capacity — mathematically, sufficiently large $A$ could substitute arbitrarily for $h$, which is closer to perfect substitutability than to complementarity in the CES sense. We retain the term "complementarity" for consistency with the applied literature's informal usage (e.g., the "AI complementarity" framing in Acemoglu and Restrepo, 2018, and related work), but readers should read $C$ as a marginal-effectiveness parameter rather than a formal complementarity (low-substitution) parameter. Every derivation in this paper goes through correctly under the stated functional form regardless of this labeling choice; the caveat concerns interpretation, not correctness.
+**On the functional form and terminology.** We adopt the additive-linear form $\tilde H = h+\theta AC$, rather than a multiplicative or CES alternative (as in Acemoglu and Restrepo, 2018), because it keeps $\Pi_T(A)$ exactly linear in $A$ — the linear-versus-convex asymmetry that drives Theorem 1 — and gives $\theta C$ a direct reading as the marginal human-capital return to AI intensity. We call $C$ "AI-augmentation effectiveness" throughout, rather than "complementarity": the additive form technically implies infinite substitutability between $h$ and AI-augmented capacity, closer to substitution than to the low-elasticity sense the word "complementarity" usually carries in production theory. We flag, without resolving, two related scope boundaries: whether the existence-and-uniqueness result of Theorem 1 extends to other augmentation functions increasing and unbounded in $A$ (we conjecture it does, but only the additive-linear form delivers Appendix A's exact elasticities), and $C$'s treatment as exogenous and time-invariant (Section 8.2).
 
 ## 2.2 AI, Automation, and Labor Markets
 
@@ -803,7 +795,7 @@ $$
 
 **Figure 1: Contract transformation threshold.** Plots calibrated time-rate profit $\Pi_T(A)$ against piece-rate profit $\Pi_P^*(A)$ for $A \in [0, 3]$. Time-rate profit rises only linearly because a fixed wage cannot capture the convex incentive gains AI-augmented effort makes possible; piece-rate profit rises convexly because higher $A$ raises effective human capital $\tilde{H}$, compounding through the $\tilde{H}^4$ term in $\Pi_P^*(A)$. The curves cross exactly once, at $A^* \approx 0.65$ under baseline calibration. Below the threshold, monitoring cost $F$ outweighs incentive gains and firms retain fixed wages; above it, convex gains dominate and output risk shifts onto workers. *(See `simulation/fig1_threshold.png` in the code repository, or explore this relationship interactively at the link above.)*
 
-![Figure 1: Contract transformation threshold](fig1_threshold.png)
+![Figure 1: Contract transformation threshold](../simulation/fig1_threshold.png)
 
 ### Interpretation
 
@@ -865,7 +857,7 @@ $$
 \gamma_c^* = \frac{1}{2}
 $$
 
-— an exact result independent of $\tilde H$, $\sigma^2$, $r$, or $W_{\min}$, since the risk-cost and incentive-cost terms shaping the unconstrained $\gamma^*$ have both been absorbed into the now-fixed $\alpha=W_{\min}$. A firm facing a binding wage floor optimally moves its incentive slope toward $1/2$, not toward the unconstrained $\gamma^*$ (which can approach 1 as $A$ grows). The firm's true optimal profit under the constraint, $\Pi_P^{MW}(A)$, is obtained by maximizing over $\gamma\in[0,1]$ with $\alpha(\gamma)$ as defined above.
+— an exact result independent of $\tilde H$, $\sigma^2$, $r$, or $W_{\min}$, since the risk-cost and incentive-cost terms shaping the unconstrained $\gamma^*$ have both been absorbed into the now-fixed $\alpha=W_{\min}$. Intuitively: once $\alpha$ is pinned at $W_{\min}$ rather than chosen to offset risk, the firm's problem collapses to a pure output-share-versus-effort-cost tradeoff — $\gamma\tilde H^2/k - \gamma^2\tilde H^2/k$ — with no remaining term in $r$ or $\sigma^2$ to balance against; that quadratic alone is maximized at $\gamma=1/2$, regardless of how risky or noisy the underlying task is. A firm facing a binding wage floor optimally moves its incentive slope toward $1/2$, not toward the unconstrained $\gamma^*$ (which can approach 1 as $A$ grows). The firm's true optimal profit under the constraint, $\Pi_P^{MW}(A)$, is obtained by maximizing over $\gamma\in[0,1]$ with $\alpha(\gamma)$ as defined above.
 
 **Threshold values.** Solving $\Pi_P^{MW}(A^*_{MW}) = \Pi_T(A^*_{MW})$ numerically for $A\in[0,50]$:
 
@@ -882,7 +874,7 @@ Every value remains within the empirically relevant range $A\in[0,3]$ (Section 3
 
 **Figure 2: Minimum-wage floor delays, but does not block, transformation over the empirically relevant AI-intensity range.** Plots $\Pi_T(A)$, the unconstrained $\Pi_P^*(A)$, and the correctly re-optimized $\Pi_P^{MW}(A)$ for $A\in[0,3]$ under $W_{\min}=0.5$, together with the optimal incentive slope $\gamma$ chosen at each $A$ under the binding constraint (converging to $\gamma_c^*=0.5$). $\Pi_P^{MW}(A)$ grows more slowly than $\Pi_P^*(A)$ — since it forgoes the negative-base-wage channel — but remains strictly convex and crosses $\Pi_T(A)$ at a finite point within the plotted range. *(See `simulation/fig2_minimum_wage.png` and `simulation/minimum_wage.py` in the code repository; the interactive tool above lets readers verify this directly by sweeping $W_{\min}$ from 0 to 2.)*
 
-![Figure 2: Minimum-wage floor delays but does not block transformation](fig2_minimum_wage.png)
+![Figure 2: Minimum-wage floor delays but does not block transformation](../simulation/fig2_minimum_wage.png)
 
 ### Interpretation
 
@@ -930,9 +922,11 @@ Because $A^*$ depends on $(C,\sigma^2,r)$, occupations differ systematically in 
 
 *Note: only $(C, \sigma^2, r)$ vary by row; all other parameters use the Section 3.4 baseline. The "representative examples" column names commonly recognized occupation categories purely for illustration, not as claims about any specific company's actual compensation structure. Calibrations are illustrative rather than estimated from worker-level data (see Section 8.2). See `simulation/fig3_heterogeneity.png` and `simulation/simulate.py` in the code repository for the full computation.*
 
-![Figure 3: Sector-heterogeneous transformation thresholds](fig3_heterogeneity.png)
+![Figure 3: Sector-heterogeneous transformation thresholds](../simulation/fig3_heterogeneity.png)
 
 Riders and livestream hosts, whose tasks are both highly monitorable (low $\sigma^2$) and strongly augmented by AI routing or recommendation algorithms (high $C$), cross the threshold at roughly two-thirds of the baseline AI intensity — consistent with the empirical observation (Section 3.5) that these occupations are already overwhelmingly piece-rate. Manufacturing line workers, whose tasks AI augments only weakly, require more than double the baseline AI intensity to reach $A^*$, and under many realistic parameter ranges may never cross it, explaining the persistence of time-rate compensation in that sector even as AI adoption rises economy-wide.
+
+**External corroboration.** While the sector-specific $(C,\sigma^2,r)$ calibrations in Table 2 are illustrative rather than estimated, the qualitative ordering finds two independent points of support. First, Chen and Guo's (2023) industry-heterogeneity regressions on Chinese A-share firms (their Table 3) find that digitalization's effect on wages is significant and comparable in magnitude for labor-intensive (coefficient 0.030, $p<0.01$) and knowledge-technology-intensive industries (0.028, $p<0.01$), but markedly weaker and only marginally significant for capital-intensive industries (0.010, $p<0.10$) — consistent with, though not a direct estimate of, manufacturing's markedly higher $A^*$ in Table 2. We caution that their industry classification (based on listed-company balance sheets) is not a literal match to the occupation-level categories here, so this is directional corroboration rather than calibration validation. Second, on the $\sigma^2$ ordering specifically: Zhang (2023), analyzing survey data covering 63,000 delivery riders, reports that full-time riders' monthly earnings are approximately normally distributed with a slowly-decaying right tail, a pattern attributed to the transparency of platform dispatch algorithms; by contrast, the China Association of Performing Arts (2023) reports that streamer earnings are extremely right-skewed (95.2% below ¥5,000/month, 0.4% above ¥100,000/month), a pattern Zhang (2023) attributes to Rosen's (1981) "superstar effect," in which platform-scale distribution lets a small number of top performers capture disproportionate returns at near-zero marginal cost of reach. This asymmetry — labor-income risk for riders versus winner-take-most dynamics for streamers — is consistent with the relative $\sigma^2$ ordering calibrated in Table 2, though it is descriptive corroboration of distributional *shape*, not a calibration of $\sigma^2$'s magnitude; streamers' extreme skew plausibly reflects cross-worker heterogeneity in audience reach as much as within-worker output risk, a distinction the single-agent model of Section 4 does not separately identify.
 
 ---
 
@@ -1007,14 +1001,18 @@ Section 7.3's finding should not be read as a case against minimum-wage protecti
 5. Augmentation effectiveness $C$ is treated as exogenous and time-invariant. In practice, workers may endogenously invest in AI-collaboration skills to raise $C$ over time, which would make $A^*$ itself a dynamic, path-dependent object rather than a static threshold — a natural direction for future dynamic extensions of this model. Relatedly, the sector calibrations in Section 7.5 are illustrative, drawn from qualitative task characteristics rather than estimated from worker-level data; replacing them with data-informed values (e.g. platform-reported income variance by occupation) is a natural next step.
 6. The baseline piece-rate contract in Sections 4.3 and 5.2 permits an arbitrarily negative base wage $\alpha$ in the unconstrained case. Section 7.3.1 shows the paper's central convexity mechanism survives even under the stricter institutional constraint $\alpha\ge0$, though with a higher threshold — a robustness check we view as resolving, rather than merely flagging, this earlier concern.
 7. **From moral hazard to hidden information: screening under unobserved $(r, C)$.** The model in Sections 4–5 treats worker risk aversion $r$ and AI-augmentation effectiveness $C$ as parameters the firm can effectively condition on when setting $(\alpha, \gamma)$. In practice, a platform typically cannot observe an individual worker's risk aversion or her capacity to benefit from AI-assisted tasks before contracting with her; these are private information. This connects the paper's single-threshold framework to the broader theory of incentives under hidden information developed by Laffont and Tirole (1993), who show that when an agent's type is unobserved, the principal generally cannot implement the full-information contract $(\alpha^*, \gamma^*)$ derived in Section 5.2 for every worker, and instead must offer a menu of contracts $\{(\alpha_i, \gamma_i)\}$ designed to induce self-selection. Extending the present model in this direction would replace the single transformation threshold $A^*$ of Theorem 1 with a *separation condition*: for a given AI intensity $A$, the platform would need to determine whether the gain from screening — offering low-$\gamma$ contracts that retain risk-averse or low-$C$ workers alongside high-$\gamma$ contracts that extract surplus from risk-tolerant, high-$C$ workers — exceeds the informational rents such a menu must concede to induce truthful revelation. This would generalize $A^*$ from a scalar cutoff into a *region* in $(A, r, C)$-space, and offers a natural bridge between this paper's aggregate-firm framing and worker-level heterogeneity of the kind documented in Section 7.5. We leave the formal characterization of this screening extension to future work.
-8. **Single-task framework and the multitasking blind spot.** This paper cites Holmstrom and Milgrom (1991) for its general theory of linear contracting under CARA-normal uncertainty, but does not apply that same paper's central substantive insight — that high-powered incentives on measurable tasks induce agents to systematically neglect unmeasured tasks — to its own setting. This is a first-order omission for the platform-labor context motivating this paper: piece-rate compensation for delivery riders, for instance, is widely associated in policy discussion with speed-versus-safety tradeoffs that a single-task effort model cannot represent. Extending the model to a multitask setting (a₁ = measurable output, a₂ = unmeasured quality/safety, with a joint cost function $\psi(a_1,a_2)$) would very plausibly strengthen — not weaken — the paper's regulatory conclusion in Section 8.1: minimum-wage protection's welfare case would gain an additional channel beyond risk-sharing, since dampening the incentive slope $\gamma$ under a binding floor (Section 7.3.1) would also mitigate multitasking distortions. We do not model this extension here but flag it as a substantively important direction for future work, and note explicitly that the current efficiency-equity tradeoff in Section 8.1(4) should be read as a lower bound on the equity case for regulation, since it omits this channel entirely.
+8. **Single-task framework and the multitasking blind spot.** This paper cites Holmstrom and Milgrom (1991) for its general theory of linear contracting under CARA-normal uncertainty, but does not apply that same paper's central substantive insight — that high-powered incentives on measurable tasks induce agents to systematically neglect unmeasured tasks — to its own setting. This is a first-order omission for the platform-labor context motivating this paper: piece-rate compensation for delivery riders is widely associated in policy discussion with speed-versus-safety tradeoffs that a single-task effort model cannot represent.
+
+   > **Sketch: a two-task extension (informal, not a full derivation).** Let the worker split effort between measurable output $a_1$ (what $y=a_1\tilde H+\varepsilon$ in Section 4.1 captures) and unmeasured quality/safety $a_2$ (e.g. following traffic rules, order accuracy), with a joint, substitutable cost function $\psi(a_1,a_2)$ such as $\psi(a_1,a_2)=\tfrac12 k(a_1^2+a_2^2)+\lambda a_1 a_2$ for $\lambda>0$. Under piece-rate pay, the worker is compensated only for $a_1$; the standard multitask logic then implies $a_2$ falls as the incentive slope $\gamma$ rises, since effort substitutes away from the unrewarded task. This suggests $a_2$ is decreasing in $A$ above the transformation threshold $A^*$ — a testable prediction this paper's single-task model cannot generate. We do not derive $\gamma$'s optimal value in this extended setting, only note the direction of the effect.
+   >
+   > This channel would strengthen — not weaken — Section 8.1's regulatory conclusion: minimum-wage protection's welfare case gains an additional channel beyond risk-sharing, since dampening $\gamma$ under a binding wage floor (Section 7.3.1) would also mitigate this safety-effort substitution. We flag this as a substantively important direction for future work, and note that the efficiency-equity tradeoff in Section 8.1(4) should be read as a lower bound on the equity case for regulation, since it omits this channel entirely.
 9. **Effort-independent automation channel.** The baseline production function $y=a\tilde H+\varepsilon$ (Section 4.1) routes all of AI's contribution to output through the multiplicative term $a\tilde H$, meaning AI augmentation has zero effect on output whenever effort $a=0$. This captures AI as a pure effort-amplifier but omits a channel plausibly central to platform gig work: AI components (route optimization, automated matching) that contribute to output largely independent of the worker's momentary effort level. Appendix D formalizes this concern by extending the production function to $y=a\tilde H+g(A)+\varepsilon$ and proves (Proposition 2) that the paper's central threshold result is *exactly* invariant to any such term $g(A)$, provided it is realized identically under both contract modes — the empirically plausible baseline case, since a platform's automated dispatch or routing typically runs the same way regardless of how workers are paid. What remains genuinely open is the harder case where automation returns are *endogenous to the contract mode itself* (e.g., output-based pay might give firms a stronger incentive to invest in complementary automation than time-based pay does); Appendix D states precisely what would need to hold for this to overturn the paper's results, replacing the vague concern "AI might do more than amplify effort" with a specific, falsifiable open question.
 
 ---
 
 # Appendix A. Additional Proofs
 
-This appendix provides complete derivations for (i) the second-order conditions underlying the worker's effort choice and the firm's optimal piece rate (Section A.0); (ii) an explicit global-convexity verification of $\Pi_P^*(A)$ completing the proof of Theorem 1, which the main text only established asymptotically (Sections A.1–A.2); (iii) the comparative-statics proofs of Theorem 2, with a corrected derivation for $\partial A^*/\partial C$ and its verification across all sector calibrations (Sections A.3–A.4); and (iv) three exact structural invariance results not stated in the main text (Sections A.5–A.7).
+This appendix provides complete derivations for (i) the second-order conditions underlying the worker's effort choice and the firm's optimal piece rate (Section A.0); (ii) an explicit global-convexity verification of $\Pi_P^*(A)$ completing the proof of Theorem 1, which the main text only established asymptotically (Sections A.1–A.2); and (iii) the corrected comparative-statics proof for $\partial A^*/\partial C$, with its verification across all sector calibrations (Section A.4; Section A.3 is a pointer to the parallel derivation for $\partial A^*/\partial r$ already given in Section 6.2(ii), to avoid duplication). Section A.5–A.7 states three further structural invariance results with a one-line justification each; their complete proofs and numerical verification are in the Extended Online Appendix, referenced there.
 
 ## A.0 Second-Order Conditions (SOC)
 
@@ -1070,56 +1068,7 @@ Theorem 2's comparative statics apply the implicit function theorem to $G(A^*)=0
 
 ## A.3 Derivative with Respect to Risk Aversion $r$
 
-Piece‑rate profit is:
-
-$$
-\Pi_P^*(A)
-= \frac{\tilde{H}^4}{2k(\tilde{H}^2 + rk\sigma^2)}
-- \bar{U} - F
-$$
-
-Differentiate with respect to $r$:
-
-$$
-\frac{\partial \Pi_P^*}{\partial r}
-= -\frac{\sigma^2\tilde{H}^4}{2(\tilde{H}^2 + rk\sigma^2)^2}
-$$
-
-Since all parameters are positive:
-
-$$
-\frac{\partial \Pi_P^*}{\partial r} < 0
-$$
-
-Time‑rate profit does not depend on $r$, so:
-
-$$
-\frac{\partial G}{\partial r}
-= \frac{\partial \Pi_P^*}{\partial r} < 0
-$$
-
-Using the implicit function theorem:
-
-$$
-\frac{\partial A^*}{\partial r}
-= -\frac{\partial G/\partial r}{\partial G/\partial A}
-$$
-
-The denominator is positive:
-
-$$
-\frac{\partial G}{\partial A}(A^*) > 0
-$$
-
-Thus:
-
-$$
-\frac{\partial A^*}{\partial r} > 0
-$$
-
-### Interpretation
-
-More risk‑averse workers require higher compensation under piece‑rate pay, reducing firm profit and delaying contract transformation.
+The full derivative and sign argument are already given in Section 6.2(ii); we do not repeat them here to avoid duplication. The result, $\partial A^*/\partial r>0$, is used directly in A.2.1's non-degeneracy argument and A.4 below.
 
 ## A.4 Derivative with Respect to Augmentation Effectiveness $C$ (corrected proof, with sector-level verification)
 
@@ -1168,249 +1117,23 @@ The inequality holds comfortably at every sector's own equilibrium point, with a
 
 **Note.** Because this step depends on calibration rather than being a pure algebraic identity, the precise statement is: this holds whenever AI-augmentation effectiveness is productive enough, relative to the enforced minimum effort $a_0$ under time-rate pay, that raising $C$ creates more marginal option value under the convex piece-rate branch than under the linear time-rate branch — satisfied comfortably under our calibration and across all sector calibrations tested, but not a theorem-level universal claim.
 
-## A.5 Corollary: Exact Closed-Form Dependence of $A^*$ on $\theta C$
+## A.5–A.7 Three Structural Corollaries (condensed; full derivations in the Extended Online Appendix)
 
-Both $\Pi_T(A)$ and $\tilde H(A)$ depend on $\theta$ and $C$ only through the product $\psi\equiv\theta C$:
+Three additional closed-form results follow from the model's structure, each with a full proof and numerical verification in the [Extended Online Appendix](https://github.com/danghaosheng2028/ai-contract-transformation/blob/main/paper/extended-appendix.md):
 
-$$
-\Pi_T(A) = a_0h + a_0\psi A - \bar U - \tfrac12 ka_0^2, \qquad \tilde H = h+\psi A.
-$$
-
-Substituting $x\equiv\psi A$, the equilibrium condition $G(A^*)=0$ becomes an equation purely in $x$ (all other parameters fixed), so its solution $x^*$ is a constant independent of how $\psi$ is decomposed into $\theta$ and $C$. Since $x^*=\psi A^*=\theta C\cdot A^*$, we obtain the exact closed form
-
-$$
-A^* = \frac{x^*}{\theta C},
-$$
-
-where $x^*\approx0.9744$ under baseline calibration. Two corollaries:
-
-1. $\partial\ln A^*/\partial\ln\theta = \partial\ln A^*/\partial\ln C = -1$ exactly — confirmed numerically at $\pm1\%$, $\pm5\%$, $\pm10\%$, and $\pm20\%$ perturbations, all returning elasticity $-1.0000$ to four decimal places.
-2. Since $\theta$ and $C$ enter identically, doubling either has an identical effect on $A^*$: AI-augmentation-skills training and technology upgrades that raise $\theta$ are, at the margin, perfect substitutes for accelerating contract transformation (cf. Section 8.1(2)).
-
-## A.6 Corollary: Equal Elasticities for $r$ and $\sigma^2$
-
-By an analogous argument, $r$ and $\sigma^2$ enter the model only through the product $b\equiv rk\sigma^2$. Since $\partial\ln b/\partial\ln r = \partial\ln b/\partial\ln\sigma^2 = 1$ identically, and $A^*$ depends on $r,\sigma^2$ only via $b$, it follows that
-
-$$
-\frac{\partial\ln A^*}{\partial\ln r} = \frac{\partial\ln A^*}{\partial\ln\sigma^2}
-$$
-
-exactly, for any parameter values. Confirmed numerically: both elasticities equal $0.213$ under baseline calibration. Worker risk aversion and output-noise variance are interchangeable drivers of the transformation threshold — a doubling of either has exactly the same proportional effect on $A^*$.
-
-## A.7 Corollary: Invariance of $A^*$ to the Specification of Reservation Utility $\bar U$
-
-The main text treats $\bar U$ as a constant, independent of $A$. We show this is a harmless normalization, not a substantive restriction: for *any* specification $\bar U(A)$ — constant, increasing, decreasing, or nonlinear in $A$ — the threshold $A^*$ is unchanged.
-
-**Proof.** Both $\Pi_T(A)$ and $\Pi_P^*(A)$ contain $\bar U(A)$ as an additive term with coefficient $-1$:
-
-$$
-\Pi_T(A) = a_0\tilde H(A) - \bar U(A) - \tfrac12 ka_0^2, \qquad \Pi_P^*(A) = \frac{\tilde H(A)^4}{2k(\tilde H(A)^2+b)} - \bar U(A) - F.
-$$
-
-Hence $G(A) = \Pi_P^*(A) - \Pi_T(A)$ contains the term $-\bar U(A) - (-\bar U(A)) = 0$: **$\bar U(A)$ cancels exactly**, regardless of its functional form, because the same worker faces the same outside option under either contract mode. $G(A)$, and hence $A^*$, is therefore completely independent of how $\bar U$ varies with $A$. $\blacksquare$
-
-We confirmed this numerically for four specifications — $\bar U(A) = 1.0$ (constant), $1.0+0.3A$ (linear), $1.0+0.2A+0.1A^2$ (quadratic), and $1.0+0.5\ln(1+A)$ (concave) — all four returning $A^*=0.649633$ to six decimal places. This directly addresses a natural general-equilibrium concern: even if AI adoption raises workers' economy-wide outside options as it becomes more prevalent, this does not affect the contract-mode threshold *for a given firm and worker*, since both contract modes draw on the same competitive labor market.
+- **A.5 — Exact dependence on $\theta C$.** $\theta$ and $C$ enter the model only through their product, so $A^*=x^*/(\theta C)$ for a constant $x^*\approx0.9744$, giving $\partial\ln A^*/\partial\ln\theta=\partial\ln A^*/\partial\ln C=-1$ exactly. AI-skills training and technology upgrades are, at the margin, perfect substitutes for accelerating transformation (Section 8.1(2)).
+- **A.6 — Equal elasticities for $r$ and $\sigma^2$.** Because $r$ and $\sigma^2$ enter only through the product $b\equiv rk\sigma^2$, $\partial\ln A^*/\partial\ln r=\partial\ln A^*/\partial\ln\sigma^2$ exactly (both equal $0.213$ at baseline) — worker risk aversion and output-noise variance are interchangeable drivers of the threshold.
+- **A.7 — Invariance to the specification of $\bar U$.** $\bar U(A)$ enters $\Pi_T$ and $\Pi_P^*$ identically and cancels exactly in $G(A)=\Pi_P^*(A)-\Pi_T(A)$, so $A^*$ is unaffected by *any* functional form of $\bar U(A)$ — constant, increasing, or nonlinear in $A$. Confirmed numerically across four specifications, all returning $A^*=0.649633$ to six decimal places.
 
 ---
 
-# Appendix B. Parameter Calibration Details
+# Appendix C. A Unified Contract Family and Its Limits (condensed)
 
-This appendix provides additional justification for the parameter values used in the numerical simulations in Section 7. The calibration is designed to ensure internal consistency, empirical plausibility, and alignment with stylized facts from China's rapidly digitalizing labor markets.
+Full derivation, including Proposition 1's proof and both proposed extensions, is in the [Extended Online Appendix](https://github.com/danghaosheng2028/ai-contract-transformation/blob/main/paper/extended-appendix.md). Summary: extending the firm's contract space to $(\alpha,\gamma,a_{\min})$ — an incentive slope alongside an attendance-enforced effort floor — shows (**Proposition 1**) that the optimum is always a corner: pure time-rate ($\gamma=0$) or pure piece-rate ($a_{\min}=0$), never a blend, under the paper's baseline cost structure. This formalizes the "corner solution" intuition behind Theorem 1, but sits in tension with the hybrid base-plus-commission pay common in China's platform economy. The extended appendix discusses why (a zero-marginal-cost assumption on layering enforcement) and sketches two ways the model could be extended to rationalize hybrid pay: a convex cost of layering enforcement mechanisms, or treating the effort floor as partial income insurance rather than pure enforcement.
 
----
+# Appendix D. Robustness to an Effort-Independent Automation Channel (condensed)
 
-## B.1 Human Capital and AI Amplification
-
-Baseline human capital:
-
-$$
-h = 2.0
-$$
-
-AI amplification coefficient:
-
-$$
-\theta = 1.5
-$$
-
-AI-augmentation effectiveness:
-
-$$
-C = 1.0
-$$
-
-These values ensure that effective human capital:
-
-$$
-\tilde{H} = h + \theta AC
-$$
-
-increases meaningfully with AI intensity $A$ while remaining within empirically plausible ranges.
-
----
-
-## B.2 Effort Cost and Monitoring
-
-Effort cost parameter:
-
-$$
-k = 1.0
-$$
-
-Minimum enforceable effort under time‑rate:
-
-$$
-a_0 = 1.0
-$$
-
-Reservation utility:
-
-$$
-\bar{U} = 1.0
-$$
-
-Monitoring cost for piece‑rate implementation:
-
-$$
-F = 1.5
-$$
-
-These values reflect typical magnitudes in principal–agent models and ensure that time‑rate compensation is initially more profitable when AI intensity is low.
-
----
-
-## B.3 Noise and Risk Aversion
-
-Output noise:
-
-$$
-\sigma^2 = 1.0
-$$
-
-Worker risk aversion:
-
-$$
-r = 1.0
-$$
-
-These values lie in the center of empirically estimated ranges for gig‑economy workers (Chetty 2006; subsequent studies).
-
----
-
-## B.4 AI Intensity Range
-
-The simulation range:
-
-$$
-A \in [0,3]
-$$
-
-corresponds to the empirical transition from low to high AI penetration in Chinese firms, based on CAICT digitalization statistics.
-
----
-
-## B.5 Baseline Transformation Threshold
-
-Using the calibrated parameters, the baseline contract transformation threshold satisfies:
-
-$$
-A^* \approx 0.65
-$$
-
-This value lies within the mid‑range of observed AI adoption levels in digital service industries, providing empirical grounding for the model's predictions.
-
----
-
-## B.6 Sector Heterogeneity Calibration
-
-Table 2 (Section 7.5) varies $(C, \sigma^2, r)$ by occupation while holding $(h, \theta, k, a_0, \bar{U}, F)$ at their Section 3.4 baseline values. The direction of each adjustment — higher $C$ and lower $\sigma^2$ for platform-mediated, algorithmically-routed tasks; lower $C$ for tasks AI augments only weakly — follows directly from the task characteristics discussed in Sections 2.3 and 3.5, but the specific magnitudes are illustrative rather than estimated. Full reproduction code and numerical output are provided in `simulation/simulate.py` and `simulation/results.json` in the accompanying code repository.
-
----
-
-# Appendix C. A Unified Contract Family and Its Limits
-
-This appendix formalizes the correspondence between Mode T and Mode P gestured at in Section 4.5, and — in the interest of intellectual honesty — states plainly where this formalization's central prediction departs from observed compensation practice.
-
-## C.1 Extended Contract Space
-
-Let the firm choose a triple $(\alpha,\gamma,a_{\min})$, where $a_{\min}\ge0$ is an enforced effort floor implemented through direct, attendance-style supervision — a technology distinct from, and not requiring, digital output monitoring. Given $(\gamma,a_{\min})$, the worker's realized effort is
-
-$$
-a(\gamma,a_{\min}) = \max\{a_{\min},\, \gamma\tilde H/k\}.
-$$
-
-The firm incurs the digital monitoring cost $F$ if and only if $\gamma>0$; enforcing a positive floor $a_{\min}$ via attendance supervision is available at zero marginal cost, consistent with the original Mode T specification of Section 4.2 (no separate cost parameter is introduced, so Sections 6–7 require no recalibration).
-
-## C.2 Proposition 1 (T/P as a Discrete Regime Choice)
-
-*Given the extended contract space above, the firm's optimal $(\alpha,\gamma,a_{\min})$ is always a corner: either (i) $\gamma=0$, $a_{\min}=a_0$ (Mode T exactly), or (ii) $a_{\min}=0$, $\gamma=\gamma^*=\tilde H^2/(\tilde H^2+rk\sigma^2)$ (Mode P exactly). No interior combination is ever optimal.*
-
-**Proof.** Fix $\gamma>0$. If $a_{\min}\le\gamma\tilde H/k$, the floor is redundant (profit is independent of $a_{\min}$ in this range), so $a_{\min}=0$ is weakly optimal. If $a_{\min}>\gamma\tilde H/k$, realized effort equals $a_{\min}$ regardless of $\gamma$, so any $\gamma>0$ purchases no additional effort while still imposing the worker's risk cost $\tfrac12 r\gamma^2\sigma^2$ and the fixed cost $F$; $\gamma=0$ strictly dominates. Hence the optimum is always a corner. $\blacksquare$
-
-## C.3 What This Buys, and an Honest Limitation
-
-This gives a rigorous version of the "corner solution jumping to an interior solution" intuition for Theorem 1: $A^*$ is the point at which the firm's optimum switches from the pure-T corner to the pure-P corner of this two-instrument space. We verified numerically that this switch involves a genuine discontinuity — at $A=A^*\approx0.65$, $\Pi_T(A^*)\approx1.474$ while $\lim_{\gamma\to0^+}\Pi_P(\gamma;A^*)\approx-2.500$ — confirming the jump is real and driven entirely by the fixed cost $F$, consistent with the existence argument in Section 6.1.
-
-**Limitation.** Proposition 1's strict-corner prediction is a direct consequence of assuming attendance-based effort enforcement is available at *zero marginal cost* regardless of how it is combined with $\gamma$. Under this assumption, layering a positive $a_{\min}$ alongside a positive $\gamma$ is either redundant or strictly dominant, which mechanically rules out any interior blend. This is not a deep economic result about why hybrid pay is suboptimal — it is an artifact of the specific (frictionless) cost structure assumed for tractability.
-
-This matters because hybrid compensation — a guaranteed base wage combined with per-order or per-unit commission — is the empirically dominant structure in much of China's platform delivery and ride-hailing sector, not the pure-corner outcome Proposition 1 predicts. We see two natural channels, left to future work, through which the model could be extended to accommodate this:
-
-1. **A positive, convex cost of layering enforcement on top of incentive pay** (e.g., attendance supervision becomes more expensive to run alongside digital output tracking, due to duplicated administrative overhead) would create an interior trade-off and could rationalize a strictly positive but sub-$a_0$ effort floor combined with $\gamma\in(0,1)$.
-2. **$a_{\min}$ as partial insurance rather than pure enforcement**: if a positive $a_{\min}$ lowers the worker's effective risk exposure under CARA utility (by guaranteeing a floor income independent of output realization, distinct from simply mandating effort), it would enter the worker's certainty equivalent directly rather than only through the $\max\{\cdot\}$ operator, potentially making a blended contract optimal for sufficiently risk-averse workers even without extra monitoring cost.
-
-We do not pursue either extension formally here, but flag this as the most direct way Proposition 1 could be reconciled with observed hybrid pay structures.
-
----
-
-# Appendix D. Robustness to an Effort-Independent Automation Channel
-
-A natural critique of the production function $y=a\tilde H+\varepsilon$ (Section 4.1) is that it routes all of AI's contribution to output through worker effort $a$ — if $a=0$, output is zero regardless of $A$. This section tests that concern directly by extending the production function to
-
-$$
-y = a\tilde H(A) + g(A) + \varepsilon,
-$$
-
-where $g(A)$ is an effort-independent automation contribution — e.g., algorithmic route optimization or automated order matching, realized whether or not the worker exerts effort — and asking whether this channel changes the paper's central threshold result.
-
-## D.1 Re-derivation
-
-**Worker's problem.** With wage $w=\alpha+\gamma y = \alpha + \gamma(a\tilde H + g(A)) + \gamma\varepsilon$, the worker chooses $a$ to maximize $\alpha + \gamma a\tilde H + \gamma g(A) - \tfrac12 r\gamma^2\sigma^2 - \tfrac12 ka^2$. Since $\gamma g(A)$ does not depend on $a$, it drops out of the first-order condition entirely: $a^*=\gamma\tilde H/k$, **unchanged** from Section 4.3.
-
-**Participation constraint.** $CE = \alpha + \gamma a^*\tilde H + \gamma g(A) - \tfrac12 r\gamma^2\sigma^2 - \tfrac12 k(a^*)^2 = \bar U$ gives
-
-$$
-\alpha = \bar U + \tfrac12 r\gamma^2\sigma^2 - \frac{\gamma^2\tilde H^2}{2k} - \gamma g(A).
-$$
-
-**Firm profit.** $\Pi_P(\gamma) = (1-\gamma)(a^*\tilde H + g(A)) - \alpha - F$. Substituting and simplifying, the $-\gamma g(A)$ term from $\alpha$ cancels against the $-\gamma g(A)$ term from $(1-\gamma)g(A)$, leaving
-
-$$
-\Pi_P(\gamma) = \frac{\gamma\tilde H^2}{k} - \frac{\gamma^2\tilde H^2}{2k} - \tfrac12 r\gamma^2\sigma^2 - \bar U - F + g(A),
-$$
-
-i.e., **exactly the original $\Pi_P(\gamma)$ of Section 4.3, plus $g(A)$ as an independent additive term**. Since $g(A)$ does not depend on $\gamma$, it does not affect the first-order condition for $\gamma$, so $\gamma^*=\tilde H^2/(\tilde H^2+rk\sigma^2)$ is also **unchanged**, and
-
-$$
-\Pi_P^{g,*}(A) = \Pi_P^*(A) + g(A).
-$$
-
-**Mode T.** The automation contribution is realized under time-rate pay as well (the algorithm runs regardless of contract mode), so $\Pi_T^g(A) = \Pi_T(A) + g(A)$.
-
-## D.2 Proposition 2 (Invariance of $A^*$ to Mode-Common Automation)
-
-*For any function $g(A)$ that enters $\Pi_T(A)$ and $\Pi_P^*(A)$ identically, the transformation threshold $A^*$ is exactly unchanged from Theorem 1's original value.*
-
-**Proof.** $G^g(A) = \Pi_P^{g,*}(A) - \Pi_T^g(A) = [\Pi_P^*(A)+g(A)] - [\Pi_T(A)+g(A)] = G(A)$, identical to the original profit difference for any functional form of $g$. Since $A^*$ is defined by $G(A^*)=0$, it is unaffected. $\blacksquare$
-
-This was verified numerically for $g(A) \in \{0.5A,\ 2A,\ 5A,\ 0.1A^2,\ 0.5A^2,\ A^2,\ 2\ln(1+A)\}$ — linear, convex, and concave specifications spanning a wide range of magnitudes — all eight returning $A^*=0.649633$ to six decimal places, matching the $g(A)=0$ baseline exactly.
-
-## D.3 Corollary: Full Automation Never Dominates Under This Specification
-
-A related question is whether sufficiently large $g(A)$ could make eliminating the worker entirely (retaining only $g(A)$) more profitable than either contract mode. Under Mode T, profit including the worker is $\Pi_T^g(A) = a_0\tilde H(A) + g(A) - \bar U - \tfrac12 ka_0^2$, while pure automation without a worker yields $\Pi_Z(A) = g(A)$. Their difference, $\Pi_T^g(A) - \Pi_Z(A) = a_0\tilde H(A) - \bar U - \tfrac12 ka_0^2$, does **not** depend on $g(A)$ at all, and is strictly positive under baseline calibration for every $A$ tested (confirmed numerically for automation coefficients up to $\mu=20$, far outside any plausible calibration, in the linear case $g(A)=\mu A$). Under this specification, keeping the worker is a free option that only adds value; full automation is never optimal.
-
-## D.4 What This Resolves, and What Remains Open
-
-Propositions 2 and the corollary above show the paper's central mechanism is robust to *mode-common* automation — the most natural first-pass extension, and arguably the empirically plausible baseline case, since a platform's routing or dispatch algorithm typically runs identically regardless of how the affected worker happens to be paid. They do **not** address the harder case where automation returns are themselves *endogenous to the contract mode* — for instance, if output-based pay gives firms a stronger incentive to invest in complementary automation than time-based pay does, so that $g_P(A) > g_T(A)$ systematically. In that case the $g(A)$ terms would not cancel in $G(A)$, and $A^*$ could shift. Formalizing this mode-dependent extension — and characterizing the boundary in $(A,\mu)$-space at which full automation would dominate human-inclusive production once $g$ becomes worker-*competing* rather than worker-*independent* — is the precise open question this analysis leaves for future work. This replaces the earlier, vaguer concern "AI might do more than amplify effort" with a specific, falsifiable modeling gap: *does the automation contribution differ systematically by contract mode, and does it substitute for rather than sit alongside the worker's output?*
+Full re-derivation is in the [Extended Online Appendix](https://github.com/danghaosheng2028/ai-contract-transformation/blob/main/paper/extended-appendix.md). Summary: the baseline production function $y=a\tilde H+\varepsilon$ (Section 4.1) routes all of AI's contribution through worker effort. We test robustness to an effort-independent automation term, $y=a\tilde H(A)+g(A)+\varepsilon$ — e.g. algorithmic route optimization realized whether or not the worker exerts effort. **Proposition 2** shows this leaves $A^*$ exactly unchanged whenever $g(A)$ is realized identically under both contract modes ($g$ cancels in $G(A)=\Pi_P^*(A)-\Pi_T(A)$), confirmed numerically across seven functional forms of $g$. A further corollary shows full automation (dropping the worker entirely) is never optimal under this specification. What the appendix does *not* resolve — and states as a specific, falsifiable open question — is the harder case where automation returns are themselves endogenous to the contract mode (e.g. piece-rate pay might spur more complementary automation investment than time-rate pay), which would break the cancellation and could shift $A^*$.
 
 ---
 
@@ -1426,6 +1149,8 @@ Chen, Y. (2021). Online digital labour platforms in China: Working conditions, p
 
 Chetty, R. (2006). *A New Method for Estimating Risk Aversion*.
 
+China Association of Performing Arts. (2023). *China Network Performance (Live-streaming and Short Video) Industry Development Report (2022–2023)* [中国网络表演（直播与短视频）行业发展报告（2022~2023）].
+
 Holmstrom, B. (1979). *Moral Hazard and Observability*.
 
 Holmstrom, B., & Milgrom, P. (1991). *Multitask Principal–Agent Problems*.
@@ -1436,4 +1161,8 @@ Lazear, E. (2000). *Performance Pay and Productivity*.
 
 Prendergast, C. (2002). *The Tenuous Tradeoff Between Risk and Incentives*.
 
+Rosen, S. (1981). The Economics of Superstars. *American Economic Review*, 71(5), 845–858.
+
 Shin, K. S., & Kang, I. S. (2026). What capital after labor? Forecasting the talent ROI transition in the human-AI era. arXiv:2606.19846 [econ.GN].
+
+Zhang, C. (2023, November 20). *Are Nine in Ten Streamers Really Worse Paid Than Riders? An Objective View of New Employment Forms' Occupational Value* [九成主播收入不如骑手？应客观理解新就业形态的职业价值]. Yicai (第一财经).
