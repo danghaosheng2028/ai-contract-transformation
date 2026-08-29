@@ -68,6 +68,55 @@ comparative statics
 
 ---
 
+## Contents（目录）
+
+1. Introduction
+   1.1 The Intuition, Without the Formulas
+2. Literature Review
+   2.1 Principal–Agent Models of Incentives and Risk‑Sharing
+   2.2 AI, Automation, and Labor Markets
+   2.3 Platform Labor, Flexible Employment, and Chinese Labor Regulation
+   2.4 Contribution Relative to the Literature
+3. Stylized Facts and Parameter Calibration
+   3.1 Stylized Fact 1: Rising AI Penetration in Chinese Firms
+   3.2 Stylized Fact 2: Expansion of Flexible and Output‑Based Employment
+   3.3 Stylized Fact 3: Empirical Estimates of Worker Risk Aversion
+   3.4 Calibration of Remaining Parameters
+   3.5 Suggestive Evidence for the Threshold Mechanism
+4. Model
+   4.1 Environment
+   4.2 Time‑Rate Contract (Mode T)
+   4.3 Piece‑Rate Contract (Mode P)
+   4.4 Timing
+   4.5 Discussion
+5. Equilibrium Analysis
+   5.1 Time‑Rate Contract (Mode T)
+   5.2 Piece‑Rate Contract (Mode P)
+   5.3 Comparison of the Two Modes
+6. Main Results
+   6.1 Existence and Uniqueness of the Contract Transformation Threshold
+   6.2 Comparative Statics of the Transformation Threshold
+   6.3 Implications for Contract Design
+7. Numerical Simulation
+   7.1 Baseline Profit Comparison and the Transformation Threshold
+   7.2 Comparative Statics: Threshold Surface $A^*(r,\sigma^2)$
+   7.3 Regulatory Friction: Minimum Wage Constraint
+   7.4 Summary of Simulation Results
+   7.5 Sector Heterogeneity
+   7.6 Joint Sensitivity of $A^*$ to $\theta$ and $k$
+8. Conclusion and Policy Implications
+   8.1 Policy Implications
+   8.2 Limitations and Future Research
+
+Appendix A. Additional Proofs
+Appendix C. A Unified Contract Family and Its Limits (condensed)
+Appendix D. Robustness to an Effort-Independent Automation Channel (condensed)
+References
+
+*Full derivations for Appendices A.5–A.7, C, and D are in the accompanying Extended Online Appendix (see title-page link).*
+
+---
+
 # 1. Introduction
 
 Artificial intelligence (AI) is transforming how firms organize production, monitor performance, and design compensation systems. In China, this transformation is particularly salient: more than 84 million workers were engaged in platform‑based flexible employment in 2023, accounting for roughly 18 percent of urban employment. Since the 2021 *Guiding Opinions on Safeguarding the Labor Rights of New Employment Forms*, platform labor has become a regulated category, and the shift from traditional time‑rate compensation to output‑based pay has accelerated across logistics, content creation, and digital services.
@@ -87,6 +136,22 @@ $$
 derive closed‑form expressions for optimal effort and incentives, and show that a unique transformation threshold $A^*$ exists. Comparative statics reveal how noise, risk aversion, and AI-augmentation effectiveness shape this threshold. We further incorporate China's minimum‑wage regulation and show that binding wage floors substantially delay — roughly doubling to tripling the required AI intensity, though not categorically preventing — contract transformation within the empirically relevant AI-intensity range.
 
 The remainder of the paper proceeds as follows. Section 2 reviews the related literature. Section 3 presents stylized facts and parameter calibration, together with suggestive evidence from independent Chinese firm-panel data supporting the threshold mechanism. Section 4 introduces the model. Section 5 derives equilibrium outcomes. Section 6 presents the main theoretical results. Section 7 provides numerical simulations, including a sensitivity and sector-heterogeneity analysis. Section 8 concludes with policy implications. Appendix A completes the proofs of Theorems 1 and 2; Appendices C and D summarize a formal unification of the two contract modes and a robustness check against an unmodeled automation channel, with full derivations in the accompanying Extended Online Appendix.
+
+---
+
+## 1.1 The Intuition, Without the Formulas
+
+Before the model, here is the whole argument in plain language.
+
+Imagine a delivery platform deciding how to pay its riders. It has two basic options. It can pay a **fixed monthly wage** and just tell riders to show up and work — call this the *time-rate* deal. Or it can pay **per delivery** — the more orders a rider completes, the more they earn — call this the *piece-rate* deal.
+
+Each option has a cost. Time-rate pay is safe for the rider, but it caps the firm's upside: no matter how productive AI-assisted routing makes a rider, the firm still just pays the flat wage. Piece-rate pay lets the firm capture that upside, but it isn't free — the firm has to build and run a digital system that tracks every delivery, which costs money ($F$ in the model), and it makes the rider's paycheck bounce around with things outside their control (traffic, weather, app glitches), which riders dislike and have to be compensated for.
+
+Now bring in AI. As AI tools (smart routing, order-batching, real-time traffic prediction) get better, they make *each hour of a rider's work worth more* — a rider aided by good AI tools can deliver more orders in the same time. Here is the key asymmetry the whole paper is built on: **under time-rate pay, this extra value goes entirely to the firm in a straight, one-for-one way — but under piece-rate pay, because pay is tied to output, the value compounds.** A rider who is twice as productive doesn't just deliver twice the value once; a well-designed piece-rate contract lets the firm capture that productivity gain *and* fine-tune the split between fixed pay and per-order pay to squeeze out more profit as productivity rises. Mathematically, time-rate profit grows *in a straight line* with AI intensity; piece-rate profit grows *on a curve that bends upward*.
+
+At low AI intensity, that curve hasn't bent up enough to clear the fixed cost of running a digital monitoring system, so time-rate wins. At some point — this paper calls it $A^*$, the **transformation threshold** — the curve crosses the line, and piece-rate becomes more profitable for the firm. Push AI intensity up further and the case for piece-rate only gets stronger. That crossing point is the single number this whole paper is trying to pin down, explain, and test.
+
+The rest of the paper asks three follow-up questions a curious reader would naturally have. *When does the crossing happen sooner or later?* — it depends on how much income risk bothers the rider ($r$), how noisy their output is ($\sigma^2$), and how good the AI tools actually are ($C$); we derive exact formulas for each. *Does a minimum wage stop this from happening?* — no, but it substantially delays it, because it makes the piece-rate deal's fixed base pay more expensive for the firm. *Does this actually match what we see in Chinese platform labor?* — broadly yes: highly AI-augmented, easily monitored jobs like delivery have already shifted heavily to piece-rate pay, while jobs AI helps less (manufacturing) have not.
 
 ---
 
@@ -751,7 +816,11 @@ These insights form the theoretical foundation for Section 7's numerical simulat
 
 # 7. Numerical Simulation
 
-This section presents numerical simulations that illustrate the theoretical results derived in Sections 5 and 6. Using the calibrated parameters from Section 3, we evaluate firm profit under the time‑rate and piece‑rate contracts, compute the contract transformation threshold $A^*$, and examine how risk, uncertainty, and regulation affect the profitability of output‑based compensation. An interactive version of the simulations below — allowing readers to vary $\sigma^2$, $r$, $C$, and $W_{\min}$ in real time and see $A^*$ recomputed on the fly — is available at https://danghaosheng2028.github.io/ai-contract-transformation/ (source: `docs/index.html` in the code repository).
+This section presents numerical simulations that illustrate the theoretical results derived in Sections 5 and 6. Using the calibrated parameters from Section 3, we evaluate firm profit under the time‑rate and piece‑rate contracts, compute the contract transformation threshold $A^*$, and examine how risk, uncertainty, and regulation affect the profitability of output‑based compensation. An interactive version of the simulations below — allowing readers to vary $\sigma^2$, $r$, $C$, and $W_{\min}$ in real time and see $A^*$ recomputed on the fly — is accessible online via the [interactive simulation widget](https://danghaosheng2028.github.io/ai-contract-transformation/) (source: `docs/index.html` in the code repository).
+
+**Figure 0: Interactive simulation widget (default baseline view).** Screenshot of the deployed widget at baseline parameters ($\sigma^2=r=C=1.00$, $W_{\min}=0.00$), showing the unconstrained profit crossing at $A^*\approx0.650$ matching Section 7.1. *(See `simulation/widget_screenshot_1.png` in the code repository.)*
+
+![Figure 0: Interactive simulation widget default view](../simulation/widget_screenshot_1.png)
 
 All simulations use the baseline parameter set:
 
@@ -984,7 +1053,7 @@ Because $A^*$ decreases in $C$ — and, in fact, is exactly inversely proportion
 
 ### (3) Minimum‑wage design for flexible employment
 
-Binding wage floors raise the required base wage under piece‑rate compensation and, under baseline calibration, substantially delay transformation — roughly doubling to tripling the AI intensity required across the range of floors tested (Section 7.3) — rather than blocking it outright. Hybrid systems (minimum income guarantees, earnings smoothing) may protect workers with a smaller efficiency cost than a flat floor, though this paper's formal unification of the two contract modes (Appendix C) predicts that base-guarantee-plus-commission schemes are only optimal under monitoring-cost structures somewhat richer than the one calibrated here — a caveat discussed there in detail.
+Binding wage floors raise the required base wage under piece‑rate compensation and, under baseline calibration, substantially delay transformation — roughly doubling to tripling the AI intensity required across the range of floors tested (Section 7.3) — rather than blocking it outright. Hybrid systems (minimum income guarantees, earnings smoothing) intuitively look like they should protect workers at a smaller efficiency cost than a flat floor. Here this paper's own results urge caution rather than endorsement: the formal unification of the two contract modes in Appendix C shows that, under the baseline (zero-marginal-cost) enforcement technology calibrated in this paper, the firm's optimum is *never* an interior blend of a guaranteed base and a commission — it is always a corner, pure time-rate or pure piece-rate (Proposition 1). This sits in direct tension with the hybrid base-plus-commission pay that is in fact the empirically dominant structure in China's platform delivery and ride-hailing sector (Appendix C.3). We do not read this as evidence that hybrid schemes are undesirable; rather, it flags that this paper's baseline model is the wrong tool to *design* one, and that rationalizing observed hybrid pay requires one of the two richer enforcement-cost structures sketched in Appendix C.3 — a specific, stated direction for extending the model before it can speak to hybrid-scheme design with confidence.
 
 ### (4) An efficiency–equity tradeoff, not a one-sided cost
 
@@ -998,15 +1067,11 @@ Section 7.3's finding should not be read as a case against minimum-wage protecti
 2. Multi‑agent extensions could analyze team production under AI.
 3. Dynamic models could incorporate learning about AI tools.
 4. Social-insurance contributions (工伤保险、社保) mandated alongside wage floors under China's 2021 Guiding Opinions are not modeled as a separate firm-side cost; incorporating them as an additional fixed cost under piece-rate compensation would plausibly strengthen the delaying effect documented in Section 7.3 further, not weaken it.
-5. Augmentation effectiveness $C$ is treated as exogenous and time-invariant. In practice, workers may endogenously invest in AI-collaboration skills to raise $C$ over time, which would make $A^*$ itself a dynamic, path-dependent object rather than a static threshold — a natural direction for future dynamic extensions of this model. Relatedly, the sector calibrations in Section 7.5 are illustrative, drawn from qualitative task characteristics rather than estimated from worker-level data; replacing them with data-informed values (e.g. platform-reported income variance by occupation) is a natural next step.
+5. Augmentation effectiveness $C$ is treated as exogenous and time-invariant, and the sector calibrations in Section 7.5 are illustrative rather than estimated from worker-level data. Letting workers endogenously raise $C$ over time (making $A^*$ a dynamic, path-dependent object) and replacing the sector calibrations with data-informed values are natural next steps.
 6. The baseline piece-rate contract in Sections 4.3 and 5.2 permits an arbitrarily negative base wage $\alpha$ in the unconstrained case. Section 7.3.1 shows the paper's central convexity mechanism survives even under the stricter institutional constraint $\alpha\ge0$, though with a higher threshold — a robustness check we view as resolving, rather than merely flagging, this earlier concern.
-7. **From moral hazard to hidden information: screening under unobserved $(r, C)$.** The model in Sections 4–5 treats worker risk aversion $r$ and AI-augmentation effectiveness $C$ as parameters the firm can effectively condition on when setting $(\alpha, \gamma)$. In practice, a platform typically cannot observe an individual worker's risk aversion or her capacity to benefit from AI-assisted tasks before contracting with her; these are private information. This connects the paper's single-threshold framework to the broader theory of incentives under hidden information developed by Laffont and Tirole (1993), who show that when an agent's type is unobserved, the principal generally cannot implement the full-information contract $(\alpha^*, \gamma^*)$ derived in Section 5.2 for every worker, and instead must offer a menu of contracts $\{(\alpha_i, \gamma_i)\}$ designed to induce self-selection. Extending the present model in this direction would replace the single transformation threshold $A^*$ of Theorem 1 with a *separation condition*: for a given AI intensity $A$, the platform would need to determine whether the gain from screening — offering low-$\gamma$ contracts that retain risk-averse or low-$C$ workers alongside high-$\gamma$ contracts that extract surplus from risk-tolerant, high-$C$ workers — exceeds the informational rents such a menu must concede to induce truthful revelation. This would generalize $A^*$ from a scalar cutoff into a *region* in $(A, r, C)$-space, and offers a natural bridge between this paper's aggregate-firm framing and worker-level heterogeneity of the kind documented in Section 7.5. We leave the formal characterization of this screening extension to future work.
-8. **Single-task framework and the multitasking blind spot.** This paper cites Holmstrom and Milgrom (1991) for its general theory of linear contracting under CARA-normal uncertainty, but does not apply that same paper's central substantive insight — that high-powered incentives on measurable tasks induce agents to systematically neglect unmeasured tasks — to its own setting. This is a first-order omission for the platform-labor context motivating this paper: piece-rate compensation for delivery riders is widely associated in policy discussion with speed-versus-safety tradeoffs that a single-task effort model cannot represent.
-
-   > **Sketch: a two-task extension (informal, not a full derivation).** Let the worker split effort between measurable output $a_1$ (what $y=a_1\tilde H+\varepsilon$ in Section 4.1 captures) and unmeasured quality/safety $a_2$ (e.g. following traffic rules, order accuracy), with a joint, substitutable cost function $\psi(a_1,a_2)$ such as $\psi(a_1,a_2)=\tfrac12 k(a_1^2+a_2^2)+\lambda a_1 a_2$ for $\lambda>0$. Under piece-rate pay, the worker is compensated only for $a_1$; the standard multitask logic then implies $a_2$ falls as the incentive slope $\gamma$ rises, since effort substitutes away from the unrewarded task. This suggests $a_2$ is decreasing in $A$ above the transformation threshold $A^*$ — a testable prediction this paper's single-task model cannot generate. We do not derive $\gamma$'s optimal value in this extended setting, only note the direction of the effect.
-   >
-   > This channel would strengthen — not weaken — Section 8.1's regulatory conclusion: minimum-wage protection's welfare case gains an additional channel beyond risk-sharing, since dampening $\gamma$ under a binding wage floor (Section 7.3.1) would also mitigate this safety-effort substitution. We flag this as a substantively important direction for future work, and note that the efficiency-equity tradeoff in Section 8.1(4) should be read as a lower bound on the equity case for regulation, since it omits this channel entirely.
-9. **Effort-independent automation channel.** The baseline production function $y=a\tilde H+\varepsilon$ (Section 4.1) routes all of AI's contribution to output through the multiplicative term $a\tilde H$, meaning AI augmentation has zero effect on output whenever effort $a=0$. This captures AI as a pure effort-amplifier but omits a channel plausibly central to platform gig work: AI components (route optimization, automated matching) that contribute to output largely independent of the worker's momentary effort level. Appendix D formalizes this concern by extending the production function to $y=a\tilde H+g(A)+\varepsilon$ and proves (Proposition 2) that the paper's central threshold result is *exactly* invariant to any such term $g(A)$, provided it is realized identically under both contract modes — the empirically plausible baseline case, since a platform's automated dispatch or routing typically runs the same way regardless of how workers are paid. What remains genuinely open is the harder case where automation returns are *endogenous to the contract mode itself* (e.g., output-based pay might give firms a stronger incentive to invest in complementary automation than time-based pay does); Appendix D states precisely what would need to hold for this to overturn the paper's results, replacing the vague concern "AI might do more than amplify effort" with a specific, falsifiable open question.
+7. **Hidden information.** Sections 4–5 treat worker risk aversion $r$ and AI-augmentation effectiveness $C$ as observable to the firm. In practice these are private information, connecting this paper's single-threshold framework to the screening theory of Laffont and Tirole (1993): a platform that cannot observe a worker's type generally cannot implement the full-information contract of Section 5.2 for every worker, and would instead need a menu of contracts satisfying a self-selection constraint. This would replace the scalar threshold $A^*$ of Theorem 1 with a separation *region* in $(A,r,C)$-space — a natural bridge to the worker-level heterogeneity in Section 7.5, left to future work.
+8. **Multitasking.** This paper's single-task effort model cannot represent a concern central to the platform-labor context motivating it: piece-rate pay may induce riders to substitute effort away from unmeasured dimensions like safety, in the spirit of Holmstrom and Milgrom (1991)'s multitask logic. Formally introducing a second, unrewarded effort dimension $a_2$ would plausibly make $a_2$ decreasing in $A$ above $A^*$ — a testable prediction this paper does not derive. If this channel is real, it strengthens, rather than weakens, the equity case for minimum-wage regulation in Section 8.1(4), since dampening the incentive slope $\gamma$ under a binding floor (Section 7.3.1) would also blunt this safety-effort substitution; the efficiency–equity tradeoff sketched there should accordingly be read as a lower bound.
+9. **Effort-independent automation channel.** The baseline production function $y=a\tilde H+\varepsilon$ (Section 4.1) routes all of AI's contribution through worker effort, so output is zero whenever $a=0$ — omitting AI components (e.g. route optimization) that contribute to output independent of momentary effort. Appendix D shows the paper's threshold result is exactly invariant to any such term $g(A)$, provided it is realized identically under both contract modes (Proposition 2) — the empirically plausible case, since dispatch algorithms typically run the same way regardless of pay structure. The harder, genuinely open case is automation that is *endogenous to the contract mode* (e.g. piece-rate pay spurring more automation investment than time-rate pay), which Appendix D states precisely without resolving.
 
 ---
 

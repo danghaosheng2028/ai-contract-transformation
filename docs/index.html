@@ -64,27 +64,40 @@ function PiT(A, C) {
   return a0 * Htilde(A, C) - Ubar - 0.5 * k * a0 * a0;
 }
 
-// Unconstrained piece-rate profit, Section 4.3
+// Unconstrained piece-rate profit, Section 4.3 (firm freely chooses gamma; alpha solves IR with equality)
 function PiPstar(A, C, r, sigma2) {
   const Ht = Htilde(A, C);
   return (Ht ** 4) / (2 * k * (Ht ** 2 + r * k * sigma2)) - Ubar - F;
 }
 
-// Optimal gamma, Section 4.3 (needed for the minimum-wage-constrained profit, Section 7.3)
-function gammaStar(A, C, r, sigma2) {
+// --- FIX ---
+// Section 7.3: with a binding wage floor, alpha(gamma) = max(Wmin, alpha_unconstrained(gamma)).
+// The firm does NOT keep using the unconstrained gamma* once alpha is clamped — it re-optimizes
+// gamma over [0,1] against the *clamped* alpha. (The previous version of this file reused the
+// unconstrained gammaStar() here, which silently assumes the firm never adjusts gamma in response
+// to the floor — that is the bug that made A*_MW diverge to "no crossing" even at Wmin = 0.)
+
+function profitAtGamma(A, C, r, sigma2, Wmin, gamma) {
   const Ht = Htilde(A, C);
-  return (Ht ** 2) / (Ht ** 2 + r * k * sigma2);
+  const aEff = gamma * Ht / k;
+  const alphaUnconstrained = Ubar + 0.5 * r * gamma * gamma * sigma2 - 0.5 * gamma * gamma * Ht * Ht / k;
+  const alpha = Math.max(Wmin, alphaUnconstrained);
+  return (1 - gamma) * aEff * Ht - alpha - F;
 }
 
-// Minimum-wage-constrained piece-rate profit, Section 7.3
+// Firm's true optimal profit under the minimum-wage floor (Section 7.3):
+// maximize over gamma in [0,1] rather than assuming the unconstrained gamma* still applies.
 function PiP_MW(A, C, r, sigma2, Wmin) {
-  const Ht = Htilde(A, C);
-  const gamma = gammaStar(A, C, r, sigma2);
-  const aStar = gamma * Ht / k;
-  const alphaUnconstrained = Ubar + 0.5 * r * gamma * gamma * sigma2 - 0.5 * gamma * gamma * Ht * Ht / k;
-  const alphaMW = Math.max(Wmin, alphaUnconstrained);
-  return (1 - gamma) * aStar * Ht - alphaMW - F;
+  const steps = 400;
+  let best = -Infinity;
+  for (let i = 0; i <= steps; i++) {
+    const gamma = i / steps;
+    const pi = profitAtGamma(A, C, r, sigma2, Wmin, gamma);
+    if (pi > best) best = pi;
+  }
+  return best;
 }
+// --- END FIX ---
 
 // Find A* by bisection on G(A) = PiPstar(A) - PiT(A) over [0, Amax]
 function findThreshold(C, r, sigma2, Amax = 10, useMW = false, Wmin = 0) {
@@ -107,7 +120,7 @@ let chart = new Chart(ctx, {
     datasets: [
       { label: 'Π_T(A)  (time-rate)', data: [], borderColor: '#1a5fb4', borderWidth: 2, pointRadius: 0 },
       { label: 'Π_P*(A)  (piece-rate, unconstrained)', data: [], borderColor: '#c01c28', borderWidth: 2, pointRadius: 0 },
-      { label: 'Π_P^MW(A)  (piece-rate, wage floor)', data: [], borderColor: '#2ec27e', borderWidth: 2, borderDash: [6,4], pointRadius: 0 }
+      { label: 'Π_P^MW(A)  (piece-rate, wage floor, re-optimized γ)', data: [], borderColor: '#2ec27e', borderWidth: 2, borderDash: [6,4], pointRadius: 0 }
     ]
   },
   options: {
