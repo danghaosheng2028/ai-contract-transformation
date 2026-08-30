@@ -1,34 +1,58 @@
 # From Hours to Output — Simulation Code
 
-Reproduces the baseline contract-transformation threshold (A*) and the
-sector-heterogeneity results reported in Sections 6–7 of the paper
-*"From Hours to Output: A Principal–Agent Theory of AI-Driven Contract
-Transformation and the Limits of Minimum-Wage Protection in China's
-Platform Economy."*
+Reproduces the contract-transformation threshold (A*), the minimum-wage
+robustness results, and the sector-heterogeneity results reported in
+Sections 6–7 of the paper *"From Hours to Output: A Principal–Agent
+Theory of AI-Driven Contract Transformation and the Limits of
+Minimum-Wage Protection in China's Platform Economy."*
 
 ## Files
 - `simulate.py` — closed-form profit functions Π_T(A), Π_P*(A); root-finds
   the transformation threshold A* for the baseline calibration and for
   four illustrative worker types (delivery riders, livestream hosts,
-  designers/knowledge workers, manufacturing line workers).
+  designers/knowledge workers, manufacturing line workers). Writes
+  `results.json`.
 - `make_figures.py` — generates Figure 1 (baseline threshold crossing) and
-  Figure 3 (sector-heterogeneous thresholds) used in the paper.
+  Figure 3 (sector-heterogeneous thresholds). Imports from `simulate.py`.
+- `minimum_wage.py` — Section 7.3: firm's profit-maximizing choice of γ
+  under a binding minimum-wage floor α ≥ W_min. Generates Figure 2 and
+  `mw_threshold_table.csv` (the six-row W_min robustness table). This is
+  the *only* script that produces Figure 2 — see note below.
+- `make_figures2.py` — generates Figure 4 (model timing schematic) only.
 - `results.json` — numerical output (A* values) for citation/reproducibility.
+- `mw_threshold_table.csv` — A*_MW and the optimal γ at the threshold,
+  for six values of W_min (Section 7.3).
+- `index.html` — the interactive browser simulation (Chart.js), deployed
+  via GitHub Pages; lets the reader sweep σ², r, C, and W_min directly.
+
+> **Note on Figure 2:** an earlier version of this repo had two separate,
+> out-of-sync implementations generating `fig2_minimum_wage.png` — one in
+> `minimum_wage.py`, one in `make_figures2.py`. The `make_figures2.py`
+> copy imported a function (`Pi_P_MW`) that did not actually exist in
+> `minimum_wage.py`, so running it would fail. Figure 2 generation now
+> lives solely in `minimum_wage.py`; `make_figures2.py` only produces
+> Figure 4.
 
 ## Usage
 ```bash
 pip install numpy scipy matplotlib
-python simulate.py         # prints A* for baseline + all sectors -> fig1_threshold.png, fig3_heterogeneity.png (via make_figures.py)
-python make_figures.py     # writes fig1_threshold.png, fig3_heterogeneity.png
-python minimum_wage.py     # prints A*_MW for a range of W_min values (Section 7.3)
-python make_figures2.py    # writes fig2_minimum_wage.png, fig4_timing.png
+
+python simulate.py         # baseline + sector A* -> results.json
+python make_figures.py     # -> fig1_threshold.png, fig3_heterogeneity.png
+python minimum_wage.py     # -> fig2_minimum_wage.png, mw_threshold_table.csv
+python make_figures2.py    # -> fig4_timing.png
 ```
+Each script writes its outputs next to itself (via `os.path.dirname(__file__)`),
+so they can be run from any working directory, in any order — `make_figures.py`
+does depend on `simulate.py`'s functions being importable, and `make_figures2.py`
+on `minimum_wage.py`'s (both via `from ... import ...` at the top of the file),
+so keep all `.py` files in the same folder.
 
 ## Figures
 | File | Paper location | What it shows |
 |---|---|---|
 | `fig1_threshold.png` | Section 7.1, Figure 1 | Baseline Π_T(A) vs Π_P*(A) crossing at A*≈0.65 |
-| `fig2_minimum_wage.png` | Section 7.3, Figure 2 | Under a binding minimum wage, Π_P^MW(A) stays flat and never overtakes Π_T(A) for A∈[0,3] — a stronger finding than a simple threshold shift (see paper text) |
+| `fig2_minimum_wage.png` | Section 7.3, Figure 2 | Π_T(A), the unconstrained Π_P*(A), and Π_P^MW(A) under a re-optimized γ. The wage floor **delays but does not block** transformation over the empirically relevant AI-intensity range: at W_min=0.5, Π_P^MW(A) crosses Π_T(A) at A*_MW≈1.63, still within [0,3] |
 | `fig3_heterogeneity.png` | Section 7.5, Figure 3 | A* by occupation (riders, livestream hosts, designers, manufacturing workers) |
 | `fig4_timing.png` | Section 4.4, Figure 4 | Four-stage timing of the principal–agent game |
 
@@ -47,7 +71,28 @@ python make_figures2.py    # writes fig2_minimum_wage.png, fig4_timing.png
 
 Baseline result: **A\* ≈ 0.65**.
 
-## Sector heterogeneity (Section 7.5 in the revised paper)
+## Minimum-wage robustness (Section 7.3)
+`minimum_wage.py` re-optimizes the firm's choice of γ under a binding
+floor α ≥ W_min, rather than holding γ fixed at its unconstrained value —
+the binding branch has a closed-form optimum at γ_c\*=0.5, independent of
+W_min. A*_MW rises with W_min but stays finite (and stays inside the
+empirically relevant range [0,3] up to fairly large floors):
+
+| W_min | A*_MW |
+|---|---|
+| 0.0 | 1.333 |
+| 0.02 | 1.347 |
+| 0.1 | 1.398 |
+| 0.5 | 1.633 |
+| 1.0 | 1.886 |
+| 1.5 | 2.108 |
+
+A finite A* exists for any positive parameter combination (a consequence
+of Theorem 1); root-finding uses a search window wide enough to confirm
+this rather than a fixed range — see the comments in `minimum_wage.py`
+and `index.html` for the specific windows used and why.
+
+## Sector heterogeneity (Section 7.5)
 Only (C, σ², r) are varied by sector; all other parameters use the
 baseline values above.
 

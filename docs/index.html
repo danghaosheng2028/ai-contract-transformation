@@ -70,12 +70,9 @@ function PiPstar(A, C, r, sigma2) {
   return (Ht ** 4) / (2 * k * (Ht ** 2 + r * k * sigma2)) - Ubar - F;
 }
 
-// --- FIX ---
 // Section 7.3: with a binding wage floor, alpha(gamma) = max(Wmin, alpha_unconstrained(gamma)).
-// The firm does NOT keep using the unconstrained gamma* once alpha is clamped — it re-optimizes
-// gamma over [0,1] against the *clamped* alpha. (The previous version of this file reused the
-// unconstrained gammaStar() here, which silently assumes the firm never adjusts gamma in response
-// to the floor — that is the bug that made A*_MW diverge to "no crossing" even at Wmin = 0.)
+// The firm re-optimizes gamma over [0,1] against the *clamped* alpha rather than retaining
+// the unconstrained gamma* (see Section 7.3 of the paper for why this matters).
 
 function profitAtGamma(A, C, r, sigma2, Wmin, gamma) {
   const Ht = Htilde(A, C);
@@ -97,14 +94,19 @@ function PiP_MW(A, C, r, sigma2, Wmin) {
   }
   return best;
 }
-// --- END FIX ---
 
-// Find A* by bisection on G(A) = PiPstar(A) - PiT(A) over [0, Amax]
-function findThreshold(C, r, sigma2, Amax = 10, useMW = false, Wmin = 0) {
+// Find A* by bisection on G(A) = PiPstar(A) - PiT(A) over [0, Amax].
+// NOTE on Amax: by Theorem 1, a finite root exists for ANY positive parameter
+// combination (both curves are eventually convex-dominant), so "no crossing found"
+// below is always a statement about the search window, never about non-existence.
+// The unconstrained search uses Amax=100 (not 10) because the slider's own extreme
+// corner (C=0.1, sigma2=3, r=3 — all in-range) pushes the true A* to about 13, which
+// a narrower window would incorrectly report as "no crossing."
+function findThreshold(C, r, sigma2, Amax, useMW, Wmin = 0) {
   const G = (A) => (useMW ? PiP_MW(A, C, r, sigma2, Wmin) : PiPstar(A, C, r, sigma2)) - PiT(A, C);
   let lo = 0, hi = Amax;
   if (G(lo) >= 0) return 0; // already crosses at 0 (edge case)
-  if (G(hi) < 0) return null; // no crossing found within range
+  if (G(hi) < 0) return null; // no crossing within this search window
   for (let i = 0; i < 60; i++) {
     const mid = (lo + hi) / 2;
     if (G(mid) < 0) lo = mid; else hi = mid;
@@ -157,15 +159,18 @@ function update() {
   chart.data.datasets[2].data = dMW;
   chart.update();
 
-  const Astar = findThreshold(C, r, sigma2, 10, false, 0);
+  // Unconstrained search widened to 100 (was 10 — see comment on findThreshold above).
+  const Astar = findThreshold(C, r, sigma2, 100, false, 0);
+  // MW search stays at 50: verified to always find a crossing within the slider's
+  // full range (including Wmin at its max of 2), so this window is never truncated.
   const AstarMW = findThreshold(C, r, sigma2, 50, true, Wmin);
 
   let msg = '';
   msg += Astar === null
-    ? '<b>A* (unconstrained):</b> no crossing found in [0,10] — piece-rate never overtakes time-rate at these parameters.<br>'
+    ? '<b>A* (unconstrained):</b> exceeds 100 at these parameters. A finite threshold still exists for any positive parameter combination (Theorem 1) — it is just far outside the empirically relevant AI-intensity range of Section 3.1.<br>'
     : `<b>A* (unconstrained):</b> ${Astar.toFixed(3)}<br>`;
   msg += AstarMW === null
-    ? `<b>A*_MW (with wage floor W_min = ${Wmin.toFixed(2)}):</b> no crossing found in [0,50] — the wage floor blocks transformation within any empirically plausible range.`
+    ? `<b>A*_MW (with wage floor W_min = ${Wmin.toFixed(2)}):</b> exceeds 50 at these parameters — still finite in principle, just very far delayed.`
     : `<b>A*_MW (with wage floor W_min = ${Wmin.toFixed(2)}):</b> ${AstarMW.toFixed(3)}`;
   document.getElementById('threshold').innerHTML = msg;
 }
