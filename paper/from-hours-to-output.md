@@ -818,9 +818,9 @@ These insights form the theoretical foundation for Section 7's numerical simulat
 
 This section presents numerical simulations that illustrate the theoretical results derived in Sections 5 and 6. Using the calibrated parameters from Section 3, we evaluate firm profit under the time‑rate and piece‑rate contracts, compute the contract transformation threshold $A^*$, and examine how risk, uncertainty, and regulation affect the profitability of output‑based compensation. An interactive version of the simulations below — allowing readers to vary $\sigma^2$, $r$, $C$, and $W_{\min}$ in real time and see $A^*$ recomputed on the fly — is accessible online via the [interactive simulation widget](https://danghaosheng2028.github.io/ai-contract-transformation/) (source: `docs/index.html` in the code repository).
 
-**Figure 0: Interactive simulation widget (default baseline view).** Screenshot of the deployed widget at baseline parameters ($\sigma^2=r=C=1.00$, $W_{\min}=0.00$), showing the unconstrained profit crossing at $A^*\approx0.650$ matching Section 7.1. *(See `simulation/widget_screenshot_1.png` in the code repository.)*
+**Figure 0: Interactive simulation widget (default baseline view).** Screenshot of the deployed widget at baseline parameters ($\sigma^2=r=C=1.00$, $W_{\min}=0.00$), showing the unconstrained profit crossing at $A^*\approx0.650$ matching Section 7.1. *(See `simulation/fig0_widget.png` in the code repository.)*
 
-![Figure 0: Interactive simulation widget default view](../simulation/widget_screenshot_1.png)
+![Figure 0: Interactive simulation widget default view](../simulation/fig0_widget.png)
 
 All simulations use the baseline parameter set:
 
@@ -862,7 +862,7 @@ $$
 A^* \approx 0.65
 $$
 
-This $[0,3]$ range is a plotting convention, not a restriction on the domain over which $A^*$ is shown to exist (Theorem 1 holds for any positive parameter values, with no upper bound on $A$ required). The numerical root-finding code in the online repository accordingly searches a wider window than $[0,3]$ wherever a parameter combination would otherwise place $A^*$ outside the plotted range.
+This $[0,3]$ range is a plotting convention, not a restriction on the domain over which $A^*$ is shown to exist (Theorem 1 holds for any positive parameter values, with no upper bound on $A$ required). The numerical root-finding code in the online repository accordingly searches a wider window than $[0,3]$ wherever a parameter combination would otherwise place $A^*$ outside the plotted range; Appendix A.8 records a numerical check of this at the interactive widget's own parameter extremes.
 
 **Figure 1: Contract transformation threshold.** Plots calibrated time-rate profit $\Pi_T(A)$ against piece-rate profit $\Pi_P^*(A)$ for $A \in [0, 3]$. Time-rate profit rises only linearly because a fixed wage cannot capture the convex incentive gains AI-augmented effort makes possible; piece-rate profit rises convexly because higher $A$ raises effective human capital $\tilde{H}$, compounding through the $\tilde{H}^4$ term in $\Pi_P^*(A)$. The curves cross exactly once, at $A^* \approx 0.65$ under baseline calibration. Below the threshold, monitoring cost $F$ outweighs incentive gains and firms retain fixed wages; above it, convex gains dominate and output risk shifts onto workers. *(See `simulation/fig1_threshold.png` in the code repository, or explore this relationship interactively at the link above.)*
 

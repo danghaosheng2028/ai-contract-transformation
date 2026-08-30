@@ -53,7 +53,13 @@ $$
 Hence $G(A) = \Pi_P^*(A) - \Pi_T(A)$ contains the term $-\bar U(A) - (-\bar U(A)) = 0$: **$\bar U(A)$ cancels exactly**, regardless of its functional form, because the same worker faces the same outside option under either contract mode. $G(A)$, and hence $A^*$, is therefore completely independent of how $\bar U$ varies with $A$. $\blacksquare$
 
 We confirmed this numerically for four specifications — $\bar U(A) = 1.0$ (constant), $1.0+0.3A$ (linear), $1.0+0.2A+0.1A^2$ (quadratic), and $1.0+0.5\ln(1+A)$ (concave) — all four returning $A^*=0.649633$ to six decimal places. This directly addresses a natural general-equilibrium concern: even if AI adoption raises workers' economy-wide outside options as it becomes more prevalent, this does not affect the contract-mode threshold *for a given firm and worker*, since both contract modes draw on the same competitive labor market.
--e 
+
+## A.8 Numerical Check: Existence at the Interactive Widget's Parameter Extremes
+
+Section 7.1 notes that the $[0,3]$ range used in Figures 1–3 is a plotting convention, not a bound on where $A^*$ is shown to exist — Theorem 1 holds for any positive parameter combination, with no upper bound on $A$ required. We confirm this directly at the most adverse parameter corner the interactive widget's sliders allow: $C=0.1$ (AI-augmentation effectiveness at its floor), $\sigma^2=3$ and $r=3$ (output noise and risk aversion both at their ceiling) — the combination least favorable to piece-rate contracting.
+
+At this corner, both $\Pi_T(A)$ and $\Pi_P^*(A)$ are pushed well below their baseline levels (the latter negative over most of $[0,3]$), and the crossing point moves far outside the plotted range: root-finding gives $A^*\approx13.01$ (unconstrained) and $A^*_{MW}\approx13.43$ (at $W_{\min}=0$) — both finite, consistent with Theorem 1, and both about 20 times the baseline $A^*\approx0.65$. This is the expected direction: weak AI augmentation combined with high noise and high risk aversion should make firms most reluctant to switch to output-based pay, so the threshold should be — and is — pushed far out rather than becoming undefined. The interactive widget itself displays these values live when its sliders are set to this corner.
+
 ---
 
 # Appendix C. A Unified Contract Family and Its Limits
