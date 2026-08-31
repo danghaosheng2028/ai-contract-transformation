@@ -10,7 +10,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 11})
 NAVY, GOLD, GREY, RED = "#1F3864", "#C9A227", "#8C8C8C", "#B44646"
 
-# ---------- Figure 1: baseline profit curves ----------
+# ---------- Figure 3: baseline profit curves ----------
 A = np.linspace(0, 3, 400)
 p = baseline
 piT = [Pi_T(a, p["a0"], p["h"], p["theta"], p["C"], p["k"], p["Ubar"]) for a in A]
@@ -30,14 +30,14 @@ ax.fill_between(A, -3, 4, where=(np.array(A) >= A_star), color=NAVY, alpha=0.07)
 ax.set_xlabel("AI intensity $A$")
 ax.set_ylabel("Firm profit")
 ax.set_ylim(-2, 3.5)
-ax.set_title("Figure 1. Contract transformation threshold\n(baseline calibration)", fontsize=10.5)
+ax.set_title("Figure 3. Contract transformation threshold\n(baseline calibration)", fontsize=10.5)
 ax.legend(loc="upper left", frameon=False, fontsize=9)
 ax.spines[["top", "right"]].set_visible(False)
 plt.tight_layout()
-plt.savefig(os.path.join(HERE, "fig1_threshold.png"), transparent=True)
+plt.savefig(os.path.join(HERE, "fig3_threshold.png"), transparent=True)
 plt.close()
 
-# ---------- Figure 3: sector heterogeneity ----------
+# ---------- Figure 5: sector heterogeneity ----------
 names_cn = ["Delivery\nriders", "Livestream\nhosts", "Designers /\nknowledge work", "Manufacturing\nline workers"]
 astars = []
 for name, ov in sectors.items():
@@ -55,10 +55,10 @@ ax.axhline(0.65, color=GOLD, linestyle=":", linewidth=1.3)
 ax.text(3.35, 0.72, "baseline $A^*\\approx0.65$", color=GOLD, fontsize=8.5, ha="right")
 ax.set_ylabel("Transformation threshold $A^*$")
 ax.set_ylim(0, 3)
-ax.set_title("Figure 3. Sector-heterogeneous transformation thresholds\n(lower = firms switch to piece-rate at lower AI intensity)", fontsize=10.5)
+ax.set_title("Figure 5. Sector-heterogeneous transformation thresholds\n(lower = firms switch to piece-rate at lower AI intensity)", fontsize=10.5)
 ax.spines[["top", "right"]].set_visible(False)
 plt.tight_layout()
-plt.savefig(os.path.join(HERE, "fig3_heterogeneity.png"), transparent=True)
+plt.savefig(os.path.join(HERE, "fig5_heterogeneity.png"), transparent=True)
 plt.close()
 
-print("figures saved:", os.path.join(HERE, "fig1_threshold.png"), "and", os.path.join(HERE, "fig3_heterogeneity.png"))
+print("figures saved:", os.path.join(HERE, "fig3_threshold.png"), "and", os.path.join(HERE, "fig5_heterogeneity.png"))

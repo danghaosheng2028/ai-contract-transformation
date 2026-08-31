@@ -25,7 +25,7 @@ Heavy-tailed noise is flagged as a limitation (Section 8.2, point 1) — the qua
 threshold logic (a fixed monitoring cost vs. convex incentive gains) likely survives, but
 the exact closed-form expressions would not.
 
-**Q2. Are the Table 2 sector calibrations estimated or assumed?**
+**Q2. Are the Table 1 sector calibrations estimated or assumed?**
 
 Assumed / illustrative, stated explicitly in the paper (Section 7.5 note and Section 8.2,
 point 5). The direction of each parameter choice follows from task characteristics
@@ -170,7 +170,7 @@ pressed on "what would a stronger version of this model need to do."
 Weaker than a real estimate, but honestly framed as such — don't overstate it if asked.
 It's two pieces of descriptive, secondary evidence, not a test of the model. First, Chen
 and Guo's (2023) industry-heterogeneity coefficients (labor/knowledge-intensive ≈0.03,
-capital-intensive ≈0.01, only marginally significant) match the *direction* of Table 2's
+capital-intensive ≈0.01, only marginally significant) match the *direction* of Table 1's
 manufacturing-vs-other-sectors ordering, but their industry classification is built from
 listed-company balance sheets, not gig-economy occupations — a real classification
 mismatch the paper states explicitly. Second, Zhang (2023) and the China Association of

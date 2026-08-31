@@ -1,12 +1,12 @@
 """
-make_figures2.py — Figure 4 (model timing schematic) only.
+make_figures2.py — Figure 1 (model timing schematic) only.
 
-Figure 2 (minimum-wage floor) used to be generated here as well as in
+Figure 4 (minimum-wage floor) used to be generated here as well as in
 minimum_wage.py, using two different implementations that had drifted out
 of sync (this file imported a Pi_P_MW function that didn't actually exist
-in minimum_wage.py). Figure 2 generation now lives solely in
+in minimum_wage.py). Figure 4 generation now lives solely in
 minimum_wage.py — run `python minimum_wage.py` to regenerate it and
-mw_threshold_table.csv. This file keeps only Figure 4, which nothing else
+mw_threshold_table.csv. This file keeps only Figure 1, which nothing else
 in the repo produces.
 """
 
@@ -20,7 +20,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 11})
 NAVY, GOLD, GREY, RED = "#1F3864", "#C9A227", "#8C8C8C", "#B44646"
 
-# ---------- Figure 4: model timing schematic ----------
+# ---------- Figure 1: model timing schematic ----------
 fig, ax = plt.subplots(figsize=(7.2, 2.0), dpi=200)
 ax.set_xlim(0, 10)
 ax.set_ylim(0, 2)
@@ -46,8 +46,8 @@ for i, (num, text) in enumerate(steps):
     x += box_w + gap
 
 plt.tight_layout()
-fig_path = os.path.join(HERE, "fig4_timing.png")
+fig_path = os.path.join(HERE, "fig1_timing.png")
 plt.savefig(fig_path, transparent=True)
 plt.close()
 
-print("figure 4 saved:", fig_path)
+print("figure 1 saved:", fig_path)

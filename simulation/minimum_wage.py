@@ -8,7 +8,7 @@ optimum at gamma_c* = 0.5, independent of H, sigma2, r, or W_min.
 
 Outputs (written next to this script, not to a fixed absolute path):
   - mw_threshold_table.csv   (six-row robustness table, Section 7.3)
-  - fig2_minimum_wage.png    (Figure 2: Pi_T, Pi_P*, Pi_P^MW, and optimal gamma)
+  - fig4_minimum_wage.png    (Figure 4: Pi_T, Pi_P*, Pi_P^MW, and optimal gamma)
 
 This module is import-safe: importing it (e.g. from make_figures2.py) only
 defines functions and does not run the table/figure pipeline. Run this file
@@ -112,8 +112,8 @@ def _main():
     print(f"\nWrote {csv_path}")
 
     # ------------------------------------------------------------ #
-    # 2. Figure 2: Pi_T, unconstrained Pi_P*, and re-optimized Pi_P^MW
-    #    (baseline W_min = 0.5, matching the paper's Figure 2 caption)
+    # 2. Figure 4: Pi_T, unconstrained Pi_P*, and re-optimized Pi_P^MW
+    #    (baseline W_min = 0.5, matching the paper's Figure 4 caption)
     # ------------------------------------------------------------ #
     W_min_fig = 0.5
     A_range = np.linspace(0, 3, 400)
@@ -149,7 +149,7 @@ def _main():
                  color="#2f855a", fontsize=9)
 
     ax1.set_ylabel("Firm profit")
-    ax1.set_title("Figure 2: Minimum-wage floor delays, but does not block,\n"
+    ax1.set_title("Figure 4: Minimum-wage floor delays, but does not block,\n"
                    fr"contract transformation ($W_{{\min}}={W_min_fig}$)")
     ax1.legend(loc="upper left", fontsize=9)
     ax1.grid(alpha=0.25)
@@ -163,7 +163,7 @@ def _main():
     ax2.grid(alpha=0.25)
 
     plt.tight_layout()
-    fig_path = os.path.join(HERE, "fig2_minimum_wage.png")
+    fig_path = os.path.join(HERE, "fig4_minimum_wage.png")
     plt.savefig(fig_path, dpi=200)
     plt.close()
 
