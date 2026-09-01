@@ -137,8 +137,8 @@ substitution (e.g., Leontief-style $\min(h,\theta AC)$, where AI is useless with
 baseline of human input). The paper's additive-linear form $h+\theta AC$ instead implies
 *infinite* elasticity of substitution between $h$ and AI-augmented capacity — mathematically,
 AI could in principle fully substitute for human capital as $A\to\infty$, which is the
-opposite of complementarity in the classical sense. $C$ is better read as a *task-specific
-marginal-effectiveness* parameter for AI augmentation, not complementarity in the CES
+opposite of complementarity in the classical sense. $C$ is better read as the *coefficient of AI-augmentation effectiveness* — a task-specific
+marginal-effectiveness parameter — not complementarity in the CES
 sense. This naming looseness doesn't invalidate any derivation — every proof goes through
 correctly given the stated functional form — but it is a legitimate critique of how the
 parameter is *labeled*, and Section 2.1's discussion of the functional-form choice should

@@ -64,7 +64,7 @@ so keep all `.py` files in the same folder.
 |---|---|---|
 | h (baseline human capital) | 2.0 | Section 3.4 |
 | θ (AI amplification) | 1.5 | Section 3.4 |
-| C (AI-augmentation effectiveness) | 1.0 | Section 3.4 |
+| C (coefficient of AI-augmentation effectiveness) | 1.0 | Section 3.4 |
 | k (effort cost) | 1.0 | Section 3.4 |
 | a₀ (min. enforceable effort) | 1.0 | Section 3.4 |
 | Ū (reservation utility) | 1.0 | Section 3.4 |
