@@ -9,11 +9,10 @@ were substantively wrong under the corrected Section 7.3 (the earlier "blocks tr
 entirely" claim did not survive re-derivation of the firm's optimal γ under a binding wage
 floor — see Section 7.3's revised text). Q3 is also rewritten: the model does *not*
 "directly" handle hybrid base-pay-plus-commission contracts the way the old answer claimed;
-Appendix C's Proposition 1 shows the opposite, and that tension is now stated honestly. Two
+Appendix B's Proposition 1 shows the opposite, and that tension is now stated honestly. Two
 new questions (Q8, Q9) cover findings from later verification passes, and Q10 covers the most
-recent — and most structural — unresolved critique. Q11–Q13 cover the latest revision pass:
-the 7.5 external-corroboration paragraph, the 8.2 multitasking sketch, and the appendix
-restructuring into a main paper plus Extended Online Appendix.
+recent — and most structural — unresolved critique. Q11–Q12 cover the latest revision pass:
+the 7.5 external-corroboration paragraph and the 8.2 multitasking sketch.
 
 ---
 
@@ -44,7 +43,7 @@ otherwise is a real risk if pressed.
 Within the two named modes (T and P) as originally specified, the piece-rate contract
 $w=\alpha+\gamma y$ *is* the general linear contract, and $\gamma=0$ formally recovers a
 fixed-wage structure — but not Mode T's actual equilibrium, since $\gamma=0$ implies
-worker effort $a^*=0$, not the enforced $a_0>0$ that defines Mode T. Appendix C
+worker effort $a^*=0$, not the enforced $a_0>0$ that defines Mode T. Appendix B
 formalizes the correct unification: it introduces a second instrument, an
 attendance-enforced effort floor $a_{\min}$, and *proves* (Proposition 1) that under the
 paper's cost assumptions, the firm's optimum is always a corner — pure T ($\gamma=0$,
@@ -52,7 +51,7 @@ $a_{\min}=a_0$) or pure P ($a_{\min}=0$, $\gamma=\gamma^*$) — never a blend.
 
 This is a real tension worth naming directly: real Chinese platform contracts (e.g., a
 guaranteed base plus per-order commission) often *are* hybrids, and the model's corner
-solution doesn't produce that. Appendix C says why: it's an artifact of assuming
+solution doesn't produce that. Appendix B says why: it's an artifact of assuming
 attendance-based enforcement is available at *zero marginal cost* regardless of how it's
 combined with $\gamma$. Relaxing that — e.g., a convex cost of running both enforcement
 technologies at once, or letting $a_{\min}$ serve as risk-reducing income insurance rather
@@ -130,9 +129,7 @@ in $A$ — into the model, $A^*$ comes out to *exactly* the same value (0.649633
 case. So the threshold $A^*$ is provably invariant to whether or how the outside option
 responds to economy-wide AI adoption; this isn't an assumption doing hidden work.
 
-**Q9. The paper calls $C$ "human–AI complementarity," but doesn't $\tilde H = h+\theta AC$
-actually describe perfect substitutability between human capital and AI, not
-complementarity?**
+**Q9. Section 2.1 goes out of its way to say $C$ should *not* be called "human–AI complementarity" — but is that just semantics, or does $\tilde H = h+\theta AC$ actually describe something closer to substitutability?**
 
 This is a fair semantic critique and worth answering directly rather than deflecting. In
 the standard production-theory sense, "complementarity" implies a *low* elasticity of
@@ -148,6 +145,14 @@ parameter is *labeled*, and Section 2.1's discussion of the functional-form choi
 be read with this caveat in mind. Reworking the model to use a genuinely low-substitution
 form (e.g., CES with $\rho<1$) would break Mode T's linearity in $A$, which is the entire
 mechanism behind Theorem 1's existence proof — not a change to make under time pressure.
+
+One likely follow-up: if $C$ isn't "complementarity" anymore, why does the symbol stay
+$C$ instead of something like $E$? Section 2.1 now addresses this directly — the symbol
+is inherited from the model's original formulation, not meant to be read as an initial
+for "effectiveness," the same way $\theta$ and $F$ elsewhere in the paper don't spell out
+their labels either. Relabeling the *term* required no change to any equation; relabeling
+the *symbol* would touch every derivation in the paper for a purely cosmetic gain, so it
+wasn't worth the risk.
 
 **Q10. Is there a channel through which AI affects platform work that the model doesn't
 capture at all — not just imperfectly, but structurally?**
@@ -196,19 +201,3 @@ without overclaiming a closed form the paper doesn't actually derive. This is st
 explicitly as "informal, not a full derivation" in the text — if asked "so what is $a_2$
 as a function of $A$," the honest answer is "the sketch doesn't tell you that; it only
 tells you the sign."
-
-**Q13. Why does the paper now point to an "Extended Online Appendix" instead of keeping
-everything in one document?**
-
-Purely a readability decision, not a rigor one — nothing was deleted, only relocated.
-Appendices A.5–A.7, C, and D originally ran to several thousand words of proof and
-robustness tables; every one of those results was independently re-verified numerically
-(symbolic differentiation and root-finding, matching the paper's stated values to at
-least four decimal places). Moving the full derivations to a public, linked GitHub file
-while keeping the *stated results and one-line justification* in the main paper means a
-reader — or a judge with limited reading time — gets the complete logical chain without
-wading through pages of restated algebra, while anyone who wants to check a specific
-derivation can still do so. If asked why this matters: several of the paper's own
-reference gold-medal papers keep their appendices short or absent entirely; a bloated
-appendix risks looking padded rather than rigorous, which was the actual reason for the
-restructuring.

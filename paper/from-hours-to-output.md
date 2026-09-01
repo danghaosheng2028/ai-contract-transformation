@@ -4,7 +4,7 @@ Lucas Dang
 RCF Experimental School, Beijing
 July 2026
 
-*Code and simulation scripts reproducing all figures and calibration results in this paper are publicly available at: https://github.com/danghaosheng2028/ai-contract-transformation. All derivations — including Appendices A.5–A.8, B, and C, previously distributed as a separate Extended Online Appendix — are now given in full below, so this document is self-contained. An interactive version of the core simulation — allowing readers to vary output noise $\sigma^2$, risk aversion $r$, human–AI complementarity $C$, and the minimum-wage floor $W_{\min}$ in real time — is available at https://danghaosheng2028.github.io/ai-contract-transformation/ (source: `docs/index.html` in the same repository).*
+*Code and simulation scripts reproducing all figures and calibration results in this paper are publicly available at: https://github.com/danghaosheng2028/ai-contract-transformation. All derivations, including Appendices A.5–A.8, B, and C, are given in full below, so this document is self-contained. An interactive version of the core simulation — allowing readers to vary output noise $\sigma^2$, risk aversion $r$, AI-augmentation effectiveness $C$ (see Section 2.1 on why this paper avoids the term "complementarity" for $C$), and the minimum-wage floor $W_{\min}$ in real time — is available at https://danghaosheng2028.github.io/ai-contract-transformation/ (source: `docs/index.html` in the same repository).*
 
 ---
 
@@ -40,7 +40,7 @@ comparative statics
 | Symbol | Definition |
 |---|---|
 | $A$ | AI utilization intensity (firm/task-level), $A \in [0, \bar A]$ |
-| $C$ | Task-specific marginal effectiveness of AI augmentation (see Section 2.1 for a note on this term's relation to "complementarity") |
+| $C$ | Task-specific marginal effectiveness of AI augmentation (see Section 2.1 for a note on this term's relation to "complementarity," and on why the symbol $C$ is retained despite the label change) |
 | $\theta$ | AI amplification coefficient |
 | $h$ | Baseline human capital |
 | $\tilde H$ | Effective human capital, $\tilde H = h + \theta AC$ |
@@ -131,7 +131,7 @@ Appendix C. Robustness to an Effort-Independent Automation Channel
    C.4 What This Resolves, and What Remains Open
 References
 
-*This document is fully self-contained: material previously published separately as an "Extended Online Appendix" (full derivations for Appendices A.5–A.8, B, and C) has been merged in below, so no result in this paper depends on consulting an external source. As a consequence, appendix labels now run consecutively from A through C with no gap — earlier drafts of this paper, in which Appendices B and C existed only as brief pointers to that external document, used the non-consecutive labels A, C, D for the same three appendices; that numbering has been retired along with the separate document.*
+*This document is fully self-contained: Appendix A completes the proofs of Theorems 1 and 2 and derives four further structural corollaries (A.5–A.8); Appendices B and C give the full formal unification of the two contract modes and the robustness check against an unmodeled automation channel, respectively. No result in this paper depends on consulting any external source.*
 
 ---
 
@@ -173,7 +173,7 @@ Subsequent work has refined these insights. Lazear (2000) documents empirically 
 
 This paper contributes to this literature by embedding AI‑augmented production into the Holmstrom–Milgrom framework. By modeling effective human capital as $\tilde{H}=h+\theta AC$, we show that AI amplifies the incentive effect of piece‑rate contracts and generates a unique transformation threshold $A^*$ at which firms optimally switch from time‑rate to piece‑rate compensation.
 
-**On the functional form and terminology.** We adopt the additive-linear form $\tilde H = h+\theta AC$, rather than a multiplicative or CES alternative (as in Acemoglu and Restrepo, 2018), because it keeps $\Pi_T(A)$ exactly linear in $A$ — the linear-versus-convex asymmetry that drives Theorem 1 — and gives $\theta C$ a direct reading as the marginal human-capital return to AI intensity. We call $C$ "AI-augmentation effectiveness" throughout, rather than "complementarity": the additive form technically implies infinite substitutability between $h$ and AI-augmented capacity, closer to substitution than to the low-elasticity sense the word "complementarity" usually carries in production theory. We flag, without resolving, two related scope boundaries: whether the existence-and-uniqueness result of Theorem 1 extends to other augmentation functions increasing and unbounded in $A$ (we conjecture it does, but only the additive-linear form delivers Appendix A's exact elasticities), and $C$'s treatment as exogenous and time-invariant (Section 8.2).
+**On the functional form and terminology.** We adopt the additive-linear form $\tilde H = h+\theta AC$, rather than a multiplicative or CES alternative (as in Acemoglu and Restrepo, 2018), because it keeps $\Pi_T(A)$ exactly linear in $A$ — the linear-versus-convex asymmetry that drives Theorem 1 — and gives $\theta C$ a direct reading as the marginal human-capital return to AI intensity. We call $C$ "AI-augmentation effectiveness" throughout, rather than "complementarity": the additive form technically implies infinite substitutability between $h$ and AI-augmented capacity, closer to substitution than to the low-elasticity sense the word "complementarity" usually carries in production theory. We retain the symbol $C$ despite this relabeling — it is inherited from the model's original formulation rather than an initial for "effectiveness," in the same way $\theta$ and $F$ elsewhere in this paper do not spell out their labels either; nothing in the notation is meant to be read mnemonically. We flag, without resolving, two related scope boundaries: whether the existence-and-uniqueness result of Theorem 1 extends to other augmentation functions increasing and unbounded in $A$ (we conjecture it does, but only the additive-linear form delivers Appendix A's exact elasticities), and $C$'s treatment as exogenous and time-invariant (Section 8.2).
 
 ## 2.2 AI, Automation, and Labor Markets
 

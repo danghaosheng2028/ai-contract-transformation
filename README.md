@@ -64,7 +64,7 @@ so keep all `.py` files in the same folder.
 |---|---|---|
 | h (baseline human capital) | 2.0 | Section 3.4 |
 | θ (AI amplification) | 1.5 | Section 3.4 |
-| C (complementarity) | 1.0 | Section 3.4 |
+| C (AI-augmentation effectiveness) | 1.0 | Section 3.4 |
 | k (effort cost) | 1.0 | Section 3.4 |
 | a₀ (min. enforceable effort) | 1.0 | Section 3.4 |
 | Ū (reservation utility) | 1.0 | Section 3.4 |
@@ -107,7 +107,7 @@ baseline values above.
 | Manufacturing line workers | 0.4 | 0.7 | 1.0 | 1.516 |
 
 Sector parameter choices are illustrative, calibrated qualitatively from
-task characteristics (monitorability, AI-tool complementarity, typical
+task characteristics (monitorability, AI-tool effectiveness, typical
 risk exposure) discussed in the text — they are not estimated from
 worker-level data and should be labelled as such in the paper.
 
