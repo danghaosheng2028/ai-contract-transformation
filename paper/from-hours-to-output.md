@@ -1396,7 +1396,11 @@ Lazear, E. (2000). *Performance Pay and Productivity*.
 
 Marx, K. (1867). *Capital: A Critique of Political Economy, Volume I*.
 
+Ministry of Human Resources and Social Security of the People's Republic of China, National Development and Reform Commission, Ministry of Transport, Ministry of Emergency Management, State Administration for Market Regulation, National Healthcare Security Administration, Supreme People's Court, & All-China Federation of Trade Unions. (2021). *Guiding Opinions on Safeguarding the Labor Rights and Interests of Workers in New Forms of Employment* [关于维护新就业形态劳动者劳动保障权益的指导意见] (Ren She Bu Fa [2021] No. 56, issued July 16, 2021).
+
 Prendergast, C. (2002). *The Tenuous Tradeoff Between Risk and Incentives*.
+
+*Proposition 22, Protect App-Based Drivers and Services Act* (2020), approved by California voters on November 3, 2020; codified at Cal. Bus. & Prof. Code §§ 7448–7467.
 
 *人物* [Renwu] magazine. (2020, September 8). *外卖骑手，困在系统里* [Delivery Riders, Trapped in the System].
 
