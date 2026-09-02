@@ -64,9 +64,14 @@ def Pi_P_constrained(A, W_min, h=h, theta=theta, C=C, k=k, r=r, sigma2=sigma2,
 def Pi_P_MW(A, h, theta, C, k, r, sigma2, Ubar_, F_, W_min):
     """
     Convenience wrapper matching the (A, h, theta, C, k, r, sigma2, Ubar, F, W_min)
-    argument order used elsewhere in the repo (e.g. make_figures2.py), returning
-    just the profit value. Thin pass-through to Pi_P_constrained.
+    argument order. NOTE: currently unused within this repo — an earlier version of
+    make_figures2.py imported a same-named function that did not exist here (see the
+    module docstring above and README's note on Figure 4); that bug has since been
+    fixed by moving Figure 4 generation entirely into this file, so nothing calls this
+    wrapper anymore. Kept as a documented, tested pass-through to Pi_P_constrained in
+    case an external script wants the (…, W_min) argument order directly.
     """
+
     return Pi_P_constrained(A, W_min, h=h, theta=theta, C=C, k=k, r=r,
                              sigma2=sigma2, U=Ubar_, F=F_)[0]
 
