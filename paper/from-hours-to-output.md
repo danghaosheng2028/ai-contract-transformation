@@ -1,323 +1,331 @@
-# 从工时到产出:委托代理理论视角下人工智能驱动的契约转型与中国平台经济最低工资保护的边界
-
-*From Hours to Output: A Principal–Agent Theory of AI-Driven Contract Transformation and the Limits of Minimum-Wage Protection in China's Platform Economy*
+# From Hours to Output: A Principal–Agent Theory of AI-Driven Contract Transformation and the Limits of Minimum-Wage Protection in China's Platform Economy
 
 Lucas Dang
-北京市朝阳区人朝分实验学校(RCF Experimental School, Beijing)
-2026年9月
+RCF Experimental School, Beijing
+September 2026
 
-*本文所有图表复现代码与校准结果均公开于:https://github.com/danghaosheng2028/ai-contract-transformation 。全部推导(包括附录A.5–A.8、B、C)均已完整收录于正文,读者无需查阅任何外部资料即可独立读完全部推导过程。核心模拟提供交互式版本,读者可实时调节产出噪声$\sigma^2$、风险厌恶系数$r$、AI增强效能系数$C$(参见第2.1节关于本文为何对$C$避免使用"互补性"一词的说明)与最低工资底线$W_{\min}$,见:https://danghaosheng2028.github.io/ai-contract-transformation/ (源码见仓库内`docs/index.html`)。*
-
----
-
-## 摘要
-
-为什么有些被AI增强的工作转向了计件工资,而另一些仍停留在固定工资?为什么中国的最低工资制度似乎能延缓、却无法阻止这一转变?本文构建了一个委托代理模型:AI通过 $\tilde H = h+\theta AC$ 增强劳动者的有效人力资本,企业在时间制契约(固定工资、强制最低劳动努力)与计件制契约(与产出挂钩的报酬、依赖数字监控、劳动者承担更高风险)之间做出选择。
-
-本文推导出两种模式下的闭式最优契约,并证明存在唯一的AI强度阈值 $A^*$,一旦超过该阈值,企业将从时间制转向计件制,原因在于计件制利润随AI强度呈凸性增长,而时间制利润只随之线性增长。该阈值随产出噪声与劳动者风险厌恶程度上升而提高,随AI增强效能系数上升而降低,且可证明不受劳动者外部选择具体设定方式的影响,也不受两种契约模式共有的AI自动化增益的影响。
-
-数值模拟显示,具有约束力的最低工资大致会使触发这一转变所需的AI强度提高2到3倍,但并不能彻底阻止转变;而对于高度可监控、AI增强效果强的职业(如平台配送),该阈值明显低于AI增强效果较弱的职业(如制造业),这一模式与中国企业数字化和工资增长的独立经验证据大体吻合。
-
-该模型为解释产出导向型薪酬为何在受AI影响的各行业中呈不均衡扩散提供了一个统一的解释框架,并对劳动监管与AI技能政策具有启示意义。我们还将这一发现与美国、英国、欧盟可比的零工经济监管实践,以及国际劳工组织新近通过的平台工作公约相对照,并与"AI生产率增益如何在企业与劳动者之间分配"这一古典政治经济学问题相呼应。
+*Code and simulation scripts reproducing all figures and calibration results in this paper are publicly available at: https://github.com/danghaosheng2028/ai-contract-transformation. All derivations, including Appendices A.5–A.8, B, and C, are given in full below, so this document is self-contained. An interactive version of the core simulation — allowing readers to vary output noise $\sigma^2$, risk aversion $r$, the coefficient of AI-augmentation effectiveness $C$ (see Section 2.1 on why this paper avoids the term "complementarity" for $C$), and the minimum-wage floor $W_{\min}$ in real time — is available at https://danghaosheng2028.github.io/ai-contract-transformation/ (source: `docs/index.html` in the same repository).*
 
 ---
 
-## 关键词
+## Abstract
 
-AI增强型生产 · 委托代理模型 · 风险分担 · 激励设计 · 契约转型 · 计件工资 · 计时工资 · 人机增强 · 最低工资监管 · 比较静态分析
+Why do some AI-augmented jobs shift to piece-rate pay while others stay on fixed wages — and why does China's minimum-wage system seem to slow, but not stop, that shift? This paper develops a principal–agent model in which AI augments a worker's effective human capital, $\tilde H = h+\theta AC$, and firms choose between a time-rate contract (fixed wage, enforced minimum effort) and a piece-rate contract (output-linked pay, digitally monitored, riskier for the worker).
+
+We derive closed-form optimal contracts under each mode and prove there is a unique AI-intensity threshold $A^*$ above which firms switch from time-rate to piece-rate pay — because piece-rate profit grows convexly in AI intensity while time-rate profit only grows linearly. The threshold rises with output noise and worker risk aversion, falls with the coefficient of AI-augmentation effectiveness, and is provably unaffected by how the worker's outside option is specified or by any AI-driven automation gains common to both contract modes.
+
+Numerically, a binding minimum wage roughly doubles to triples the AI intensity needed to trigger this switch, without blocking it outright; and the threshold is markedly lower for highly monitorable, AI-augmented occupations (e.g. platform delivery) than for occupations AI augments only weakly (e.g. manufacturing), a pattern broadly consistent with independent evidence on digitalization and wage growth in Chinese firms.
+
+The model offers a unified account of why output-based pay is spreading unevenly across AI-exposed industries, with implications for labor regulation and AI-skills policy. We further situate the result against comparable gig-economy regulatory episodes in the United States, the United Kingdom, the European Union, and the newly adopted International Labour Organization (ILO) Convention on platform work, and against the classical political-economy question of how AI's productivity gains are divided between firm and worker.
 
 ---
 
-## 符号表
+## Keywords
 
-| 符号 | 定义 |
+AI-augmented production
+principal–agent model
+risk-sharing
+incentive design
+contract transformation
+piece-rate compensation
+time-rate compensation
+human–AI augmentation
+minimum-wage regulation
+comparative statics
+
+---
+
+## Notation
+
+| Symbol | Definition |
 |---|---|
-| $A$ | AI利用强度(企业/任务层面),$A \in [0, \bar A]$ |
-| $C$ | AI增强效能系数(AI增强的任务专属边际效能;见第2.1节关于该术语与"互补性"关系的说明) |
-| $\theta$ | AI放大系数 |
-| $h$ | 基础人力资本 |
-| $\tilde H$ | 有效人力资本,$\tilde H = h + \theta AC$ |
-| $a$ | 劳动者努力水平 |
-| $a_0$ | 时间制(模式T)下强制的最低努力水平 |
-| $k$ | 努力成本凸性参数,$\psi(a) = \tfrac12 k a^2$ |
-| $r$ | 劳动者绝对风险厌恶系数(CARA效用) |
-| $\sigma^2$ | 产出噪声方差,$\varepsilon \sim N(0,\sigma^2)$ |
-| $\bar U$ | 保留效用 |
-| $F$ | 计件制(模式P)下的固定监控成本 |
-| $\alpha$ | 计件制下的基础工资 |
-| $\gamma$ | 计件制激励斜率 |
-| $\gamma^*$ | 最优计件激励斜率 |
-| $W_0$ | 时间制下的固定工资 |
-| $\Pi_T(A)$ | 时间制契约下的企业利润 |
-| $\Pi_P^*(A)$ | 最优计件制契约下的企业利润 |
-| $A^*$ | 契约转型阈值,$\Pi_T(A^*) = \Pi_P^*(A^*)$ |
-| $W_{\min}$ | 最低工资底线 |
-| $G(A)$ | 利润差,$G(A) = \Pi_P^*(A) - \Pi_T(A)$ |
-| $g(A)$ | 与努力无关的自动化产出贡献(附录C) |
+| $A$ | AI utilization intensity (firm/task-level), $A \in [0, \bar A]$ |
+| $C$ | Coefficient of AI-augmentation effectiveness — task-specific marginal effectiveness of AI augmentation (see Section 2.1 for a note on this term's relation to "complementarity") |
+| $\theta$ | AI amplification coefficient |
+| $h$ | Baseline human capital |
+| $\tilde H$ | Effective human capital, $\tilde H = h + \theta AC$ |
+| $a$ | Worker effort |
+| $a_0$ | Minimum enforceable effort under time-rate (Mode T) |
+| $k$ | Effort-cost convexity parameter, $\psi(a) = \tfrac12 k a^2$ |
+| $r$ | Worker absolute risk aversion (CARA) |
+| $\sigma^2$ | Output noise variance, $\varepsilon \sim N(0,\sigma^2)$ |
+| $\bar U$ | Reservation utility |
+| $F$ | Fixed monitoring cost under piece-rate (Mode P) |
+| $\alpha$ | Piece-rate base wage |
+| $\gamma$ | Piece-rate incentive slope |
+| $\gamma^*$ | Optimal piece-rate slope |
+| $W_0$ | Fixed wage under time-rate |
+| $\Pi_T(A)$ | Firm profit under time-rate contract |
+| $\Pi_P^*(A)$ | Firm profit under optimal piece-rate contract |
+| $A^*$ | Contract transformation threshold, $\Pi_T(A^*) = \Pi_P^*(A^*)$ |
+| $W_{\min}$ | Minimum-wage floor |
+| $G(A)$ | Profit difference, $G(A) = \Pi_P^*(A) - \Pi_T(A)$ |
+| $g(A)$ | Effort-independent automation contribution to output (Appendix C) |
 
-*上述符号按其在第4.1–4.3节中首次出现的顺序列出。*
+*Symbols are listed in order of first appearance in Sections 4.1–4.3.*
 
-**关于单位的说明。** 所有货币量($\Pi$、$W$、$\alpha$、$\bar U$)均以标准化单位表示——即以校准行业代表性月基本工资为基准的倍数,与第3.4节保留效用标准化取值 $\bar U = 1.0$ 保持一致。AI强度 $A$ 同样是定义在 $[0,3]$ 区间上的标准化指数,其构造依据是CAICT(中国信息通信研究院)报告的企业数字工具渗透率的经验范围(见第3.1节),而非可直接观测的物理量。这一标准化处理方式遵循典型化委托代理校准研究的通行做法;$A^*\approx0.65$ 这类数值阈值不应被理解为可与其他文献中基于不同尺度构造的指数直接比较(参见第3.5节关于陈东、郭文光, 2023的说明)。
-
----
-
-## 目录
-
-1. 引言
-2. 文献综述
-   2.1 激励与风险分担的委托代理模型
-   2.2 AI、自动化与劳动力市场
-   2.3 平台劳动、灵活就业与中国劳动监管
-   2.4 相对于既有文献的贡献
-   2.5 一个政治经济学视角:AI、剩余价值与生产关系的重构
-3. 典型事实与参数校准
-   3.1 典型事实一:中国企业AI渗透率上升
-   3.2 典型事实二:灵活就业与产出导向型就业的扩张
-   3.3 典型事实三:劳动者风险厌恶的实证估计
-   3.4 其余参数的校准
-   3.5 阈值机制的支持性证据
-   3.6 拓宽视野:国际比较证据
-4. 模型
-   4.1 环境设定
-   4.2 时间制契约(模式T)
-   4.3 计件制契约(模式P)
-   4.4 时序
-   4.5 讨论
-5. 均衡分析
-   5.1 时间制契约(模式T)
-   5.2 计件制契约(模式P)
-   5.3 两种模式的比较
-6. 主要结果
-   6.1 契约转型阈值的存在性与唯一性
-   6.2 转型阈值的比较静态分析
-   6.3 对契约设计的含义
-7. 数值模拟
-   7.1 基准利润比较与转型阈值
-   7.2 比较静态分析:阈值曲面 $A^*(r,\sigma^2)$
-   7.3 监管摩擦:最低工资约束
-   7.4 模拟结果总结
-   7.5 行业异质性
-   7.6 $A^*$ 对 $\theta$ 与 $k$ 的联合敏感性
-8. 结论与政策含义
-   8.1 政策含义(含第5条:监管监控机制本身)
-   8.2 局限性与未来研究方向
-   8.3 结语
-附录A. 补充证明
-   A.0 二阶条件(SOC)
-   A.1 $\Pi_P^*(A)$ 的全域凸性
-   A.2 存在性与唯一性
-   A.3 关于风险厌恶 $r$ 的导数
-   A.4 关于增强效能 $C$ 的导数
-   A.5 推论:$A^*$ 对 $\theta C$ 的精确闭式依赖
-   A.6 推论:$r$ 与 $\sigma^2$ 的弹性相等
-   A.7 推论:$A^*$ 对保留效用 $\bar U$ 具体设定方式的不变性
-   A.8 数值检验:交互式组件参数极值处的存在性
-附录B. 统一契约族及其局限
-   B.1 扩展契约空间
-   B.2 命题1(T/P作为一种离散的机制选择)
-   B.3 这一命题带来了什么,以及一个诚实的局限
-附录C. 对不依赖努力的自动化渠道的稳健性检验
-   C.1 重新推导
-   C.2 命题2(对模式共有的自动化的不变性)
-   C.3 推论:在此设定下,完全自动化从不占优
-   C.4 这解决了什么,又留下了什么开放问题
-参考文献
-
-*本文档内容完整、自成体系:附录A完成定理1与定理2的证明,并推导四项进一步的结构性推论(A.5–A.8);附录B、C分别给出两种契约模式的完整数理统一,以及针对未建模自动化渠道的稳健性检验——并在此过程中分别确立了命题1(B.2节)与命题2(C.2节),第8.1节(3)与第8.2节(9)分别依赖于这两个命题。本文任何结论均不依赖读者查阅外部资料。*
+**A note on units.** All monetary quantities ($\Pi$, $W$, $\alpha$, $\bar U$) are expressed in standardized units — multiples of a representative monthly base-wage benchmark for the calibrated occupations, consistent with the reservation-utility normalization $\bar U = 1.0$ in Section 3.4. AI intensity $A$ is likewise a standardized index on $[0,3]$, constructed to span the empirical range of enterprise digital-tool penetration reported by CAICT (Section 3.1), rather than a directly observable physical quantity. This normalization follows standard practice in stylized principal–agent calibration exercises; numerical thresholds such as $A^*\approx0.65$ should not be read as directly comparable to indices constructed on different scales elsewhere (see the caveat in Section 3.5 regarding Chen and Guo, 2023).
 
 ---
 
-# 1. 引言
+## Contents（目录）
 
-设想两位骑手,在同一条城市街道上结束八小时轮班,时间相隔十年。第一位为固定月薪送货,他打卡上班,凭主管对"一天合理工作量"的大致判断干活,再打卡下班——他到底送了多少件包裹,几乎无人在意。第二位,今天在美团或饿了么送货,盯着一个算法实时重置的倒计时:送得快,下周的派单量就会提升;送得慢,则不会。这两位骑手之间,正是本文试图解释的那个转变——从按劳动者"到岗"的时间付费,转向按其"产出"付费。而这一转变并不局限于中国:一位在旧金山与配送时限赛跑的Instacart购物员、一位登入Deliveroo应用的伦敦骑手、一位盯着Gojek应用内激励倍数的雅加达司机,都在各自的监管环境中,经历着同一场劳动组织方式重塑的不同版本——而这场重塑,如今几乎在全球同时被人工智能(而不仅仅是管理时尚)所加速。
+1. Introduction
+2. Literature Review
+   2.1 Principal–Agent Models of Incentives and Risk-Sharing
+   2.2 AI, Automation, and Labor Markets
+   2.3 Platform Labor, Flexible Employment, and Chinese Labor Regulation
+   2.4 Contribution Relative to the Literature
+   2.5 A Political-Economy Lens: AI, Surplus Value, and the Restructuring of Production Relations
+3. Stylized Facts and Parameter Calibration
+   3.1 Stylized Fact 1: Rising AI Penetration in Chinese Firms
+   3.2 Stylized Fact 2: Expansion of Flexible and Output-Based Employment
+   3.3 Stylized Fact 3: Empirical Estimates of Worker Risk Aversion
+   3.4 Calibration of Remaining Parameters
+   3.5 Suggestive Evidence for the Threshold Mechanism
+   3.6 Widening the Lens: International Comparative Evidence
+4. Model
+   4.1 Environment
+   4.2 Time-Rate Contract (Mode T)
+   4.3 Piece-Rate Contract (Mode P)
+   4.4 Timing
+   4.5 Discussion
+5. Equilibrium Analysis
+   5.1 Time-Rate Contract (Mode T)
+   5.2 Piece-Rate Contract (Mode P)
+   5.3 Comparison of the Two Modes
+6. Main Results
+   6.1 Existence and Uniqueness of the Contract Transformation Threshold
+   6.2 Comparative Statics of the Transformation Threshold
+   6.3 Implications for Contract Design
+7. Numerical Simulation
+   7.1 Baseline Profit Comparison and the Transformation Threshold
+   7.2 Comparative Statics: Threshold Surface $A^*(r,\sigma^2)$
+   7.3 Regulatory Friction: Minimum Wage Constraint
+   7.4 Summary of Simulation Results
+   7.5 Sector Heterogeneity
+   7.6 Joint Sensitivity of $A^*$ to $\theta$ and $k$
+8. Conclusion and Policy Implications
+   8.1 Policy Implications
+   8.2 Limitations and Future Research
+   8.3 Closing Reflection
 
-这不是一个微小或纯技术性的转变。截至2023年,中国有超过8400万劳动者从事平台化灵活就业(中华全国总工会,2023)——约占全国职工总数的五分之一,其中多数按配送、行程、直播销售或已完成的任务计酬,而非按小时计酬。自2021年《关于维护新就业形态劳动者劳动保障权益的指导意见》发布以来,中国监管机构一直在努力跟上这一转变的步伐。这一问题在全球范围内变得多么紧迫,最清晰的信号出现在本文定稿前不过数周:2026年6月12日,来自187个国家的代表在日内瓦召开的第114届国际劳工大会上,以406票赞成、8票反对、36票弃权的结果,通过了国际劳工组织(International Labour Organization,ILO)第193号公约——这是全球第一份专门针对平台经济的、具有约束力的国际劳工标准,覆盖全球超过1.5亿平台劳动者。它的核心机制根本不是工资规则:它要求平台披露其自动化决策系统如何设定薪酬与工时,并对影响劳动者收入的决定提供人工复核——规制的是*算法*本身,而不仅仅是*工资单*。第193号公约并非凭空出现,它凝结了各国法律体系多年来一直在摸索的同一张力。英国最高法院2021年对*Uber BV v Aslam*案的判决认定Uber司机属于"劳动者",有权获得最低工资保护,理由正是平台算法而非司机本人控制着工作的完成方式;美国加州第22号提案则采取了相反的做法,在保留平台算法定价灵活性的同时增加了有限的福利底线;欧盟2024年通过的《平台工作指令》规定,只要算法管理对劳动者的工作日施加了足够的控制,就推定构成雇佣关系。四种不同的制度与工具,却从不同方向指向了同一股底层经济力量。
+Appendix A. Additional Proofs
+   A.0 Second-Order Conditions (SOC)
+   A.1 Global Convexity of $\Pi_P^*(A)$
+   A.2 Existence and Uniqueness
+   A.3 Derivative with Respect to Risk Aversion $r$
+   A.4 Derivative with Respect to Augmentation Effectiveness $C$
+   A.5 Corollary: Exact Closed-Form Dependence of $A^*$ on $\theta C$
+   A.6 Corollary: Equal Elasticities for $r$ and $\sigma^2$
+   A.7 Corollary: Invariance of $A^*$ to the Specification of Reservation Utility $\bar U$
+   A.8 Numerical Check: Existence at the Interactive Widget's Parameter Extremes
+Appendix B. A Unified Contract Family and Its Limits
+   B.1 Extended Contract Space
+   B.2 Proposition 1 (T/P as a Discrete Regime Choice)
+   B.3 What This Buys, and an Honest Limitation
+Appendix C. Robustness to an Effort-Independent Automation Channel
+   C.1 Re-derivation
+   C.2 Proposition 2 (Invariance of $A^*$ to Mode-Common Automation)
+   C.3 Corollary: Full Automation Never Dominates Under This Specification
+   C.4 What This Resolves, and What Remains Open
+References
 
-这股力量既带来真实的收益,也带来真实的成本,二者之间的张力正是本文试图用模型精确刻画的核心问题。一方面,AI确实让每一小时的努力变得更有价值:智能路径规划让骑手每小时能跑更多地址;推荐算法让直播主播在每场直播中面对更多潜在买家。另一方面,按产出付费也意味着劳动者开始承担企业过去通过固定工资默默吸收的那部分风险——一场暴雨、一次堵车、一次算法故障、一个不走运的夜晚的观众数量。企业获取了AI生产率红利中的一部分份额;劳动者在期望意义上获益,但在日常实践中承受了更多不确定性。这正是委托代理理论半个世纪以来所研究的"激励"与"风险分担"之间的经典权衡(Holmstrom, 1979)——但AI通过改变劳动者努力的生产率,恰恰改变了这一权衡向哪一种契约倾斜的临界点。将这一临界点形式化,正是本文的任务,并直接引出本文试图回答的问题:
+*This document is fully self-contained: Appendix A completes the proofs of Theorems 1 and 2 and derives four further structural corollaries (A.5–A.8); Appendices B and C give the full formal unification of the two contract modes and the robustness check against an unmodeled automation channel, respectively — establishing, in the process, Proposition 1 (B.2) and Proposition 2 (C.2), on which Sections 8.1(3) and 8.2(9) respectively rely. No result in this paper depends on consulting any external source.*
 
-**企业应在什么条件下从计时工资转向计件工资?AI的采用又如何改变这一边界?**
+---
 
-既有研究提供了扎实的理论基础,但尚未直接回答这一问题。经典委托代理理论在抽象层面告诉我们企业应如何在激励与风险之间取得平衡——但它并非为AI增强型劳动者而构建。一批关于AI与劳动力市场的新兴文献(Acemoglu and Restrepo, 2018;Brynjolfsson, Li, and Raymond, 2025)细致地记录了AI如何提升生产率,但并未进一步追问这种生产率增益应当如何改变*薪酬契约本身的形态*——这一具体联系,本文未见有他处以闭式阈值、其比较静态特征,或它与劳动监管之间相互作用的形式加以处理。
+# 1. Introduction
 
-本文通过将AI嵌入一个可解析的委托代理模型,填补了这一具体空白。我们引入一个AI增强的有效人力资本函数:
+Picture two riders finishing an eight-hour shift on the same city street, a decade apart. The first, delivering for a fixed monthly wage, clocks in, follows a supervisor's rough sense of a fair day's work, and clocks out — how many parcels he carried barely enters the conversation. The second, delivering for Meituan or Ele.me today, glances at a countdown clock that an algorithm resets with every new order: finish faster and next week's order allocation improves; finish slower and it does not. Between these two riders lies exactly the transition this paper tries to explain — the shift from paying people for the *time* they show up to paying them for the *output* they produce. And this shift is not confined to China. A San Francisco Instacart shopper racing a delivery-time estimate, a London cyclist logging into the Deliveroo app, and a Jakarta driver watching Gojek's in-app incentive multiplier are, in their own regulatory settings, living through versions of the same reorganization of work — one that artificial intelligence, not just management fashion, is now accelerating almost everywhere at once.
+
+This is not a small or narrowly technical shift. By 2023, more than 84 million workers in China were engaged in platform-based flexible employment (All-China Federation of Trade Unions, 2023) — roughly one-fifth of the national registered workforce, most paid by the delivery, the ride, the livestreamed sale, or the completed task rather than by the hour. Since the 2021 *Guiding Opinions on Safeguarding the Labor Rights of New Employment Forms* (Ministry of Human Resources and Social Security of the PRC et al., 2021), Chinese regulators have tried to keep pace with this shift. The clearest sign of how urgent the question has become worldwide came only weeks before this paper was finalized: on 12 June 2026, delegates from 187 countries meeting in Geneva at the 114th International Labour Conference voted 406 to 8, with 36 abstentions, to adopt ILO Convention No. 193 — the first binding international labor standard written specifically for the platform economy, covering an estimated 150 million-plus platform workers worldwide. Its central mechanism is not a wage rule at all: it requires platforms to disclose how their automated decision systems set pay and hours, and to provide human review of decisions that affect a worker's earnings — regulating the *algorithm*, not just the *paycheck*. Convention 193 did not appear from nowhere; it crystallizes a tension legal systems have been circling for years. The UK Supreme Court's 2021 ruling in *Uber BV v Aslam* found that Uber drivers were "workers" entitled to a minimum wage precisely because the platform's algorithm — not the driver — controlled how the job was done; California's Proposition 22 (2020) took the opposite tack, preserving platforms' algorithmic pricing flexibility while adding limited benefit floors; and the European Union's 2024 Platform Work Directive presumes an employment relationship wherever algorithmic management exercises enough control over a worker's day. Four different institutions, four different instruments, converging on the same underlying economic force from different directions.
+
+That force carries a genuine benefit and a genuine cost, and the tension between them is the puzzle this paper sets out to formalize. On one hand, AI genuinely makes each hour of effort more valuable: smart routing gets a rider to more addresses per hour; a recommendation algorithm gets a livestream host in front of more buyers per broadcast. On the other hand, paying by output also means the worker now absorbs risk the firm used to absorb quietly through a flat wage — a rainstorm, a traffic jam, an algorithm glitch, an unlucky night's audience. Firms capture a share of AI's productivity dividend; workers gain in expectation but bear more of the day-to-day uncertainty in practice. This is the classical trade-off between *incentives* and *risk-sharing* that principal–agent theory has studied for half a century (Holmstrom, 1979) — but AI, by changing how productive a worker's effort is, changes exactly where that trade-off tips the firm toward one contract over the other. Formalizing that tipping point is this paper's task, and it leads directly to the question this paper answers:
+
+**Under what conditions should firms switch from time-rate to piece-rate compensation, and how does AI adoption shift this boundary?**
+
+Existing research offers real foundations but does not yet answer this question directly. Classical principal–agent theory tells us, in the abstract, how firms should balance incentives against risk — but it was not built with an AI-augmented worker in mind. A newer literature on AI and labor markets (Acemoglu and Restrepo, 2018; Brynjolfsson, Li, and Raymond, 2025) carefully documents that AI raises productivity, but stops short of asking how that productivity gain should change the *shape of the pay contract itself* — a specific link this paper has not found addressed elsewhere in the form of a closed-form threshold, its comparative statics, or its interaction with labor regulation.
+
+This paper closes that specific gap by embedding AI into a tractable principal–agent model. We introduce an AI-augmented effective human capital function,
 
 $$
 \tilde{H} = h + \theta AC,
 $$
 
-推导出每种契约模式下最优努力与激励的闭式表达式,并证明存在唯一的转型阈值 $A^*$——即利润最大化企业从计时制转向计件制的AI强度水平。比较静态分析精确刻画了产出噪声、劳动者风险厌恶与AI增强效能系数如何共同塑造这一阈值。随后我们纳入中国的最低工资监管,证明具有约束力的工资底线会在经验相关的范围内大幅延缓——大致使所需AI强度提高2到3倍,但从未彻底阻止——这一契约转型。
+derive closed-form expressions for optimal effort and incentives under each contract mode, and prove that a unique transformation threshold $A^*$ exists — the AI-intensity level at which a profit-maximizing firm switches from time-rate to piece-rate pay. Comparative statics show exactly how output noise, worker risk aversion, and the coefficient of AI-augmentation effectiveness shape this threshold. We then incorporate China's minimum-wage regulation and show that a binding wage floor substantially delays — roughly doubling to tripling the AI intensity required, though never categorically preventing — this contract transformation within the empirically relevant range.
 
-用不涉及公式的语言先讲一遍:这一阈值背后的完整机制是这样的。开篇提到的两位骑手,所服务的企业都面临同样两个基本薪酬选项:一种是固定工资,无论AI辅助的路径规划把骑手产出提到多高,企业的上行收益都被封顶;另一种是按单计价,能让企业获取这部分上行收益,但需要建立一套数字监控系统来验证产出(即模型中的固定成本 $F$),并把交通、天气、App故障这些日常噪声转嫁给骑手。是什么让企业从第一种选项转向第二种?答案在于一个简单的不对称性:在固定工资下,AI工具带来的生产率增益会以一比一的直线方式流向企业——利润随AI强度线性上升。在按单计价下,由于报酬与产出挂钩,企业还能随着生产率上升不断微调"保底工资"与"计件工资"之间的比例,所以利润不只是上升——它会向上弯曲,随 $A$ 呈*凸性*增长而非线性增长。在AI强度较低时,这条向上弯曲的曲线还没有跨过监控系统的固定成本;超过本文推导出的阈值 $A^*$ 之后,曲线已经越过直线,按单计价对企业而言变得更有利可图。这个交叉点,就是本文全部论证所围绕的那一个数字,而围绕它自然引出的三个后续问题,也组织起了本文剩余的结构:*这个交叉点会更早还是更晚发生*——第6节推导出精确公式,表明这取决于劳动者对收入风险的在意程度、产出的噪声大小,以及AI工具究竟有多有效;*最低工资能否阻止它*——第7节证明不能,但会大幅延缓它,因为它提高了计件契约中仍须保证的那部分保底工资的成本;*这一模式在现实中是否真实存在*——第3、3.6及第7节论证,总体而言确实如此:AI高度增强、易于监控的职业(如平台配送)已经大量转向产出导向型薪酬,而AI帮助有限的职业(如制造业)大多尚未转变。
+In plain language, before the formal derivation, this is the whole mechanism behind that threshold. Both riders from this section's opening image work for firms with the same two basic pay options: a fixed wage that caps the firm's upside no matter how much AI-assisted routing raises a rider's output, or per-delivery pay that lets the firm capture that upside but requires building a digital monitoring system to verify it (the fixed cost $F$ in the model) and shifts the day-to-day noise of traffic, weather, and app glitches onto the rider. What tips a firm from the first option to the second is a simple asymmetry. Under the fixed wage, a productivity gain from better AI tools flows to the firm in a straight, one-for-one line — profit rises linearly with AI intensity $A$. Under per-delivery pay, because compensation is tied to output, the firm can also fine-tune the split between guaranteed pay and per-order pay as productivity rises, so profit does not just rise — it bends upward, growing *convexly* in $A$ rather than linearly. At low AI intensity that upward bend has not yet cleared the fixed cost of monitoring, so the flat wage still wins; past the threshold $A^*$ this paper derives, the curve has crossed the line, and per-delivery pay becomes the more profitable choice for the firm. That crossing point is the single number this paper is built around, and three natural follow-up questions organize the rest of it: *when does the crossing happen sooner or later* — Section 6 derives exact formulas showing it depends on how much income risk bothers the worker, how noisy their output is, and how effective the AI tools genuinely are; *does a minimum wage stop it* — Section 7 shows it does not, but substantially delays it, by raising the cost of the base pay a piece-rate contract must still guarantee; and *does the pattern actually show up in practice* — Sections 3, 3.6, and 7 argue that it broadly does, with highly AI-augmented, easily monitored occupations like platform delivery already shifted heavily toward output-based pay, while occupations AI helps only weakly, such as manufacturing, mostly have not.
 
-除了这一数理模型本身,我们还把这一发现置于两场这类阈值天然会引发的更宽广对话之中。第2.5节探讨,从古典政治经济学——尤其是马克思劳动价值论——的视角看,从计时制到计件制的转变意味着什么,以及这一更古老的框架对"企业让算法为劳动者的产出定价"这一决策还能说些什么。第3.6节把经验视野从中国拓宽到海外,追问同样的阈值逻辑是否也体现在美国、英国、欧盟,以及——最新也最权威地——国际劳工组织新近通过的公约之中。第8节的结尾,不仅给出模型本身在政策层面的具体含义,还给出一组由这两场对话共同支撑的、具体编号的政策建议。
+Beyond the formal model, we also situate the result within two broader conversations this kind of threshold naturally invites. Section 2.5 asks what the shift from time-rate to piece-rate pay looks like through the lens of classical political economy — specifically Marx's labor theory of value — and what, if anything, that older framework still has to say about a firm's decision to let an algorithm price a worker's output. Section 3.6 widens the empirical lens beyond China to ask whether the same threshold logic is visible in how gig-economy regulation has actually evolved in the United States, the United Kingdom, the European Union, and — most recently and most authoritatively — the new ILO Convention. Section 8 then closes not just with the model's formal policy implications but with a concrete, numbered set of recommendations informed by both.
 
-本文其余部分安排如下:第2节回顾相关文献,并在2.5节给出对该机制的政治经济学解读。第3节给出中国的典型事实与参数校准,并附有一节国际比较(3.6)与来自独立中国企业面板数据的支持性证据。第4节引入模型。第5节推导均衡结果。第6节给出主要理论结果。第7节提供数值模拟,包括敏感性分析与行业异质性分析。第8节以一组编号的政策建议与一段结语作结。附录A完成定理1与定理2的证明并推导四项进一步的结构性推论;附录B、C分别给出两种契约模式的完整数理统一,以及针对一个未建模自动化渠道的稳健性检验。三个附录均在本文档中完整给出,论证自成体系,不依赖外部资料。只关心论证本身、不关心代数细节的读者,可以只读上面的通俗直觉部分、第2.5节、第3.6节与第8节;中间各节则提供支撑这一直觉成立的形式化证明。
-
----
-
-# 2. 文献综述
-
-## 2.1 激励与风险分担的委托代理模型
-
-本文的理论基础在于经典的委托代理框架。Holmstrom(1979)证明,在CARA效用与正态分布噪声下,最优契约在产出上是线性的,并在激励与风险暴露之间取得平衡。Holmstrom and Milgrom(1991)将这一洞见拓展到多任务环境,指出高噪声任务更适合固定工资,因为激励会扭曲努力的分配。
-
-后续研究进一步深化了这些洞见。Lazear(2000)通过实证证明计件工资如何提高生产率,同时也提高了收入波动性。Prendergast(2002)强调了不确定性在塑造激励强度中的作用。这些研究突出了激励与风险之间的权衡,但均未将AI作为一种提升生产率的力量纳入模型,也未分析AI如何改变最优契约的边界。
-
-本文将AI增强型生产嵌入Holmstrom–Milgrom框架,对这一文献做出贡献。通过将有效人力资本建模为 $\tilde H=h+\theta AC$,我们证明AI放大了计件契约的激励效应,并生成了一个唯一的转型阈值 $A^*$,在该阈值处企业将最优地从计时制转向计件制。
-
-**关于函数形式与术语的说明。** 我们采用加法-线性形式 $\tilde H = h+\theta AC$,而非乘法形式或CES形式(如Acemoglu and Restrepo, 2018中所采用的),原因是这一形式能保证 $\Pi_T(A)$ 严格关于 $A$ 线性——这正是驱动定理1的"线性对凸性"不对称性——并使 $\theta C$ 具有"AI强度对人力资本的边际回报"这一直接解释。全文我们将 $C$ 称为"AI增强效能系数",而非"互补性":加法形式在技术上意味着 $h$ 与AI增强能力之间存在无限替代性,这更接近替代而非生产理论中"互补性"一词通常所指的低替代弹性含义。我们在此标注(但不解决)两个相关的适用边界问题:定理1的存在性与唯一性结果是否可推广到其他关于 $A$ 递增且无界的增强函数(我们推测可以,但只有加法-线性形式能给出附录A中的精确弹性结果);以及 $C$ 被处理为外生且不随时间变化这一假设(见第8.2节)。
-
-## 2.2 AI、自动化与劳动力市场
-
-第二类文献考察AI与自动化如何重塑劳动力市场。Acemoglu and Restrepo(2018)构建了一个基于任务的模型,其中自动化在任务间重新配置劳动力,并影响工资与就业。Brynjolfsson, Li, and Raymond(2025)提供了实证证据,表明生成式AI工具在知识密集型客服场景中显著提升了个体生产率。其他研究记录了AI如何影响监督、预测与管理决策。
-
-然而,这类文献主要聚焦于就业、生产率与任务分配——而非薪酬设计。一篇同期工作论文(Shin and Kang, 2026)构建了一个预测框架,刻画人机时代从基于工时到基于产出的**人才核算**方式的平行转变,其核心是一个闭式阈值结果(其定理3,"τ*处的ROI反转"),并以韩国分阶段实施的52小时工作制作为管理费用压力上升的经验预警案例。他们的框架运作于企业整体人才核算与管理费用分配的层面,而非本文所研究的个体契约设计问题,也未对风险中性企业与风险厌恶劳动者之间在道德风险下的风险分担进行建模。现有模型——包括他们的模型在内——都没有正式地把AI采用与个体雇佣契约内部风险与激励的最优分配联系起来,而这正是本文的具体贡献所在。
-
-## 2.3 平台劳动、灵活就业与中国劳动监管
-
-第三类文献考察中国平台劳动与灵活就业的兴起。政府报告显示,2023年平台灵活就业者超过8400万人(中华全国总工会,2023),反映出物流、网约车、数字内容创作等零工经济部门的快速增长。学者们分析了平台算法如何塑造劳动供给、监督与薪酬,以及监管框架如何试图在灵活性与劳动者保护之间取得平衡——其中最直接的是陈龙(2020)对外卖骑手的实地研究,该研究表明平台算法如何将监督控制权从平台企业自身,转移到派单系统、并间接转移到消费者身上,同时通过持续收集并反馈骑手的绩效数据,压缩骑手的自主空间、使不断提升的劳动强度趋于常态化,这正是第2.5节从政治经济学视角重新讨论的同一"数字控制"机制。
-
-一项核心监管工具是最低工资制度,即便在灵活就业安排中,它也对基础工资构成有约束力的限制。近期政策文件强调了保护劳动者免受过度收入波动之害的必要性,但并未分析此类监管如何与激励设计或AI采用相互作用。
-
-## 2.4 相对于既有文献的贡献
-
-相对于以上三类文献,本文做出四点贡献:
-
-1. **闭式转型阈值。**
-   我们推导出唯一的 $A^*$,在该点企业将最优地从计时制转向计件制,并给出该阈值如何依赖于AI放大系数与增强效能的精确闭式表达式 $A^* = x^*/(\theta C)$(附录A.5)。
-
-2. **将风险、不确定性与AI增强效能系数联系起来的比较静态分析。**
-   借助隐函数定理,我们证明噪声、风险厌恶与AI增强效能系数如何共同决定转型阈值,推导出精确的弹性结果(附录A.5–A.6),并证明该阈值对劳动者保留效用的具体设定方式(附录A.7)以及对两种契约模式共有的、与努力无关的自动化渠道(附录C)均具有不变性。
-
-3. **纳入中国劳动监管。**
-   通过纳入最低工资约束,我们证明监管摩擦会显著延缓——但不会彻底阻止——中国快速数字化的劳动力市场中的契约转型(第7.3节)。
-
-4. **与独立经验证据相关联的行业异质性,及开放、可复现的代码。**
-   我们证明 $A^*$ 在不同可监控性与AI增强效能系数的职业间存在系统性差异(第7.5节),并将这一排序与中国企业面板数据中数字化与工资增长的独立经验证据相联系(第3.5节)。所有校准与模拟代码均公开发布以确保可复现性。
-
-## 2.5 一个政治经济学视角:AI、剩余价值与生产关系的重构
-
-以上三类文献都把从时间制到计件制的转变当作一个*契约设计*问题来分析——企业与劳动者共同选择能在AI生产率增益下最优分配风险与激励的薪酬结构。这一框架是标准的,也是本文全篇所构建的模型所采用的框架。但在转入数据与模型之前,值得停下来问一句:经济学中另一支脉更古老、也颇为不同的传统,会如何看待同一个转变——这并非要取代契约设计这一视角,而是把它放在一束更宽的光下,因为这两种视角恰恰在模型本身无法裁定的一件事上存在分歧:第6节定理1中,企业在阈值 $A^*$ 之上获取的、AI生产率增益中不断扩大的那一份份额,究竟*代表*着什么。
-
-**古典问题。** 马克思的劳动价值论把劳动者一个工作日中的一部分区分为"必要劳动"——用以再生产劳动者自身生活资料价值的那部分——与"剩余劳动",其价值由雇主以利润形式留存。马克思进一步区分了雇主扩大这部分剩余的两种方式:通过延长工作日本身来榨取"绝对剩余价值",以及通过提高劳动生产率——借助机器、分工,或在本文语境下,借助AI增强型工具——来榨取"相对剩余价值",使同样长的工作日产出比过去更多的价值,而劳动者的报酬却不会按比例上升。透过这一视角看,模型的核心对象 $\tilde H=h+\theta AC$,正是对第二种机制的一个精确刻画:AI提升了劳动者每一小时劳动对企业而言的价值($\theta AC$),而定理1表明,在阈值 $A^*$ 之上,企业的*最优*应对并非把这部分增益全部转移给劳动者的保底报酬,而是重新设计契约本身——从固定工资转向计件工资——使得AI生产率红利中更大的份额归于利润,而非归于劳动者的确定性收入。这并非一个把历史类比生硬套用到当代情境的修辞:至少有一篇近期论文提出了"算法剩余价值"(algorithmic surplus value)这一概念,专门描述这一机制——将其理解为马克思框架的延伸而非断裂,是数字时代对相对剩余价值榨取的强化:AI系统压缩了生产给定产出所需的社会必要劳动时间,但其本身并非独立的价值来源(Zhang, 2026)。在这一解读下,第4.3节中的固定监控成本 $F$ 并非一个中性的技术参数;它是构建数字化"劳动过程控制"的代价——那些倒计时、GPS定位、评分算法,正是哈里·布雷弗曼(Harry Braverman, 1974)"劳动与垄断资本"论题在智能手机时代的更新版本——它让企业得以把一份本来无法验证的生产率增益,转化为一份可以精确校准的工资支出。薇娜·杜巴尔(Veena Dubal, 2023)从法律经济学角度对她所称的"算法工资歧视"(algorithmic wage discrimination)的分析,记录了同一机制的另一面:一旦平台能够按笔交易而非按小时为劳动定价,工资本身就变成了平台算法实时、个体化、且几乎无法申诉的输出结果——这恰恰对应着本文的 $F$ 在形式上所代表的那种测量权力的集中。这种通过测量实现控制集中的现象,并非零工经济或中国所独有:凯洛格、瓦伦丁与克里斯汀(Kellogg, Valentine & Christin, 2020)对各行业算法管理的跨行业综合研究,识别出了同样更普遍的模式——算法构成了一种独特而持久的职场控制机制,而不只是人工监督的更高效替代品——本文所建模的平台配送场景,正是这一模式中一个尤为清晰可见的实例。2020年中国的一篇调查报道《外卖骑手,困在系统里》(《人物》杂志,2020年9月)记录了平台算法如何比骑手能够安全跟上的速度更快地压缩配送时限,这篇报道在中国公共讨论中常被引用,作为这一动态的生动写照——陈龙(2020)的学术实地研究以更系统的方式独立印证了这一模式:平台通过持续收集并反馈骑手的绩效数据,压缩了骑手的自主空间,使不断提升的劳动强度趋于常态化,而骑手个体无法就此重新议价。
-
-**契约论的反面解读。** 本文模型所刻画的主流委托代理视角,对同样的事实给出了截然不同的解释,而这一解释理应获得同等的重视,而非仅仅作为陪衬。在这一视角下,计件契约首先不是一种榨取工具,而是对一个真实存在的信息问题的解决方案:努力不可观测(第4.1节的道德风险假设),因此企业无法直接为努力付费;而竞争性劳动力市场(第4.1节的参与约束)要求契约无论采取何种模式,都必须至少给予劳动者其外部选择 $\bar U$。在这一解读下,企业在 $A^*$ 之上获取的更大利润份额,反映的是固定成本 $F$,以及企业仍须为承担产出噪声的风险厌恶劳动者支付的风险溢价(第5.2节)——这是对承担了可验证成本与风险一方的回报,而非无偿的占有。两种解读在模型所推导出的*事实*上是一致的——计件工资将收入风险集中于劳动者,同时让企业获取AI产出增益中呈凸性增长的一部分份额(定理1)——分歧只在于如何对这一分配作出规范性解读:是对信息与风险分担问题的一种有效应对,还是资本通过控制测量技术本身而占有劳动生产率增益的一个历史特定实例。
-
-**这对阅读本文其余部分意味着什么。** 本文并不在这两种解读之间做出裁决,第4–7节的数理推导结果也不依赖读者更认同哪一种——无论如何,定理1的阈值 $A^*$ 都是同一个数字。有差异的只是人们如何*评价*跨越这一阈值这件事。我们在此标出这一区分,出于三个理由。第一,它解释了为什么同一个经验事实——中国平台劳动部门正迅速转向计件工资(第3.2节)——在中国与国际评论中,时而被描述为一个效率上的成功故事,时而被描述为一个关于算法控制的警示案例,而双方往往并不真正对底层数字本身存在分歧。第二,它预示了本文自身的局限性分析在第8.2节(11)独立得出的一个观点:如果平台对外部选择有限的劳动者拥有*买方垄断*力量——而非面对参与约束 $CE=\bar U$ 所假设的完全竞争劳动力市场——那么有效契约这一解读本身也会被削弱,模型的结果届时也将与"超出竞争性风险分担所要求范围的部分剩余占有"相一致。第三,也是最直接的一点:这正是第8节的政策建议并非仅仅立足于效率理由的原因——一位至少部分认同剩余价值解读的监管者,除了第6.2节纯粹的风险保护逻辑之外,还有额外的理由去支持第8.1节(5)提出的算法透明度与议价能力措施——这些措施在契约论视角下同样说得通,只是理由更为狭窄。
-
-# 3. 典型事实与参数校准
-
-本节给出三项典型事实,用以说明模型的合理性并指导第7节模拟中关键参数的校准。目标是将理论框架锚定在中国快速数字化的劳动力市场中观察到的经验模式上,并为数值取值提供依据。这些事实分别对应模型的核心参数:AI强度 $A$、增强效能 $C$、产出噪声 $\sigma^2$ 与劳动者风险厌恶 $r$。
+The remainder of the paper proceeds as follows. Section 2 reviews the related literature and, in Section 2.5, offers a political-economy reading of the mechanism. Section 3 presents stylized facts and parameter calibration for China, together with an international comparative section (3.6) and suggestive evidence from independent Chinese firm-panel data. Section 4 introduces the model. Section 5 derives equilibrium outcomes. Section 6 presents the main theoretical results. Section 7 provides numerical simulations, including sensitivity and sector-heterogeneity analysis. Section 8 concludes with a numbered set of policy recommendations and a closing reflection. Appendix A completes the proofs of Theorems 1 and 2 and derives four further structural corollaries; Appendices B and C give a full formal unification of the two contract modes and a robustness check against an unmodeled automation channel, respectively. All three appendices are complete and self-contained in this document. Readers primarily interested in the argument rather than the algebra can read the plain-language summary above, Section 2.5, Section 3.6, and Section 8 largely on their own; the intervening sections supply the formal proof that the intuition is correct.
 
 ---
 
-## 3.1 典型事实一:中国企业AI渗透率上升
+# 2. Literature Review
 
-中国经历了企业层面数字化与AI采用的快速增长。中国信息通信研究院(CAICT)记录了2018–2022年间企业数字化的持续大幅增长(中国信息通信研究院,2018–2022),物流、电商运营、内容创作与客服等行业大规模采用了基于AI的工作流工具、自动监控系统与算法决策。*(关于该文献的说明:CAICT这一系列报告在此期间两次更名——2018–2019年为《中国数字经济发展与就业白皮书》,2020–2021年为《中国数字经济发展白皮书》,2022年起为《中国数字经济发展研究报告》——本文将其作为一个连续但更名过的年度系列引用,而非单一文献;详见参考文献条目。)*
+## 2.1 Principal–Agent Models of Incentives and Risk-Sharing
 
-这为将AI强度 $A$ 建模为衡量AI融入生产程度的连续变量提供了依据。模拟区间 $A \in [0,3]$ 对应从低到高AI渗透率的经验性转变。
+The theoretical foundation of this paper lies in the canonical principal–agent framework. Holmstrom (1979) establishes that under CARA utility and normally distributed noise, optimal contracts are linear in output and balance incentives against risk exposure. Holmstrom and Milgrom (1991) extend this insight to multi-task environments, showing that high-noise tasks favor fixed wages because incentives distort effort allocation.
+
+Subsequent work has refined these insights. Lazear (2000) documents empirically how piece-rate compensation increases productivity but also raises income volatility. Prendergast (2002) emphasizes the role of uncertainty in shaping incentive strength. These studies highlight the tradeoff between incentives and risk, but they do not incorporate AI as a productivity-augmenting force nor analyze how AI shifts the optimal contract boundary.
+
+This paper contributes to this literature by embedding AI-augmented production into the Holmstrom–Milgrom framework. By modeling effective human capital as $\tilde{H}=h+\theta AC$, we show that AI amplifies the incentive effect of piece-rate contracts and generates a unique transformation threshold $A^*$ at which firms optimally switch from time-rate to piece-rate compensation.
+
+**On the functional form and terminology.** We adopt the additive-linear form $\tilde H = h+\theta AC$, rather than a multiplicative or CES alternative (as in Acemoglu and Restrepo, 2018), because it keeps $\Pi_T(A)$ exactly linear in $A$ — the linear-versus-convex asymmetry that drives Theorem 1 — and gives $\theta C$ a direct reading as the marginal human-capital return to AI intensity. We call $C$ the "coefficient of AI-augmentation effectiveness" throughout, rather than "complementarity": the additive form technically implies infinite substitutability between $h$ and AI-augmented capacity, closer to substitution than to the low-elasticity sense the word "complementarity" usually carries in production theory. "Coefficient" is a deliberately generic label — it makes no claim about complementarity, substitutability, or any other production-theory relationship, only that $C$ scales AI's task-specific marginal effectiveness — and it has the incidental advantage of giving the symbol $C$ a natural reading. We flag, without resolving, two related scope boundaries: whether the existence-and-uniqueness result of Theorem 1 extends to other augmentation functions increasing and unbounded in $A$ (we conjecture it does, but only the additive-linear form delivers Appendix A's exact elasticities), and $C$'s treatment as exogenous and time-invariant (Section 8.2).
+
+## 2.2 AI, Automation, and Labor Markets
+
+A second strand of literature examines how AI and automation reshape labor markets. Acemoglu and Restrepo (2018) develop a task-based model in which automation reallocates labor across tasks and affects wages and employment. Brynjolfsson, Li, and Raymond (2025) provide empirical evidence that generative AI tools significantly increase individual productivity in a knowledge-intensive customer-support setting. Other studies document how AI affects monitoring, prediction, and managerial decision-making.
+
+However, this literature focuses primarily on employment, productivity, and task allocation—not on compensation design. A concurrent working paper by Shin and Kang (2026) develops a forecasting framework for a parallel shift from time-based to output-based *talent accounting* in the human-AI era, centred on a closed-form threshold result (their Theorem 3, "ROI Inversion at τ*") and using Korea's staged 52-hour workweek mandate as an empirical early-warning case for rising overhead pressure. Their framework operates at the level of firm-wide talent accounting and overhead allocation rather than the individual contract-design problem this paper studies, and does not model risk-sharing between a risk-neutral firm and a risk-averse worker under moral hazard. No existing model — including theirs — formally links AI adoption to the optimal allocation of risk and incentives within an individual employment contract, which remains this paper's specific contribution.
+
+## 2.3 Platform Labor, Flexible Employment, and Chinese Labor Regulation
+
+A third strand of literature examines the rise of platform labor and flexible employment in China. Government reports indicate that platform-based flexible workers exceeded 84 million in 2023 (All-China Federation of Trade Unions, 2023), reflecting rapid growth in gig-economy sectors such as logistics, ride-hailing, and digital content creation. Scholars have analyzed how platform algorithms shape labor supply, monitoring, and compensation, and how regulatory frameworks attempt to balance flexibility with worker protection — most directly, Chen's (2020) field study of food-delivery riders, which shows how platform algorithms redistribute supervisory control away from the platform firm itself — onto the dispatch system and, indirectly, onto consumers — while continuously collecting and feeding back rider performance data in ways that narrow riders' autonomy and normalize rising work intensity, the same "digital control" dynamic Section 2.5 revisits through a political-economy lens.
+
+A central regulatory instrument is the minimum-wage system, which imposes binding constraints on base wages even in flexible employment arrangements. Recent policy documents emphasize the need to protect workers from excessive income volatility, but they do not analyze how such regulations interact with incentive design or AI adoption.
+
+## 2.4 Contribution Relative to the Literature
+
+Relative to these three strands, the paper makes four contributions:
+
+1. **A closed-form transformation threshold.**
+   We derive a unique $A^*$ at which firms optimally switch from time-rate to piece-rate compensation, and an exact closed-form expression $A^* = x^*/(\theta C)$ for how this threshold depends on the AI amplification coefficient and augmentation effectiveness (Appendix A.5).
+
+2. **Comparative statics linking risk, uncertainty, and AI augmentation effectiveness.**
+   Using the implicit function theorem, we show how noise, risk aversion, and the coefficient of AI-augmentation effectiveness jointly determine the transformation threshold, derive exact elasticity results (Appendix A.5–A.6), and prove the threshold's invariance to both the specification of worker reservation utility (Appendix A.7) and to any effort-independent automation channel common to both contract modes (Appendix C).
+
+3. **Integration of Chinese labor regulation.**
+   By incorporating minimum-wage constraints, we show that regulatory frictions substantially delay — but do not categorically block — contract transformation in China's rapidly digitalizing labor markets (Section 7.3).
+
+4. **Sector heterogeneity linked to independent empirical evidence, with open, reproducible code.**
+   We show that $A^*$ differs systematically across occupations with different monitorability and coefficients of AI-augmentation effectiveness (Section 7.5), and we relate this ordering to independent Chinese firm-panel evidence on digitalization and wage growth (Section 3.5). All calibration and simulation code is publicly released for reproducibility.
+
+## 2.5 A Political-Economy Lens: AI, Surplus Value, and the Restructuring of Production Relations
+
+The three literatures above analyze the shift from time-rate to piece-rate pay as a *contracting* problem — the firm and the worker jointly choosing the pay structure that best allocates risk and incentive given AI's productivity gain. That framing is standard, and it is the one this paper's formal model adopts throughout. But it is worth pausing, before turning to the data and the model, to ask what an older and quite different tradition in economics would make of the same transition — not to replace the contracting view, but to place it in a wider light, since the two lenses turn out to disagree about something the model itself cannot settle: what the firm's rising share of AI's productivity gain, in Section 6's Theorem 1, actually *represents*.
+
+**The classical question.** Marx's labor theory of value distinguishes a worker's *necessary labor* — the portion of a working day that reproduces the value of the worker's own subsistence — from *surplus labor*, whose value the employer retains as profit. Marx further distinguishes two ways an employer can enlarge that surplus: extracting *absolute* surplus value by lengthening the working day itself, and extracting *relative* surplus value by raising labor's productivity — through machinery, division of labor, or, in this paper's setting, AI-augmented tools — so that the same working day now produces more value than before, without the worker's compensation rising proportionally. Read through this lens, the model's central object, $\tilde H = h+\theta AC$, is a formal statement of exactly the second mechanism: AI raises what a given hour of a worker's labor is worth to the firm ($\theta AC$), and Theorem 1 shows that above the threshold $A^*$, the firm's *optimal* response is not to pass that entire gain through to the worker's guaranteed pay, but to redesign the contract itself — shifting from a flat wage to a piece rate — so that a larger share of AI's productivity dividend accrues to profit rather than to the worker's certain income. This is not merely a historical analogy transplanted onto a modern setting: at least one recent paper has proposed the term "algorithmic surplus value" to describe exactly this mechanism, treating it not as a break from Marx's framework but as a digital-era intensification of relative surplus value, in which AI systems compress the labor time socially necessary to produce a given output without themselves being an independent source of value (Zhang, 2026). In this reading, the fixed monitoring cost $F$ in Section 4.3 is not a neutral technological parameter; it is the price of building the digital *labor-process control* — the countdown clocks, GPS pings, and rating algorithms of Harry Braverman's (1974) "labor and monopoly capital" thesis, updated for the smartphone era — that lets the firm convert a productivity gain it could not otherwise verify into a wage bill it can precisely calibrate. Veena Dubal's (2023) legal analysis of what she terms "algorithmic wage discrimination" documents the same mechanism from a law-and-economics angle: once a platform can price labor by the transaction rather than the hour, the wage itself becomes a real-time, individualized, and largely unappealable output of the firm's algorithm — precisely the concentration of measurement power this paper's $F$ represents formally. This concentration of control through measurement is not a claim specific to gig work or to China: Kellogg, Valentine, and Christin's (2020) cross-industry synthesis of algorithmic management identifies the same pattern more generally — algorithms functioning as a distinct and durable mechanism of workplace control, not merely a faster substitute for human supervision — of which the platform-delivery setting modeled here is one especially visible instance. The 2020 Chinese investigative report "外卖骑手，困在系统里" ("Delivery Riders, Trapped in the System," *人物* magazine, September 2020), which documented how platform algorithms compressed delivery-time estimates faster than riders could safely keep pace, is frequently cited in Chinese public debate as a vivid illustration of exactly this dynamic — a pattern Chen's (2020) academic field study of delivery riders independently corroborates in more systematic form, showing how continuous collection and feedback of rider performance data narrows workers' autonomy and normalizes ever-higher effort without their being able to renegotiate its terms.
+
+**The contracting counter-reading.** The mainstream principal–agent view this paper's model formalizes offers a materially different account of the same facts, and it deserves equal weight rather than a supporting-actor role. On this view, the piece-rate contract is not primarily an instrument of extraction but a solution to a genuine information problem: effort is unobservable (Section 4.1's moral-hazard assumption), so the firm cannot simply pay for effort directly, and a competitive labor market (the participation constraint of Section 4.1) requires the contract to deliver at least the worker's outside option $\bar U$ regardless of contract mode. Under this reading, the firm's larger profit share above $A^*$ reflects the fixed cost $F$ and the risk premium the firm must still pay a risk-averse worker for bearing output noise (Section 5.2) — a return to the party bearing verifiable cost and risk, not an unearned appropriation. Both readings agree on the *facts* the model derives — that piece-rate pay concentrates income risk on the worker while letting the firm capture a convexly growing share of AI's output gain (Theorem 1) — and disagree only on how to interpret that allocation normatively: as an efficient response to an information and risk-sharing problem, or as a historically specific instance of capital appropriating labor's productivity gains through control over the technology of measurement itself.
+
+**Why this matters for reading the rest of the paper.** This paper does not adjudicate between these two readings, and nothing in Sections 4–7's formal results depends on which one a reader prefers — Theorem 1's threshold $A^*$ is the same number either way. What differs is only how one *evaluates* crossing it. We flag the distinction here for three reasons. First, it explains why the same empirical fact — China's platform-labor sector moving rapidly toward piece-rate pay (Section 3.2) — is described in Chinese and international commentary alternately as an efficiency success story and as a cautionary tale about algorithmic control, without either camp necessarily disputing the underlying numbers. Second, it foreshadows a point this paper's own limitations analysis reaches independently in Section 8.2(11): if platforms hold *monopsony* power over workers with limited outside options — rather than facing the fully competitive labor market the participation constraint $CE=\bar U$ assumes — then the efficient-contracting reading weakens on its own terms, and the model's results would then also be consistent with a partial appropriation of surplus beyond what competitive risk-sharing requires. Third, and most directly, it is why Section 8's policy recommendations do not rest on efficiency grounds alone: a regulator who finds the surplus-value reading at least partially persuasive has an additional reason, beyond the pure risk-protection logic of Section 6.2, to support the algorithmic-transparency and bargaining-power measures proposed in Section 8.1(5) — measures that make sense on the contracting view too, but for a narrower reason.
+
+# 3. Stylized Facts and Parameter Calibration
+
+This section presents three stylized facts that motivate the model and guide the calibration of key parameters. The goal is to anchor the theoretical framework in empirical patterns observed in China's rapidly digitalizing labor markets and to justify the numerical values used in the simulations in Section 7. The facts correspond directly to the model's core parameters: AI intensity $A$, augmentation effectiveness $C$, output noise $\sigma^2$, and worker risk aversion $r$.
 
 ---
 
-## 3.2 典型事实二:灵活就业与产出导向型就业的扩张
+## 3.1 Stylized Fact 1: Rising AI Penetration in Chinese Firms
 
-中国的平台经济经历了大幅扩张。政府统计数据显示,2023年平台灵活就业者超过8400万人(中华全国总工会,2023),较2019年大幅增长。这些劳动者包括快递员、网约车司机、直播主播与数字内容创作者——在这些职业中,产出导向型薪酬正日益普遍。
+China has experienced a rapid increase in enterprise-level digitalization and AI adoption. The China Academy of Information and Communications Technology (CAICT) has documented substantial and sustained growth in enterprise digitalization over the 2018–2022 period (CAICT, 2018–2022), with industries such as logistics, e-commerce operations, content creation, and customer service adopting AI-based workflow tools, automated monitoring systems, and algorithmic decision-making at scale.
 
-这一事实支撑了模型对从计时制向计件制契约转型的关注,也为固定监控成本 $F$ 的纳入提供了依据,后者反映了实施产出导向型薪酬所需的数字基础设施。
-
----
-
-## 3.3 典型事实三:劳动者风险厌恶的实证估计
-
-劳动经济学为劳动者风险厌恶的量级提供了实证指引。Chetty(2006)及后续研究估计,面临收入波动的典型劳动者的绝对风险厌恶参数处于 $r \in [0.2,2.0]$ 区间。这一范围与零工经济职业中观察到的行为一致。
-
-因此我们将 $r = 1.0$ 设为基准取值,并在比较静态分析中探索完整的经验区间。
+This motivates modeling AI intensity $A$ as a continuous variable capturing the degree of AI integration into production. The simulation range $A \in [0,3]$ corresponds to the empirical transition from low to high AI penetration.
 
 ---
 
-## 3.4 其余参数的校准
+## 3.2 Stylized Fact 2: Expansion of Flexible and Output-Based Employment
 
-为确保内部一致性与经验合理性,其余参数校准如下:
+China's platform economy has expanded dramatically. Government statistics indicate that platform-based flexible workers exceeded 84 million in 2023 (All-China Federation of Trade Unions, 2023), a substantial increase from 2019. These workers include couriers, ride-hailing drivers, livestream hosts, and digital content creators—occupations where output-based compensation is increasingly prevalent.
 
-- 基础人力资本:$h = 2.0$
-- AI放大系数:$\theta = 1.5$
-- AI增强效能系数:$C = 1.0$
-- 努力成本参数:$k = 1.0$
-- 最低强制努力:$a_0 = 1.0$
-- 保留效用:$\bar{U} = 1.0$
-- 产出噪声:$\sigma^2 = 1.0$
-- 监控成本:$F = 1.5$
+This fact supports the model's focus on contract transformation from time-rate to piece-rate pay. It also motivates the inclusion of a fixed monitoring cost $F$, reflecting the digital infrastructure required to implement output-based compensation.
 
-这些取值共同得出基准转型阈值:
+---
+
+## 3.3 Stylized Fact 3: Empirical Estimates of Worker Risk Aversion
+
+Labor economics provides empirical guidance on the magnitude of worker risk aversion. Chetty (2006) and subsequent studies estimate absolute risk aversion parameters in the range $r \in [0.2,2.0]$ for typical workers facing income volatility. This range is consistent with observed behavior in gig-economy occupations.
+
+We therefore set $r = 1.0$ as the baseline value and explore the full empirical range in comparative statics.
+
+---
+
+## 3.4 Calibration of Remaining Parameters
+
+To ensure internal consistency and empirical plausibility, the remaining parameters are calibrated as follows:
+
+- Baseline human capital: $h = 2.0$
+- AI amplification coefficient: $\theta = 1.5$
+- Coefficient of AI-augmentation effectiveness: $C = 1.0$
+- Effort cost parameter: $k = 1.0$
+- Minimum enforceable effort: $a_0 = 1.0$
+- Reservation utility: $\bar{U} = 1.0$
+- Output noise: $\sigma^2 = 1.0$
+- Monitoring cost: $F = 1.5$
+
+These values jointly produce a baseline transformation threshold:
 
 $$
 A^* \approx 0.65
 $$
 
-这一数值与中国数字服务行业的中等AI渗透水平相符。(关于这些标准化取值如何映射到第3.1–3.3节的经验区间,见符号表后的单位说明。)
+which aligns with mid-range AI penetration levels in Chinese digital service industries. (See the units note following the Notation table for how these standardized values map to the empirical ranges of Sections 3.1–3.3.)
 
 ---
 
-## 3.5 阈值机制的支持性证据
+## 3.5 Suggestive Evidence for the Threshold Mechanism
 
-尽管本文未进行企业层面的回归分析,但既有的中国面板数据证据与定理1的阈值逻辑相符。陈东、郭文光(2023)基于2846家中国A股上市公司2010–2020年的文本数字化指数,发现数字化转型与平均工资之间存在非单调关系:当数字化程度低于2.773这一阈值时,劳动替代效应占主导,工资增长受到抑制;而超过该阈值后,生产率效应与市场竞争效应占主导,工资显著上升——这一效应在劳动密集型和知识密集型行业中最为显著。这一工资侧的经验阈值,正是第6节推导出的利润侧阈值 $A^*$ 的镜像:两者都表明,AI/数字化强度会使企业薪酬方式发生非连续而非渐进式的转变。在制度层面,ILO的调查证据证实,中国基于地理位置的平台工作(配送、网约车)已绝大多数采用计件而非计时工资(Chen, 2021),这与本文的前提相符,即AI密集、易于监控的任务是定理1所预测的转型最早在经验上被观察到的领域。
+While this paper does not conduct firm-level regression, existing Chinese panel-data evidence is consistent with the threshold logic of Theorem 1. Using a text-based digitalization index for 2,846 Chinese A-share firms (2010–2020), Chen and Guo (2023) find that the relationship between digital transformation and average wages is non-monotonic: below a digitalization threshold of 2.773, labor-substitution effects dominate and wage growth is suppressed, but above this threshold, productivity and market-competition effects dominate and wages rise significantly — an effect strongest in labor-intensive and knowledge-intensive industries. This empirical wage-side threshold is the mirror image of the profit-side threshold $A^*$ derived in Section 6: both point to AI/digital intensity producing a discontinuous rather than gradual shift in how firms compensate labor. On the institutional side, ILO survey evidence confirms that location-based platform work in China (delivery, ride-hailing) is already overwhelmingly compensated by piece rate rather than time rate (Chen, 2021), consistent with this paper's premise that AI-intensive, easily-monitored tasks are where the transformation predicted by Theorem 1 is empirically observed first.
 
-**关于可比性的说明。** 陈东、郭文光(2023)报告的数值阈值——数字化指数值2.773——与本文的 $A^*\approx0.65$ 是建立在完全不同的尺度之上(前者是企业层面的文本数字化指数,后者是本文的标准化AI强度参数),二者在量级上不可直接比较。这里所作的类比仅是定性的:两项研究都指出数字化/AI强度与劳动报酬之间存在非连续的、跨越阈值式的模式,而非两个阈值数值本身相符的主张。我们也指出,陈东、郭文光的面板固定效应设计解决了部分而非全部的内生性问题——工资增长更快的企业也可能在数字化上投入更多,这一反向因果渠道本文并未独立解决,因此我们将其发现视为提示性的佐证,而非对本文具体机制的因果验证。
+**A caveat on comparability.** The numerical threshold reported by Chen and Guo (2023) — a digitalization index value of 2.773 — and this paper's $A^*\approx0.65$ are constructed on entirely different scales (a firm-level text-based digitalization index versus this paper's standardized AI-intensity parameter) and are not directly comparable in magnitude. The parallel drawn here is qualitative only: both studies point to a discontinuous, threshold-crossing pattern in how digital/AI intensity relates to labor compensation, not a claim that the two threshold values coincide or should be benchmarked against one another. We also note that Chen and Guo's panel-fixed-effects design addresses some, but not all, endogeneity concerns — firms with faster wage growth may also invest more in digitalization, a reverse-causality channel this paper does not independently resolve and treats their finding as suggestive corroboration rather than causal validation of this paper's specific mechanism.
 
-## 3.6 拓宽视野:国际比较证据
+## 3.6 Widening the Lens: International Comparative Evidence
 
-以上典型事实完全取自中国,一方面因为中国的监管应对(2021年《指导意见》)为模型的最低工资扩展(第7.3节)提供了具体的制度锚点,另一方面因为底层数据——CAICT的数字化统计、8400万平台就业者这一数字、陈东、郭文光(2023)的企业面板——恰好都是中国的。但本模型所刻画的经济力量并非中国独有,以下四个海外零工经济监管案例——之所以选取它们,是因为每一个都恰好触及本文阈值 $A^*$ 所回答的同一个问题,即*算法对产出的监控在多大程度上改变了雇佣关系的经济性质*——印证了这一模式具有普遍性。
+The stylized facts above are drawn entirely from China, both because China's regulatory response (the 2021 *Guiding Opinions*) gives the model's minimum-wage extension (Section 7.3) a concrete institutional anchor, and because the underlying data — CAICT's digitalization statistics, the 84-million-worker platform-employment figure, Chen and Guo's (2023) firm panel — happen to be Chinese. But the economic force the model formalizes is not China-specific, and four episodes of gig-economy regulation abroad, chosen because each turns on essentially the same question this paper's threshold $A^*$ answers — *how much does algorithmic monitoring of output change the economics of the employment relationship* — corroborate that the pattern generalizes.
 
-**美国:劳动者身份认定,作为对同一阈值的代理之争。** 加州第22号提案(2020年)及围绕其合宪性的后续诉讼,表面上与AI或薪酬设计无关;它关注的是App派单的司机究竟是"雇员"还是"独立承包商"。但其底层的经济争议,正是本文机制的另一种化身:一旦平台算法能够实时为每一趟行程定价、监控和派单,时间制保护原有的正当性理由——努力无法被验证,因此企业必须监督并支付固定工资——便会随着模型第6节中 $A$ 越过 $A^*$ 而逐渐削弱。第22号提案实质上让网约车平台得以保留计件式的灵活性,同时叠加了有限的、与产出无关的福利底线,这一结果更接近本文附录B所证明的、基准模型无法在不做扩展的情况下解释的"底薪加提成"混合结构——正是附录B.3所指出的那个缺口的一次现实写照。
+**The United States: worker classification as a proxy fight over the same threshold.** California's Proposition 22 (2020) and the subsequent litigation over its constitutionality did not, on its face, concern AI or compensation design; it concerned whether app-based drivers were "employees" or "independent contractors." But the underlying economic dispute was precisely this paper's mechanism in another guise: once a platform's algorithm can price, monitor, and route every trip in real time, the traditional case for time-rate protections — that effort is otherwise unverifiable, so firms must supervise and pay a fixed wage instead — weakens exactly as $A$ rises past $A^*$ in the model of Section 6. Prop 22 effectively let ride-hailing platforms retain piece-rate-style flexibility while adding limited, output-independent benefit floors, an outcome that sits closer to the hybrid base-plus-commission structure this paper's Appendix B shows the *baseline* model cannot rationalize without extension — a live illustration of exactly the gap Appendix B.3 identifies.
 
-**英国:法院从相反方向得出相同结论。** 英国最高法院2021年对*Uber BV v Aslam*案的判决认定,Uber司机属于有权获得最低工资和带薪假期保护的"劳动者",其依据正是Uber所行使的算法控制程度——司机无法就车费、路线或评分进行议价,这一切实际上都由平台的派单系统设定。第22号提案在很大程度上保留了企业以算法方式为劳动定价的灵活性,而英国法院则得出相反结论:一份被AI高度监控、由算法派单的工作,无论契约名义如何,都已跨入应受保护的雇佣关系的范畴——同样的底层观察(高强度的算法监控改变了这份工作的性质)被导向了截然相反的监管结论。这一对比本身很有启发性:两个结构相似的成熟经济体,面对结构相似的平台,从同一次 $A$ 的上升中得出了相反的制度性结论。
+**The United Kingdom: a court reaching the same conclusion from the opposite direction.** The 2021 UK Supreme Court ruling in *Uber BV v Aslam* found that Uber drivers were "workers" entitled to minimum-wage and holiday-pay protections, and grounded that finding specifically in the degree of algorithmic control Uber exercised — the driver's inability to negotiate fares, routes, or ratings, all effectively set by the platform's dispatch system. Where Prop 22 largely preserved firms' flexibility to price labor algorithmically, the UK courts instead concluded that a sufficiently AI-monitored, algorithmically dispatched job crosses into an employment relationship deserving of protection regardless of contract label — the same underlying observation (heavy algorithmic monitoring changes what kind of job this is) read toward the opposite regulatory conclusion. The contrast is instructive on its own: two advanced economies, looking at structurally similar platforms, drew opposite institutional conclusions from the same rise in $A$.
 
-**欧盟:直接监管阈值机制本身。** 欧盟《平台工作指令》(Directive (EU) 2024/2831)于2024年10月通过、同年12月生效,其做法比美国或英国的路径都更进一步——它直接监管*算法管理*机制本身,而非仅仅监管由此产生的薪酬结构:该指令规定,只要平台施加了足够的算法控制,就产生一项可反驳的雇佣关系法律推定;它还单独要求,对影响劳动者报酬、工时或账户状态的自动化决策,须保证透明度并接受人工复核。用本文的术语来说,该指令这项监管干预所针对的,不是像第7.3节中中国最低工资那样直接作用于 $A^*$,而是作用于*监控成本* $F$ 与*契约空间*本身(附录B)——它提高了运行纯计件制系统的合规成本,并限制了激励斜率 $\gamma$ 的设定方式,而本文的比较静态分析(定理2)预测,这会将 $A^*$ 推高至与中国最低工资相同的方向,只是作用渠道不同。
+**The European Union: regulating the threshold mechanism directly.** The EU's Platform Work Directive (Directive (EU) 2024/2831), adopted in October 2024 and entering into force that December, goes further than either the US or UK approach by regulating the *algorithmic management* mechanism itself rather than only the resulting pay structure: it creates a rebuttable legal presumption of employment wherever a platform exercises sufficient algorithmic control, and it separately mandates transparency and human review of automated decisions affecting a worker's pay, hours, or account status. In this paper's terms, the Directive is a regulatory intervention aimed not at $A^*$ directly (as China's minimum wage is modeled doing in Section 7.3) but at the *monitoring cost* $F$ and the *contract space* itself (Appendix B) — raising the compliance cost of running a purely piece-rate system and constraining how the incentive slope $\gamma$ can be set, which this paper's comparative statics (Theorem 2) predict would raise $A^*$ in the same direction as, though through a different channel than, China's minimum wage.
 
-**国际劳工组织:在全球层面监管这一机制,且时间就在本文定稿前不过数周。** 更能说明欧盟的做法反映的是一种更广泛的国际共识、而非区域性个案的,是国际劳工组织第193号公约——于2026年6月12日在第114届国际劳工大会上,以406票赞成、8票反对、36票弃权的表决结果通过,是全球第一份专门针对平台工作、具有约束力的国际劳工标准,也是第一份直接在条约文本中规制算法管理的国际标准。与欧盟指令相似,它的核心义务同样针对自动化决策的披露与对影响薪酬、工时的决定进行人工复核,而非以工资底线本身为核心;与欧盟指令不同的是,它在全球尺度上生效,一旦成员国批准,原则上适用于全球超过1.5亿平台劳动者中的任何一位。用本文的术语来说,第193号公约为第3.6节仅从欧盟得出的同一论断,提供了第二个独立且远更具权威性的证据:本文模型本身识别出的那个结构性重要的政策杠杆——提高监控成本 $F$、约束激励斜率 $\gamma$,而不仅仅作用于基础工资 $\alpha$——并非某一司法辖区的监管偏好,而是国际劳工治理如今已经以有约束力的法律形式确立的方向。
+**The International Labour Organization: regulating the mechanism, globally, and only weeks before this paper's finalization.** The clearest confirmation that the EU's approach reflects a broader convergence, not a regional idiosyncrasy, is ILO Convention No. 193, adopted 12 June 2026 at the 114th International Labour Conference by a vote of 406 to 8, with 36 abstentions — the first binding international labor standard devoted specifically to platform work, and the first to address algorithmic management directly in a treaty text. Like the EU Directive, its central obligations target disclosure of automated decision-making and human review of decisions affecting pay and hours, rather than a wage floor as such; unlike the EU Directive, it does so at global scale, applying in principle to any of the estimated 150 million-plus platform workers worldwide once a member state ratifies it. In this paper's terms, Convention 193 is a second, independent, and far more authoritative data point for the same claim Section 3.6 draws from the EU alone: that the policy lever this paper's own model identifies as structurally important — raising the monitoring cost $F$ and constraining the incentive slope $\gamma$, rather than only the base wage $\alpha$ — is not a single jurisdiction's regulatory preference but the direction international labor governance has now moved as a matter of binding law.
 
-**这一比较增添了什么。** 以上四个案例都不是对本文具体数值校准的检验——这里的目的不是宣称 $A^*\approx0.65$ 在国际上普遍成立,而是要说明其定性逻辑具有普遍性:凡是AI使产出验证变得廉价之处,全球的法律与监管体系都不得不面对本文以数理方式提出的同一个底层问题,并根据各自体系如何权衡第6.2节推导出的效率增益与风险转嫁成本,得出了明显不同的答案——从第22号提案保留灵活性的折中方案,到第193号公约全球性的披露强制要求。这种跨国差异本身就是有价值的证据:它提示,第8.1节(4)中精确刻画的"效率与公平"权衡并非本文中国校准的产物,而是不同制度传统——如今已包括国际社会近乎一致的表决本身——都在通过本文自身比较静态所识别出的、最为有效的那一渠道来加以化解的一个结构性特征。我们将在第8.1节(5)直接回到这一点。
+**What the comparison adds.** None of these four episodes is a test of this paper's specific numerical calibration — the goal here is not to claim $A^*\approx0.65$ generalizes internationally, but to show that the qualitative logic does: wherever AI-enabled monitoring has made output cheap to verify, legal and regulatory systems worldwide have had to grapple with the same underlying question this paper poses formally, and have reached visibly different answers — from Prop 22's flexibility-preserving compromise to Convention 193's global disclosure mandate — depending on how each system weighs the efficiency gains of Section 6.2 against the risk-shifting costs also derived there. This cross-national variation is itself useful evidence: it suggests the "efficiency versus equity" tradeoff formalized in Section 8.1(4) is not an artifact of this paper's Chinese calibration, but a structural feature of the underlying economics that different institutional traditions — now including a near-unanimous vote of the international community itself — have converged on addressing through the same channel this paper's own comparative statics identify as most effective. We return to this point directly in Section 8.1(5).
 
-# 4. 模型
+# 4. Model
 
-本节给出模型的正式环境设定。我们考虑一个单期委托代理框架,其中一个风险中性的企业雇用一名努力水平不可契约化的劳动者。企业在两种薪酬模式——计时制与计件制——之间做出选择,AI技术通过增强劳动者的有效人力资本进入生产过程。
+This section presents the formal environment of the model. We consider a one-period principal–agent framework in which a risk-neutral firm hires a single worker whose effort is not contractible. The firm chooses between two compensation modes—time-rate and piece-rate—and AI technology enters the production process by augmenting the worker's effective human capital.
 
 ---
 
-## 4.1 环境设定
+## 4.1 Environment
 
-### 有效人力资本
+### Effective human capital
 
-AI按以下方式增强人力资本:
+AI augments human capital according to:
 
 $$
 \tilde{H} = h + \theta AC
 $$
 
-其中:
+where:
 
-- $h > 0$ 为基础人力资本
-- $A \ge 0$ 为AI利用强度
-- $C > 0$ 为AI增强效能系数,即AI增强的任务专属边际效能(见第2.1节关于该术语的说明)
-- $\theta > 0$ 为AI的放大效应
+- $h > 0$ is baseline human capital
+- $A \ge 0$ is AI utilization intensity
+- $C > 0$ is the coefficient of AI-augmentation effectiveness (see Section 2.1's note on terminology)
+- $\theta > 0$ is the amplification effect of AI
 
 ---
 
-### 生产技术
+### Production technology
 
-产出为:
+Output is:
 
 $$
 y = a\tilde{H} + \varepsilon
 $$
 
-其中 $\varepsilon \sim N(0,\sigma^2)$。附录C考察了产出中还包含一个与努力无关的自动化项 $g(A)$ 的扩展情形,并证明只要该项在两种契约模式下均以相同方式实现,本文的主要结果不受影响。
+where $\varepsilon \sim N(0,\sigma^2)$. Appendix C considers an extension in which output also includes an effort-independent automation term $g(A)$, and shows the paper's main results are unaffected whenever this term is common to both contract modes.
 
 ---
 
-### 努力成本
+### Effort cost
 
-努力产生凸性成本:
+Effort incurs convex cost:
 
 $$
 \psi(a) = \frac{1}{2}ka^2
@@ -325,9 +333,10 @@ $$
 
 ---
 
-### 劳动者偏好
+### Worker preferences
 
-劳动者具有绝对风险厌恶系数为 $r > 0$ 的CARA效用。确定性等价为:
+The worker has CARA utility with absolute risk aversion $r > 0$.
+Certainty equivalent:
 
 $$
 CE = E[w] - \frac{1}{2}r\,\mathrm{Var}(w) - \psi(a)
@@ -335,51 +344,51 @@ $$
 
 ---
 
-### 道德风险
+### Moral hazard
 
-努力水平 $a$ 不可观测,也不可契约化。
+Effort $a$ is not observable or contractible.
 
 ---
 
-### 参与约束
+### Participation constraint
 
-竞争性劳动力市场意味着:
+Competitive labor markets imply:
 
 $$
 CE = \bar{U}
 $$
 
-附录A.7证明,模型的核心阈值结果并不依赖于 $\bar U$ 在 $A$ 上保持不变这一假设;对任意设定 $\bar U(A)$,结果均成立。
+Appendix A.7 shows the model's central threshold result does not depend on $\bar U$ being constant across $A$; it holds for any specification $\bar U(A)$.
 
 ---
 
-## 4.2 时间制契约(模式T)
+## 4.2 Time-Rate Contract (Mode T)
 
-在时间制薪酬下:
+Under time-rate compensation:
 
-- 劳动者获得固定工资 $W_0$
-- 企业强制执行最低努力水平 $a_0$
+- Worker receives fixed wage $W_0$
+- Firm enforces minimum effort $a_0$
 
-参与约束:
+Participation constraint:
 
 $$
 W_0 - \frac{1}{2}ka_0^2 = \bar{U}
 $$
 
-因此:
+Thus:
 
 $$
 W_0 = \bar{U} + \frac{1}{2}ka_0^2
 $$
 
-企业利润:
+Firm profit:
 
 $$
 \Pi_T(A)
 = a_0(h+\theta AC) - \bar{U} - \frac{1}{2}ka_0^2
 $$
 
-该利润关于AI强度 $A$ 是**线性**的:
+This is **linear** in AI intensity $A$:
 
 $$
 \frac{d\Pi_T}{dA} = a_0\theta C
@@ -387,27 +396,27 @@ $$
 
 ---
 
-## 4.3 计件制契约(模式P)
+## 4.3 Piece-Rate Contract (Mode P)
 
-薪酬为:
+Compensation:
 
 $$
 w = \alpha + \gamma y
 $$
 
-本文将薪酬限定为产出的线性函数。这是CARA-正态道德风险模型应用文献中的标准简化,但并不仅仅是建模上的权宜之计:Holmström与Milgrom(1987)证明,当委托人无法完整列明努力可能发生的每一种或有情形时,线性契约是稳健意义上的最优选择——这正是本文静态设定所隐含继承的同一种"设定稳健性"考量,尽管他们的数理结果是在连续时间环境中推导出的。
+Compensation is restricted here to be linear in output. This is the standard simplification in applied CARA-normal moral-hazard models, and it is not merely a modeling convenience: Holmström and Milgrom (1987) show that linear contracts are the robustly optimal choice when the principal cannot fully specify every contingency governing how effort is exerted — the same specification-robustness concern this paper's static setting inherits informally, even though their formal result is derived in a continuous-time environment.
 
 ---
 
-### 劳动者的努力选择
+### Worker's effort choice
 
-劳动者求解:
+Worker solves:
 
 $$
 \max_a\; \gamma a\tilde{H} - \frac{1}{2}ka^2
 $$
 
-因此:
+Thus:
 
 $$
 a^* = \frac{\gamma\tilde{H}}{k}
@@ -415,9 +424,9 @@ $$
 
 ---
 
-### 参与约束
+### Participation constraint
 
-确定性等价为:
+Certainty equivalent:
 
 $$
 CE = \alpha
@@ -426,7 +435,7 @@ CE = \alpha
 - \frac{1}{2}k(a^*)^2
 $$
 
-代入 $a^*$:
+Substitute $a^*$:
 
 $$
 CE = \alpha
@@ -434,7 +443,7 @@ CE = \alpha
 - \frac{1}{2}r\gamma^2\sigma^2
 $$
 
-令 $CE = \bar{U}$:
+Set $CE = \bar{U}$:
 
 $$
 \alpha
@@ -445,16 +454,16 @@ $$
 
 ---
 
-### 企业利润
+### Firm profit
 
-期望利润:
+Expected profit:
 
 $$
 \Pi_P(\gamma)
 = (1-\gamma)a^*\tilde{H} - \alpha - F
 $$
 
-代入 $a^*$ 与 $\alpha$:
+Substitute $a^*$ and $\alpha$:
 
 $$
 \Pi_P(\gamma)
@@ -466,16 +475,16 @@ $$
 
 ---
 
-### 最优计件比例
+### Optimal piece-rate
 
-一阶条件给出:
+FOC yields:
 
 $$
 \gamma^*
 = \frac{\tilde{H}^2}{\tilde{H}^2 + rk\sigma^2}
 $$
 
-最优利润:
+Optimal profit:
 
 $$
 \Pi_P^*(A)
@@ -485,51 +494,51 @@ $$
 
 ---
 
-## 4.4 时序
+## 4.4 Timing
 
-1. 企业选择契约模式。
-2. 在计件制下,企业选择 $(\alpha,\gamma)$。
-3. 劳动者选择努力水平 $a$。
-4. 产出实现,发放工资。
+1. Firm chooses contract mode.
+2. Under piece-rate, firm chooses $(\alpha,\gamma)$.
+3. Worker chooses effort $a$.
+4. Output realized; wage paid.
 
-**图1:模型时序。** 单期委托代理博弈的四阶段序列:企业的契约模式选择(对应第6节的 $A^*$ 阈值)先于计件参数的设定,后者先于劳动者的努力选择,再之后产出与支付才得以实现。*(见代码仓库中的 `simulation/fig1_timing.png`。)*
-
----
-
-## 4.5 讨论
-
-该模型通过让AI强度 $A$ 与增强效能 $C$ 对有效人力资本进行缩放,将AI嵌入Holmstrom–Milgrom线性契约框架。AI同时放大了生产率与努力的回报,改变了企业最优的风险分担安排,并可能触发契约转型。
-
-一个自然的问题是,模式T与模式P是否可以被视为同一契约族上的两个点,其中 $\gamma=0$ 恰好还原出模式T。朴素的理解并不成立:在劳动者一阶条件 $a^*=\gamma\tilde H/k$ 中令 $\gamma=0$ 会得到零努力,而非定义模式T的强制努力 $a_0>0$。两种模式依赖于结构上不同的执行技术——基于出勤的监督与基于产出的数字监控——因此不能仅通过改变 $\gamma$ 来统一。(第三种本文未建模的经典替代机制是效率工资:Shapiro与Stiglitz(1984)证明,当监督不完全时,企业可以通过支付高于市场出清水平的工资、并以查实偷懒即解雇作为威胁,来诱导劳动者付出努力——用工资溢价替代监控强度。本文未纳入这一机制,但它与本文一样,都把"验证努力的成本"当作决定契约设计的核心力量。)附录B通过引入第二个契约工具(通过出勤监督执行的强制努力下限)构建了一个真正的统一框架,并证明在这一扩展空间中,企业的最优选择始终是一个角点解——要么纯时间制,要么纯计件制,两种机制永远不会混合。我们在附录中标注、并在此处再次提醒读者:这一角点解预测,与中国平台经济中常见的混合薪酬安排(底薪加提成)存在张力,我们讨论了导致这一预测的具体成本结构假设,以及可以放松该假设的扩展方向。
-
-# 5. 均衡分析
-
-本节推导第4节引入的两种薪酬模式下的均衡结果。我们首先刻画时间制契约下的企业利润,该利润关于AI强度是线性的。随后我们求解计件制契约下劳动者的激励问题,推导最优计件参数,并得出企业的最优利润。这两个利润函数的比较构成了第6节所分析的契约转型阈值的基础。
+**Figure 1: Model timing.** The four-stage sequence of the one-period principal–agent game: the firm's contract-mode choice (Section 6's $A^*$ threshold) is made before the piece-rate parameters, which are set before the worker's effort choice, which is made before output and payment are realized. *(See `simulation/fig1_timing.png` in the code repository.)*
 
 ---
 
-## 5.1 时间制契约(模式T)
+## 4.5 Discussion
 
-在时间制契约下,企业通过出勤监督强制执行最低努力水平 $a_0$。劳动者获得固定工资 $W_0$,其确定性等价为:
+The model embeds AI into the Holmstrom–Milgrom linear contracting framework by allowing AI intensity $A$ and augmentation effectiveness $C$ to scale effective human capital. AI amplifies both productivity and the returns to effort, altering the firm's optimal risk-sharing arrangement and potentially triggering contract transformation.
+
+A natural question is whether Mode T and Mode P can be viewed as two points on a single contract family, with $\gamma=0$ recovering Mode T exactly. A naive reading does not work: setting $\gamma=0$ in the worker's first-order condition $a^*=\gamma\tilde H/k$ gives zero effort, not the enforced effort $a_0>0$ that defines Mode T. The two modes rely on structurally different enforcement technologies — attendance-based supervision versus output-contingent digital monitoring — and cannot be unified by varying $\gamma$ alone. (A third classical alternative, not modeled here, is the efficiency wage: Shapiro and Stiglitz (1984) show that when supervision is imperfect, a firm can induce effort by paying above the market-clearing wage and threatening dismissal upon detected shirking, substituting a wage premium for monitoring intensity — a mechanism this paper does not incorporate but that shares its focus on the cost of verifying effort as the force shaping contract design.) Appendix B formalizes a genuine unification by introducing a second contract instrument (an enforced effort floor implemented through attendance supervision) and shows that the firm's optimum in this extended space is always a corner — either pure time-rate or pure piece-rate, never a blend of the two mechanisms. We flag there, and note here for visibility, that this corner-solution prediction sits in tension with commonly observed hybrid compensation schemes (base pay plus commission) in China's platform economy, and we discuss the specific cost-structure assumption responsible for that prediction, along with the extension that would relax it.
+
+# 5. Equilibrium Analysis
+
+This section derives the equilibrium outcomes under the two compensation modes introduced in Section 4. We first characterize the firm's profit under the time-rate contract, which is linear in AI intensity. We then solve the worker's incentive problem under the piece-rate contract, derive the optimal piece-rate parameter, and obtain the firm's optimal profit. The comparison of these two profit functions forms the basis for the contract transformation threshold analyzed in Section 6.
+
+---
+
+## 5.1 Time-Rate Contract (Mode T)
+
+Under the time-rate contract, the firm enforces a minimum effort level $a_0$ through attendance monitoring. The worker receives a fixed wage $W_0$, and her certainty equivalent is:
 
 $$
 CE_T = W_0 - \frac{1}{2}ka_0^2
 $$
 
-参与约束 $CE_T = \bar{U}$ 意味着:
+The participation constraint $CE_T = \bar{U}$ implies:
 
 $$
 W_0 = \bar{U} + \frac{1}{2}ka_0^2
 $$
 
-企业的期望利润因此为:
+The firm's expected profit is therefore:
 
 $$
 \Pi_T(A)
 = a_0(h+\theta AC) - \bar{U} - \frac{1}{2}ka_0^2
 $$
 
-该利润关于AI强度 $A$ 是**线性**的:
+This profit is **linear** in AI intensity $A$:
 
 $$
 \frac{d\Pi_T}{dA} = a_0\theta C
@@ -537,21 +546,21 @@ $$
 
 ---
 
-## 5.2 计件制契约(模式P)
+## 5.2 Piece-Rate Contract (Mode P)
 
-在计件制契约下:
+Under the piece-rate contract:
 
 $$
 w = \alpha + \gamma y
 $$
 
-企业选择 $(\alpha,\gamma)$,以满足激励相容(IC)与个体理性(IR),并最大化期望利润。
+The firm chooses $(\alpha,\gamma)$ to satisfy incentive compatibility (IC) and individual rationality (IR), and to maximize expected profit.
 
 ---
 
-### 第一步:激励相容(IC)
+### Step 1: Incentive Compatibility (IC)
 
-劳动者选择努力 $a$ 以最大化:
+Worker chooses effort $a$ to maximize:
 
 $$
 CE_P(a)
@@ -560,19 +569,19 @@ CE_P(a)
 - \frac{1}{2}ka^2
 $$
 
-一阶条件给出:
+FOC yields:
 
 $$
 a^* = \frac{\gamma\tilde{H}}{k}
 $$
 
-对任意 $k>0$,二阶条件 $\partial^2 CE_P/\partial a^2 = -k < 0$ 恒成立,确认 $a^*$ 是严格全局最大值(另见附录A.0)。
+The second-order condition is $\partial^2 CE_P/\partial a^2 = -k < 0$ for all $k>0$, confirming $a^*$ is a strict global maximum (see also Appendix A.0).
 
 ---
 
-### 第二步:参与约束(IR)
+### Step 2: Participation Constraint (IR)
 
-代入 $a^*$:
+Substitute $a^*$:
 
 $$
 CE_P
@@ -581,7 +590,7 @@ CE_P
 - \frac{1}{2}r\gamma^2\sigma^2
 $$
 
-令 $CE_P = \bar{U}$:
+Set $CE_P = \bar{U}$:
 
 $$
 \alpha
@@ -592,16 +601,16 @@ $$
 
 ---
 
-### 第三步:企业利润最大化
+### Step 3: Firm Profit Maximization
 
-期望利润:
+Expected profit:
 
 $$
 \Pi_P(\gamma)
 = (1-\gamma)a^*\tilde{H} - \alpha - F
 $$
 
-代入 $a^*$ 与 $\alpha$:
+Substitute $a^*$ and $\alpha$:
 
 $$
 \Pi_P(\gamma)
@@ -611,16 +620,16 @@ $$
 - \bar{U} - F
 $$
 
-一阶条件给出最优计件比例:
+FOC yields optimal piece-rate:
 
 $$
 \gamma^*
 = \frac{\tilde{H}^2}{\tilde{H}^2 + rk\sigma^2}
 $$
 
-对任意 $\tilde H, k, r, \sigma^2 > 0$,二阶条件 $\partial^2\Pi_P/\partial\gamma^2 = -\tilde H^2/k - r\sigma^2 < 0$ 恒成立,确认 $\Pi_P(\gamma)$ 严格凹,且 $\gamma^*$ 是唯一的全局最大值点,故 $\gamma^*\in(0,1)$(附录A.0)。
+The second-order condition $\partial^2\Pi_P/\partial\gamma^2 = -\tilde H^2/k - r\sigma^2 < 0$ holds for all $\tilde H, k, r, \sigma^2 > 0$, confirming $\Pi_P(\gamma)$ is strictly concave and $\gamma^*$ is the unique global maximizer, so $\gamma^*\in(0,1)$ (Appendix A.0).
 
-最优利润:
+Optimal profit:
 
 $$
 \Pi_P^*(A)
@@ -630,108 +639,108 @@ $$
 
 ---
 
-## 5.3 两种模式的比较
+## 5.3 Comparison of the Two Modes
 
-定义利润差:
-
-$$
-G(A) = \Pi_P^*(A) - \Pi_T(A)
-$$
-
-第6节将证明:
-
-- 由于固定成本 $F$ 的存在,$G(0) < 0$
-- 当 $A \to \infty$ 时,$G(A) \to +\infty$
-- $G(A)$ 在整个定义域上严格凸(附录A.1),而不仅仅是在 $A$ 较大时
-
-因此存在唯一阈值 $A^*$。
-
-# 6. 主要结果
-
-本节给出本文的核心理论结果。我们证明,AI增强型生产会在AI利用强度上产生一个唯一阈值,超过该阈值,企业将最优地从计时工资转向计件工资。随后我们刻画该阈值如何响应产出噪声、劳动者风险厌恶与AI增强效能系数的变化。
-
----
-
-## 6.1 契约转型阈值的存在性与唯一性
-
-定义:
+Define profit difference:
 
 $$
 G(A) = \Pi_P^*(A) - \Pi_T(A)
 $$
 
+Section 6 shows:
+
+- $G(0) < 0$ due to fixed cost $F$
+- $G(A) \to +\infty$ as $A \to \infty$
+- $G(A)$ is strictly convex on the entire domain (Appendix A.1), not merely for large $A$
+
+Thus a unique threshold $A^*$ exists.
+
+# 6. Main Results
+
+This section presents the core theoretical results of the paper. We show that AI-augmented production generates a unique threshold in AI utilization intensity at which firms optimally switch from time-rate to piece-rate compensation. We then characterize how this threshold responds to changes in output noise, worker risk aversion, and the coefficient of AI-augmentation effectiveness.
+
 ---
 
-### **定理1(A\*的存在性与唯一性)。**
+## 6.1 Existence and Uniqueness of the Contract Transformation Threshold
 
-*定义域与正则性条件。* $A$ 取值于 $[0, \bar{A}]$,其中 $\bar A$ 可任意大;$k>0$ 保证努力成本函数 $\psi(a)=\tfrac{1}{2}ka^2$ 严格凸,这正是第4.3节与第5.2节中保证内点最优 $a^*$ 良定义的条件。在这些正则性条件下:
+Define:
 
-存在**唯一**阈值 $A^* > 0$,使得:
-
-- 当 $A < A^*$ 时:$\Pi_T(A) > \Pi_P^*(A)$
-- 当 $A > A^*$ 时:$\Pi_P^*(A) > \Pi_T(A)$
+$$
+G(A) = \Pi_P^*(A) - \Pi_T(A)
+$$
 
 ---
 
-### 证明
+### **Theorem 1 (Existence and uniqueness of $A^*$).**
 
-#### 第一步:存在性
+*Domain and regularity.* $A$ ranges over $[0, \bar{A}]$ for some arbitrarily large $\bar{A}$; $k>0$ ensures the effort-cost function $\psi(a)=\tfrac{1}{2}ka^2$ is strictly convex, which is what guarantees a well-defined interior optimum $a^*$ in Sections 4.3 and 5.2. Given these regularity conditions:
 
-在 $A = 0$ 处:
+There exists a **unique** threshold $A^* > 0$ such that:
+
+- For $A < A^*$: $\Pi_T(A) > \Pi_P^*(A)$
+- For $A > A^*$: $\Pi_P^*(A) > \Pi_T(A)$
+
+---
+
+### Proof
+
+#### Step 1: Existence
+
+At $A = 0$:
 
 $$
 G(0) < 0
 $$
 
-这是因为计件制利润中包含固定监控成本 $F$。
+because piece-rate profit includes fixed monitoring cost $F$.
 
-当 $A \to \infty$ 时:
+As $A \to \infty$:
 
-时间制利润线性增长:
+Time-rate profit grows linearly:
 
 $$
 \Pi_T(A) \sim a_0\theta C A
 $$
 
-计件制利润二次增长:
+Piece-rate profit grows quadratically:
 
 $$
 \Pi_P^*(A) \sim \frac{(\theta C)^2}{2k}A^2
 $$
 
-因此:
+Thus:
 
 $$
 G(A) \to +\infty
 $$
 
-由连续性可知,至少存在一个零点。
+By continuity, at least one root exists.
 
 ---
 
-#### 第二步:唯一性
+#### Step 2: Uniqueness
 
-$\Pi_T(A)$ 关于 $A$ 是线性(仿射)的。$\Pi_P^*(A)$ 可以证明在**整个**定义域 $[0,\bar A]$ 上严格凸——而不仅仅是上文所用的渐近意义——这通过显式的闭式二阶导数给出(附录A.1)。据此,$G(A)$ 本身严格凸,因为它是凸函数与仿射函数之差。严格凸函数的下水平集 $\{A : G(A)<0\}$ 是一个区间;由于该区间包含 $A=0$(第一步)且有界(因为 $G(A)\to+\infty$),它必然形如 $[0,A^*)$,对应唯一有限的 $A^*$,同时给出了存在性与唯一性。完整论证,包括闭式全域凸性的验证,见附录A.1–A.2。
+$\Pi_T(A)$ is linear (affine) in $A$. $\Pi_P^*(A)$ can be shown to be strictly convex on the *entire* domain $[0,\bar A]$ — not merely in the asymptotic sense used above — via an explicit closed-form second derivative (Appendix A.1). Given this, $G(A)$ is itself strictly convex, being the difference of a convex and an affine function. A strictly convex function's lower level set $\{A : G(A)<0\}$ is an interval; since this interval contains $A=0$ (Step 1) and is bounded (since $G(A)\to+\infty$), it takes the form $[0,A^*)$ for a unique finite $A^*$, giving existence and uniqueness simultaneously. The complete argument, including the closed-form global convexity verification, is given in Appendix A.1–A.2.
 
 $\blacksquare$
 
 ---
 
-## 6.2 转型阈值的比较静态分析
+## 6.2 Comparative Statics of the Transformation Threshold
 
-### **定理2($A^*$的比较静态)。**
+### **Theorem 2 (Comparative statics of $A^*$).**
 
-阈值 $A^*$ 满足:
+The threshold $A^*$ satisfies:
 
 $$
 \frac{\partial A^*}{\partial \sigma^2} > 0, \qquad \frac{\partial A^*}{\partial r} > 0, \qquad \frac{\partial A^*}{\partial C} < 0
 $$
 
-即,$A^*$ 随产出噪声与劳动者风险厌恶上升而提高,随AI增强效能系数上升而降低。事实上(附录A.5–A.6),$A^*$ 与 $\theta C$ 恰好成反比,且 $A^*$ 关于 $r$ 与 $\sigma^2$ 的弹性恰好相等。
+That is, $A^*$ rises with output noise and worker risk aversion, and falls with the coefficient of AI-augmentation effectiveness. In fact (Appendix A.5–A.6), $A^*$ is exactly inversely proportional to $\theta C$, and the elasticities of $A^*$ with respect to $r$ and $\sigma^2$ are exactly equal.
 
-### 证明
+### Proof
 
-利用隐函数定理:
+Using the implicit function theorem:
 
 $$
 \frac{\partial A^*}{\partial x}
@@ -739,19 +748,19 @@ $$
 \qquad x \in \{\sigma^2, r, C\}
 $$
 
-分母:
+Denominator:
 
 $$
 \frac{\partial G}{\partial A}(A^*) > 0
 $$
 
-因此每一项比较静态结果的符号取决于分子的符号。(附录A.2.1证明该分母条件并非独立的正则性假设,而是 $G$ 的严格凸性与 $G(0)<0$ 的直接推论。)
+Thus the sign of each comparative static depends on the numerator. (Appendix A.2.1 shows this denominator condition is not an independent regularity assumption but a direct consequence of $G$'s strict convexity together with $G(0)<0$.)
 
 ---
 
-### (i)产出噪声 $\sigma^2$
+### (i) Output noise $\sigma^2$
 
-计件制利润:
+Piece-rate profit:
 
 $$
 \Pi_P^*(A)
@@ -759,7 +768,7 @@ $$
 - \bar{U} - F
 $$
 
-求导:
+Differentiate:
 
 $$
 \frac{\partial \Pi_P^*}{\partial \sigma^2}
@@ -767,18 +776,18 @@ $$
 < 0
 $$
 
-因此:
+Thus:
 
 $$
 \frac{\partial A^*}{\partial \sigma^2} > 0
 $$
 
-解释:
-噪声越大,计件制越缺乏吸引力→企业需要更高的AI强度才会转型。
+Interpretation:
+More noise makes piece-rate less attractive → firms require higher AI intensity to switch.
 
 ---
 
-### (ii)风险厌恶 $r$
+### (ii) Risk aversion $r$
 
 $$
 \frac{\partial \Pi_P^*}{\partial r}
@@ -786,66 +795,68 @@ $$
 < 0
 $$
 
-因此:
+Thus:
 
 $$
 \frac{\partial A^*}{\partial r} > 0
 $$
 
-解释:
-劳动者越风险厌恶,在计件制下需要的补偿越高→转型被延缓。
+Interpretation:
+More risk-averse workers require higher compensation under piece-rate → delaying transformation.
 
 ---
 
-### (iii)AI增强效能系数 $C$
+### (iii) Coefficient of AI-augmentation effectiveness $C$
 
-有效人力资本:
+Effective human capital:
 
 $$
 \tilde{H} = h + \theta AC
 $$
 
-因此:
+Thus:
 
 $$
 \frac{\partial \tilde{H}}{\partial C} = \theta A > 0
 $$
 
-更高的 $C$ 既提高了 $\tilde H$,也通过 $\tilde H$ 提高了计件制利润的凸性,使计件制更早变得有吸引力:
+Higher $C$ increases both $\tilde H$ and the convexity of piece-rate profit through it, making piece-rate attractive earlier:
 
 $$
 \frac{\partial A^*}{\partial C} < 0
 $$
 
-完整推导——包括该符号所依赖的、依校准取值而定的不等式,及其在表1全部四个行业校准中的验证——见附录A.4,因为(与 $r$ 和 $\sigma^2$ 的符号不同)这一结果并非独立于参数取值的纯代数恒等式。
+The full derivation — including the calibration-dependent inequality this sign relies on, and its verification across all four sector calibrations of Table 1 — is given in Appendix A.4, since (unlike the sign for $r$ and $\sigma^2$) this result is not a pure algebraic identity independent of parameter values.
 
-解释:
-更强的AI增强效能系数会加速转型。
+Interpretation:
+A higher coefficient of AI-augmentation effectiveness accelerates transformation.
 
 ---
 
-## 6.3 对契约设计的含义
+## 6.3 Implications for Contract Design
 
-上述结果意味着:
+The results imply:
 
-1. **风险与不确定性延缓转型。**
-   高噪声或高风险厌恶会促使企业维持在计时制模式。
+1. **Risk and uncertainty delay transformation.**
+   High noise or high risk aversion pushes firms to remain in time-rate mode.
 
-2. **AI增强效能系数加速转型。**
-   提升任务专属AI效能的培训会降低 $A^*$。
+2. **A higher coefficient of AI-augmentation effectiveness accelerates transformation.**
+   Training that improves task-specific AI effectiveness lowers $A^*$.
 
-3. **AI放大激励。**
-   随着 $A$ 增大,由于凸性生产率增益,计件制变得越来越有利可图。
+3. **AI amplifies incentives.**
+   As $A$ grows, piece-rate becomes increasingly profitable due to convex productivity gains.
 
-这些洞见构成了第7节数值模拟的理论基础。
+These insights form the theoretical foundation for Section 7's numerical simulations.
 
-# 7. 数值模拟
+# 7. Numerical Simulation
 
-本节给出数值模拟,以说明第5节与第6节推导出的理论结果。利用第3节校准的参数,我们计算时间制与计件制契约下的企业利润,求出契约转型阈值 $A^*$,并考察风险、不确定性与监管如何影响产出导向型薪酬的盈利能力。以下模拟的交互式版本——允许读者实时调节 $\sigma^2$、$r$、$C$、$W_{\min}$,并实时观察 $A^*$ 的重新计算——可通过[交互式模拟组件](https://danghaosheng2028.github.io/ai-contract-transformation/)在线访问(源码见代码仓库中的 `docs/index.html`)。
+This section presents numerical simulations that illustrate the theoretical results derived in Sections 5 and 6. Using the calibrated parameters from Section 3, we evaluate firm profit under the time-rate and piece-rate contracts, compute the contract transformation threshold $A^*$, and examine how risk, uncertainty, and regulation affect the profitability of output-based compensation. An interactive version of the simulations below — allowing readers to vary $\sigma^2$, $r$, $C$, and $W_{\min}$ in real time and see $A^*$ recomputed on the fly — is accessible online via the [interactive simulation widget](https://danghaosheng2028.github.io/ai-contract-transformation/) (source: `docs/index.html` in the code repository).
 
-**图2:交互式模拟组件(默认基准视图)。** 在基准参数($\sigma^2=r=C=1.00$,$W_{\min}=0.00$)下部署组件的截图,显示了与第7.1节一致的、无约束情形下利润的交叉点 $A^*\approx0.650$。*(见代码仓库中的 `simulation/fig2_widget.png`。)*
+**Figure 2: Interactive simulation widget (default baseline view).** Screenshot of the deployed widget at baseline parameters ($\sigma^2=r=C=1.00$, $W_{\min}=0.00$), showing the unconstrained profit crossing at $A^*\approx0.650$ matching Section 7.1. *(See `simulation/fig2_widget.png` in the code repository.)*
 
-全部模拟均采用基准参数集:
+![Figure 2: Interactive simulation widget default view](../simulation/fig2_widget.png)
+
+All simulations use the baseline parameter set:
 
 $$
 (h,\theta,C,k,a_0,\bar{U},r,\sigma^2,F)
@@ -854,18 +865,18 @@ $$
 
 ---
 
-## 7.1 基准利润比较与转型阈值
+## 7.1 Baseline Profit Comparison and the Transformation Threshold
 
-我们计算:
+We compute:
 
-- 时间制利润:
+- Time-rate profit:
 
 $$
 \Pi_T(A)
 = a_0(h+\theta AC) - \bar{U} - \frac{1}{2}ka_0^2
 $$
 
-- 计件制利润:
+- Piece-rate profit:
 
 $$
 \Pi_P^*(A)
@@ -873,149 +884,164 @@ $$
 - \bar{U} - F
 $$
 
-其中:
+where:
 
 $$
 \tilde{H} = h + \theta AC
 $$
 
-在第3.1节所述经验相关的AI渗透率区间 $A \in [0,3]$ 上绘制 $\Pi_T(A)$ 与 $\Pi_P^*(A)$,得到唯一交点:
+Plotting $\Pi_T(A)$ and $\Pi_P^*(A)$ for $A \in [0,3]$ — the empirically relevant AI-penetration range from Section 3.1 — yields a unique intersection at:
 
 $$
 A^* \approx 0.65
 $$
 
-**图3:契约转型阈值。** 绘制校准后的时间制利润 $\Pi_T(A)$ 与计件制利润 $\Pi_P^*(A)$ 在 $A\in[0,3]$上的曲线。时间制利润只呈线性上升,因为固定工资无法捕捉AI增强型努力所带来的凸性激励增益;计件制利润呈凸性上升,因为更高的 $A$ 提升了有效人力资本 $\tilde H$,并通过 $\Pi_P^*(A)$ 中的 $\tilde H^4$ 项被放大。两条曲线在基准校准下恰好在 $A^*\approx0.65$ 处相交一次。阈值以下,监控成本 $F$ 超过激励收益,企业维持固定工资;阈值以上,凸性收益占主导,产出风险转移给劳动者。*(见代码仓库中的 `simulation/fig3_threshold.png`,或通过上方链接交互式探索这一关系。)*
+This $[0,3]$ range is a plotting convention, not a restriction on the domain over which $A^*$ is shown to exist (Theorem 1 holds for any positive parameter values, with no upper bound on $A$ required). The numerical root-finding code in the online repository accordingly searches a wider window than $[0,3]$ wherever a parameter combination would otherwise place $A^*$ outside the plotted range; Appendix A.8 records a numerical check of this at the interactive widget's own parameter extremes.
+
+**Figure 3: Contract transformation threshold.** Plots calibrated time-rate profit $\Pi_T(A)$ against piece-rate profit $\Pi_P^*(A)$ for $A \in [0, 3]$. Time-rate profit rises only linearly because a fixed wage cannot capture the convex incentive gains AI-augmented effort makes possible; piece-rate profit rises convexly because higher $A$ raises effective human capital $\tilde{H}$, compounding through the $\tilde{H}^4$ term in $\Pi_P^*(A)$. The curves cross exactly once, at $A^* \approx 0.65$ under baseline calibration. Below the threshold, monitoring cost $F$ outweighs incentive gains and firms retain fixed wages; above it, convex gains dominate and output risk shifts onto workers. *(See `simulation/fig3_threshold.png` in the code repository, or explore this relationship interactively at the link above.)*
+
+![Figure 3: Contract transformation threshold](../simulation/fig3_threshold.png)
+
+### Interpretation
+
+- For $A < A^*$: fixed monitoring cost $F$ makes piece-rate unprofitable.
+- For $A > A^*$: convex productivity gains dominate, making piece-rate optimal.
+
+This confirms **Theorem 1**.
 
 ---
 
-## 7.2 比较静态分析:阈值曲面 $A^*(r,\sigma^2)$
+## 7.2 Comparative Statics: Threshold Surface $A^*(r,\sigma^2)$
 
-我们在如下网格上计算 $A^*$:
+We compute $A^*$ over a grid:
 
 - $r \in [0.1,2.0]$
 - $\sigma^2 \in [0.1,2.0]$
 
-对每一组参数,求解:
+For each pair, solve:
 
 $$
 G(A) = 0
 $$
 
-### 结果
+### Results
 
-- $A^*$ 随劳动者风险厌恶 $r$ 上升而提高
-- $A^*$ 随产出噪声 $\sigma^2$ 上升而提高
-- $A^*$ 随AI增强效能系数 $C$ 上升而降低
+- $A^*$ increases in worker risk aversion $r$
+- $A^*$ increases in output noise $\sigma^2$
+- $A^*$ decreases in the coefficient of AI-augmentation effectiveness $C$
 
-这些结果与**定理2**一致。
+These match **Theorem 2**.
 
 ---
 
-## 7.3 监管摩擦:最低工资约束
+## 7.3 Regulatory Friction: Minimum Wage Constraint
 
-在基础工资上引入最低工资底线:
+Introduce a minimum-wage floor on the base wage:
 
 $$
 \alpha \ge W_{\min}
 $$
 
-由于劳动者的努力选择 $a^*=\gamma\tilde H/k$ 只取决于 $\gamma$(基础工资 $\alpha$ 作为一项与努力选择的一阶条件无关的加性转移进入劳动者的问题),该底线本身并不直接改变 $a^*$。它真正改变的是企业**对 $\gamma$ 本身的最优选择**——因为一旦 $\alpha$ 不能被任意压低以补贴高 $\gamma$。
+Because the worker's effort choice $a^*=\gamma\tilde H/k$ depends only on $\gamma$ (the base wage $\alpha$ enters the worker's problem as an additive transfer with no effect on the first-order condition), the floor does not change $a^*$ directly. What it changes is the firm's *optimal choice of $\gamma$ itself*, once $\alpha$ can no longer be driven arbitrarily negative to subsidize a high $\gamma$.
 
-**受约束的利润。** 给定 $\gamma$,IR约束要求
+**Constrained profit.** For a given $\gamma$, IR requires
 
 $$
 \alpha(\gamma) = \max\left\{ W_{\min},\; \bar U + \frac{1}{2}r\gamma^2\sigma^2 - \frac{\gamma^2\tilde H^2}{2k} \right\}.
 $$
 
-当无约束的IR工资已经超过 $W_{\min}$ 时,该约束是松弛的,利润即第5.2节的无约束 $\Pi_P(\gamma)$。当其低于 $W_{\min}$ 时,$\alpha=W_{\min}$,利润变为
+When the unconstrained IR-wage already exceeds $W_{\min}$, the constraint is slack and profit is the unconstrained $\Pi_P(\gamma)$ of Section 5.2. When it falls short, $\alpha=W_{\min}$ and profit becomes
 
 $$
 \Pi_P^{MW,\text{bind}}(\gamma) = \frac{\gamma\tilde H^2}{k} - \frac{\gamma^2\tilde H^2}{k} - W_{\min} - F.
 $$
 
-**约束下的最优响应。** 这一约束生效分支是关于 $\gamma$ 的开口向下的抛物线,顶点为
+**Optimal response under the constraint.** This binding-constraint branch is a downward-opening parabola in $\gamma$, with vertex at
 
 $$
 \gamma_c^* = \frac{1}{2}
 $$
 
-——这是一个与 $\tilde H$、$\sigma^2$、$r$、$W_{\min}$ 均无关的精确结果,因为原本塑造无约束 $\gamma^*$ 的风险成本项与激励成本项,此时都已被现在固定为 $\alpha=W_{\min}$ 的基础工资吸收。直观地说:一旦 $\alpha$ 被固定在 $W_{\min}$ 而不是被选定用来对冲风险,企业的问题就退化为一个纯粹的"产出份额对努力成本"的权衡——$\gamma\tilde H^2/k - \gamma^2\tilde H^2/k$——不再有 $r$ 或 $\sigma^2$ 的项需要权衡;这个二次式本身在 $\gamma=1/2$ 处取最大值,无论潜在任务风险或噪声有多大。面临具有约束力的工资底线的企业,会将其激励斜率最优地移向 $1/2$,而非移向无约束的 $\gamma^*$(随 $A$ 增大后者可趋近于1)。企业在约束下的真实最优利润 $\Pi_P^{MW}(A)$,是在 $\gamma\in[0,1]$ 上、以上文所定义的 $\alpha(\gamma)$ 为约束进行最大化得到的。
+— an exact result independent of $\tilde H$, $\sigma^2$, $r$, or $W_{\min}$, since the risk-cost and incentive-cost terms shaping the unconstrained $\gamma^*$ have both been absorbed into the now-fixed $\alpha=W_{\min}$. Intuitively: once $\alpha$ is pinned at $W_{\min}$ rather than chosen to offset risk, the firm's problem collapses to a pure output-share-versus-effort-cost tradeoff — $\gamma\tilde H^2/k - \gamma^2\tilde H^2/k$ — with no remaining term in $r$ or $\sigma^2$ to balance against; that quadratic alone is maximized at $\gamma=1/2$, regardless of how risky or noisy the underlying task is. A firm facing a binding wage floor optimally moves its incentive slope toward $1/2$, not toward the unconstrained $\gamma^*$ (which can approach 1 as $A$ grows). The firm's true optimal profit under the constraint, $\Pi_P^{MW}(A)$, is obtained by maximizing over $\gamma\in[0,1]$ with $\alpha(\gamma)$ as defined above.
 
-**阈值数值。** 对 $A\in[0,50]$ 数值求解 $\Pi_P^{MW}(A^*_{MW}) = \Pi_T(A^*_{MW})$:
+**Threshold values.** Solving $\Pi_P^{MW}(A^*_{MW}) = \Pi_T(A^*_{MW})$ numerically for $A\in[0,50]$:
 
 | $W_{\min}$ | $A^*_{MW}$ |
 |---|---|
-| 0.0(仅 $\alpha\ge0$) | 1.333 |
+| 0.0 ($\alpha\ge0$ only) | 1.333 |
 | 0.02 | 1.347 |
 | 0.1 | 1.398 |
 | 0.5 | 1.633 |
 | 1.0 | 1.886 |
 | 1.5 | 2.108 |
 
-所有取值均仍落在第3.1节所述经验相关区间 $A\in[0,3]$ 内。无约束基准为 $A^*\approx0.65$;即便只要求基础工资非负($W_{\min}=0$),阈值也大致翻倍至 $\approx1.33$;而 $W_{\min}=1.5$ 会将其推高至 $\approx2.11$——超过无摩擦基准的三倍,但仍为有限值。
+Every value remains within the empirically relevant range $A\in[0,3]$ (Section 3.1). The unconstrained baseline is $A^*\approx0.65$; even requiring only a non-negative base wage ($W_{\min}=0$) roughly doubles the threshold to $\approx1.33$, and $W_{\min}=1.5$ pushes it to $\approx2.11$ — over three times the frictionless benchmark, but still finite.
 
-**图4:最低工资底线在经验相关的AI强度范围内延缓、但不阻止转型。** 在 $W_{\min}=0.5$ 下,绘制了 $\Pi_T(A)$、无约束的 $\Pi_P^*(A)$,以及企业在约束生效时选择利润最大化 $\gamma$ 所得的 $\Pi_P^{MW}(A)$(第7.3节),同时给出约束下每个 $A$ 处选择的最优激励斜率 $\gamma$(收敛于 $\gamma_c^*=0.5$)。$\Pi_P^{MW}(A)$ 的增长慢于 $\Pi_P^*(A)$——因为它放弃了负基础工资这一渠道——但仍保持严格凸性,并在绘制区间内的某个有限点与 $\Pi_T(A)$ 相交。*(见代码仓库中的 `simulation/fig4_minimum_wage.png` 与 `simulation/minimum_wage.py`;上文的交互式工具允许读者通过在0到2之间调节 $W_{\min}$ 来直接验证这一点。)*
+**Figure 4: Minimum-wage floor delays, but does not block, transformation over the empirically relevant AI-intensity range.** Plots $\Pi_T(A)$, the unconstrained $\Pi_P^*(A)$, and $\Pi_P^{MW}(A)$ — the firm's profit-maximizing choice of $\gamma$ under the binding floor (Section 7.3) — for $A\in[0,3]$ under $W_{\min}=0.5$, together with the optimal incentive slope $\gamma$ chosen at each $A$ under the binding constraint (converging to $\gamma_c^*=0.5$). $\Pi_P^{MW}(A)$ grows more slowly than $\Pi_P^*(A)$ — since it forgoes the negative-base-wage channel — but remains strictly convex and crosses $\Pi_T(A)$ at a finite point within the plotted range. *(See `simulation/fig4_minimum_wage.png` and `simulation/minimum_wage.py` in the code repository; the interactive tool above lets readers verify this directly by sweeping $W_{\min}$ from 0 to 2.)*
 
-### 解释
+![Figure 4: Minimum-wage floor delays but does not block transformation](../simulation/fig4_minimum_wage.png)
 
-- 具有约束力的最低工资在经验相关的范围内**显著延缓、但不会彻底阻止**契约转型(第7.3节)。
-- 关于监管摩擦的叙事在定性意义上依然成立——最低工资保护大致使计件制变得最优所需的AI强度提高2到3倍——但这一机制被削弱,而非消除。
+### Interpretation
 
-### 7.3.1 稳健性:即便在更严格的有限责任约束下,凸性依然存续
+- A binding minimum wage **substantially delays, but does not categorically block**, contract transformation within the empirically relevant range (Section 7.3).
+- The regulatory-friction narrative of Sections 2.3, 6, and 8.1 survives in qualitative form — minimum-wage protection roughly doubles to triples the AI intensity required before piece-rate becomes optimal — but the mechanism is dampened, not eliminated.
 
-一个自然的后续问题是,定理1的核心机制——计件制利润的凸性增长最终主导计时制的线性增长——在彻底排除负基础工资的情形下($\alpha\ge0$,这是比任何具体法定 $W_{\min}$ 更严格、也更符合制度现实的约束)是否依然成立。在 $W_{\min}=0$ 的约束生效分支下,最优 $\gamma_c^*=1/2$ 处的利润为
+### 7.3.1 Robustness: convexity survives even under a stricter limited-liability constraint
+
+A natural follow-up question is whether Theorem 1's central mechanism — piece-rate profit's convex growth eventually dominating time-rate's linear growth — survives once negative base wages are ruled out altogether ($\alpha\ge0$), a stricter and more institutionally realistic constraint than any specific statutory $W_{\min}$. Under the binding-constraint branch with $W_{\min}=0$, profit at the optimal $\gamma_c^*=1/2$ is
 
 $$
 \Pi_P^{MW,\text{bind}}(A)\Big|_{\gamma=1/2} = \frac{\tilde H^2}{4k} - F,
 $$
 
-由于 $\tilde H$ 关于 $A$ 线性,该利润关于 $A$ 依然是二次的,首项系数为 $(\theta C)^2/(4k)$——是无约束渐近系数 $(\theta C)^2/(2k)$ 的二分之一,但仍严格凸。我们通过数值验证确认,这一受约束分支的利润在 $A\approx1.33$ 处超越 $\Pi_T(A)$,此后持续二次增长(利润差从 $A=0$ 时的 $-1.0$ 扩大到 $A=20$ 时的 $+224$)。这证实,本文的核心凸性机制并不依赖于"允许任意负工资"这一不现实的特征——即便在排除负基础工资这一最严格、最符合制度现实的约束下,该机制依然以更高但仍为有限的阈值存续。
+which is still quadratic in $A$ (since $\tilde H$ is linear in $A$), with leading coefficient $(\theta C)^2/(4k)$ — one quarter of the unconstrained asymptotic coefficient $(\theta C)^2/(2k)$, but still strictly convex. We confirmed numerically that this constrained-branch profit overtakes $\Pi_T(A)$ at $A\approx1.33$ and continues to grow quadratically thereafter (the profit gap widens from $-1.0$ at $A=0$ to $+224$ at $A=20$). This confirms that the paper's headline convexity mechanism does not depend on the unrealistic feature of allowing arbitrarily negative wages — it survives, with a higher but still finite threshold, under the strictest realistic limited-liability constraint.
 
 ---
 
-## 7.4 模拟结果总结
+## 7.4 Summary of Simulation Results
 
-1. 计件制利润在AI强度 $A$ 上**全域凸**,而不仅仅是渐近意义上(附录A.1)。
-2. 时间制利润关于 $A$ **线性**。
-3. 存在唯一的转型阈值 $A^*$,且其恰好与 $1/(\theta C)$ 成正比(附录A.5)。
-4. 噪声与风险厌恶**延缓**转型,且两者弹性相同(附录A.6)。
-5. AI增强效能系数**加速**转型。
-6. 最低工资监管**显著延缓**转型——在各种现实工资底线水平下,大致使所需AI强度提高2到3倍(第7.3节)——但在经验相关的AI强度范围内并不能彻底阻止转型。即便在彻底排除负基础工资这一更严格约束下,这一机制依然存续(第7.3.1节)。
-7. 阈值 $A^*$ 可证明不受劳动者保留效用具体设定方式的影响(附录A.7),也不受两种契约模式共有的、与努力无关的自动化渠道的影响(附录C)。
+1. Piece-rate profit is **convex** in AI intensity $A$, on the entire domain, not merely asymptotically (Appendix A.1).
+2. Time-rate profit is **linear** in $A$.
+3. A unique transformation threshold $A^*$ exists, and is exactly proportional to $1/(\theta C)$ (Appendix A.5).
+4. Noise and risk aversion **delay** transformation, with identical elasticities (Appendix A.6).
+5. The coefficient of AI-augmentation effectiveness **accelerates** transformation.
+6. Minimum-wage regulation **substantially delays** transformation — roughly doubling to tripling the required AI intensity across realistic floor levels (Section 7.3) — though it does not categorically block transformation within the empirically relevant AI-intensity range. This mechanism survives even under the stricter constraint of ruling out negative base wages entirely (Section 7.3.1).
+7. The threshold $A^*$ is provably invariant to the specification of worker reservation utility (Appendix A.7) and to any effort-independent automation channel common to both contract modes (Appendix C).
 
-这些数值结果印证了理论发现,并量化了驱动AI增强型生产环境中契约转型的经济力量。
+These numerical results reinforce the theoretical findings and quantify the economic forces driving contract transformation in AI-augmented production environments.
 
 ---
 
-## 7.5 行业异质性
+## 7.5 Sector Heterogeneity
 
-由于 $A^*$ 依赖于 $(C,\sigma^2,r)$,不同职业在何时跨越转型阈值上存在系统性差异。在其余参数保持基准取值的情况下,表1给出了四类职业的示例性校准,反映了第2–3节所讨论的AI增强效能系数、产出可监控性与典型风险暴露方面的定性差异。
+Because $A^*$ depends on $(C,\sigma^2,r)$, occupations differ systematically in how early they cross the transformation threshold. Holding all other parameters at baseline, Table 1 reports illustrative calibrations for four occupation types, reflecting qualitative differences in the coefficient of AI-augmentation effectiveness, output monitorability, and typical risk exposure discussed in Sections 2–3.
 
-**表1. 行业异质性转型阈值**
+**Table 1. Sector-heterogeneous transformation thresholds**
 
-| 职业 | 代表性现实案例 | $C$ | $\sigma^2$ | $r$ | $A^*$ |
+| Occupation | Representative real-world examples | $C$ | $\sigma^2$ | $r$ | $A^*$ |
 |---|---|---|---|---|---|
-| 配送/网约车骑手 | 美团、饿了么骑手 | 1.2 | 0.5 | 0.8 | 0.466 |
-| 直播主播 | 抖音、快手带货主播 | 1.5 | 1.8 | 1.0 | 0.500 |
-| 设计师/知识型员工 | 软件工程师、平面设计师 | 1.3 | 1.3 | 1.5 | 0.591 |
-| 制造业流水线工人 | 装配线工厂工人 | 0.4 | 0.7 | 1.0 | 1.516 |
+| Delivery / ride-hailing riders | Meituan, Ele.me couriers | 1.2 | 0.5 | 0.8 | 0.466 |
+| Livestream hosts | Douyin, Kuaishou livestream sellers | 1.5 | 1.8 | 1.0 | 0.500 |
+| Designers / knowledge workers | Software engineers, graphic designers | 1.3 | 1.3 | 1.5 | 0.591 |
+| Manufacturing line workers | Assembly-line factory workers | 0.4 | 0.7 | 1.0 | 1.516 |
 
-*注:仅 $(C, \sigma^2, r)$ 按行变化;其余参数均取第3.4节基准值。"代表性案例"一列仅为便于说明而列出普遍认知的职业类别,并非对任何具体企业实际薪酬结构的判断。这些校准是示例性的,而非依据劳动者层面数据估计所得(见第8.2节)。完整计算见代码仓库中的 `simulation/fig5_heterogeneity.png` 与 `simulation/simulate.py`。*
+*Note: only $(C, \sigma^2, r)$ vary by row; all other parameters use the Section 3.4 baseline. The "representative examples" column names commonly recognized occupation categories purely for illustration, not as claims about any specific company's actual compensation structure. Calibrations are illustrative rather than estimated from worker-level data (see Section 8.2). See `simulation/fig5_heterogeneity.png` and `simulation/simulate.py` in the code repository for the full computation.*
 
-骑手较早跨越阈值,原因在于其任务既高度可监控(低噪声 $\sigma^2=0.5$),又被AI高度增强(高效能 $C=1.2$)。直播主播以不同的原因在同样较低的 $A^*$ 处跨越阈值:尽管其在四个行业中产出噪声最高($\sigma^2=1.8$,反映了受观众驱动的收入波动性),但其极高的AI增强效能系数($C=1.5$,来自推荐算法的触达能力)超过了噪声效应——这说明在现实校准下,$A^*$ 对 $C$ 的响应可以超过其对 $\sigma^2$ 的响应(定理2)。这两种模式都与第3.5节的经验观察一致,即这些职业已经绝大多数采用计件工资。制造业流水线工人的任务被AI增强的程度较弱,需要超过基准两倍以上的AI强度才能达到 $A^*$($A^*=1.52$,对比基准0.65)。由于对任意正参数组合都存在有限的 $A^*$(定理1),模型本身从不永久排除转型的可能;足够弱的AI增强效能系数只是把 $A^*$ 推到远超第3.1节所述经验观察区间 $[0,3]$ 之外,这正是"制造业的转型在当前AI渗透水平下被无限期延后,而非在结构上被阻断"这一说法的确切含义——这也解释了为何即便AI在全经济范围内的采用不断上升,该行业仍持续采用计时工资。
+**Figure 5: Sector-heterogeneous transformation thresholds.** Plots $A^*$ for the four occupation calibrations of Table 1, illustrating how the coefficient of AI-augmentation effectiveness, output monitorability, and risk exposure jointly determine how early each occupation crosses the transformation threshold. *(See `simulation/fig5_heterogeneity.png` in the code repository.)*
 
-**外部佐证。** 尽管表1中行业专属的 $(C,\sigma^2,r)$ 校准是示例性的而非估计所得,这一定性排序仍得到两项独立证据的支持。首先,陈东、郭文光(2023)针对中国A股上市公司的行业异质性回归(其表3)发现,数字化对工资的影响,在劳动密集型行业(系数0.030,$p<0.01$)与知识技术密集型行业(0.028,$p<0.01$)中显著且量级相近,而在资本密集型行业中则明显更弱、仅边际显著(0.010,$p<0.10$)——这与表1中制造业明显更高的 $A^*$ 相符,尽管并非直接估计。我们提醒读者,他们基于上市公司资产负债表的行业分类,与本文的职业层面分类并非严格对应,因此这只是方向性的佐证,而非对校准取值的验证。其次,就 $\sigma^2$ 排序而言:张成刚(2023)分析了覆盖6.3万名配送骑手的调查数据,发现全职骑手的月收入近似服从正态分布,并有一个缓慢衰减的右尾,这一模式被归因于平台派单算法的透明性;相比之下,中国演出行业协会(2023)报告显示,主播收入呈极端右偏分布(95.2%低于每月5000元,0.4%高于每月10万元),张成刚(2023)将这一模式归因于Rosen(1981)的"超级明星效应",即平台规模化分发使少数头部主播能以近乎零的边际触达成本获取不成比例的回报。这种不对称性——骑手的劳动收入风险与主播的赢家通吃动态——与表1中校准的 $\sigma^2$ 相对排序一致,不过这只是对分布*形态*的描述性佐证,而非对 $\sigma^2$ 量级的校准;主播极端的右偏程度,很可能既反映了劳动者之间受众触达的异质性,也反映了单个劳动者自身的产出风险,而第4节的单一代理人模型并未将两者区分开来。
+![Figure 5: Sector-heterogeneous transformation thresholds](../simulation/fig5_heterogeneity.png)
 
-**图5:行业异质性转型阈值。** 绘制表1四类职业校准下的 $A^*$,展示AI增强效能系数、产出可监控性与风险暴露如何共同决定各职业跨越转型阈值的早晚。*(见代码仓库中的 `simulation/fig5_heterogeneity.png`。)*
+Riders cross the threshold early because their tasks are both highly monitorable (low $\sigma^2=0.5$) and AI-augmented (high $C=1.2$). Livestream hosts cross it at a similarly low $A^*$ for a different reason: despite the highest output noise among the four sectors ($\sigma^2=1.8$, reflecting audience-driven earnings volatility), their very high coefficient of AI-augmentation effectiveness ($C=1.5$, from recommendation-algorithm reach) dominates the noise effect — an illustration that $A^*$'s response to $C$ can outweigh its response to $\sigma^2$ at realistic calibrations (Theorem 2). Both patterns are consistent with the empirical observation (Section 3.5) that these occupations are already overwhelmingly piece-rate. Manufacturing line workers, whose tasks AI augments only weakly, require more than double the baseline AI intensity to reach $A^*$ ($A^*=1.52$ vs. baseline $0.65$). Because a finite $A^*$ exists for any positive parameter combination (Theorem 1), transformation is never permanently ruled out by the model itself; a sufficiently weak coefficient of AI-augmentation effectiveness simply pushes $A^*$ far outside the empirically observed range $[0,3]$ of Section 3.1, which is the sense in which manufacturing's transition is delayed indefinitely under current AI-penetration levels rather than blocked in any structural sense — explaining the persistence of time-rate compensation in that sector even as AI adoption rises economy-wide.
+
+**External corroboration.** While the sector-specific $(C,\sigma^2,r)$ calibrations in Table 1 are illustrative rather than estimated, the qualitative ordering finds two independent points of support. First, Chen and Guo's (2023) industry-heterogeneity regressions on Chinese A-share firms (their Table 3) find that digitalization's effect on wages is significant and comparable in magnitude for labor-intensive (coefficient 0.030, $p<0.01$) and knowledge-technology-intensive industries (0.028, $p<0.01$), but markedly weaker and only marginally significant for capital-intensive industries (0.010, $p<0.10$) — consistent with, though not a direct estimate of, manufacturing's markedly higher $A^*$ in Table 1. We caution that their industry classification (based on listed-company balance sheets) is not a literal match to the occupation-level categories here, so this is directional corroboration rather than calibration validation. Second, on the $\sigma^2$ ordering specifically: Zhang (2023), analyzing survey data covering 63,000 delivery riders, reports that full-time riders' monthly earnings are approximately normally distributed with a slowly-decaying right tail, a pattern attributed to the transparency of platform dispatch algorithms; by contrast, the China Association of Performing Arts (2023) reports that streamer earnings are extremely right-skewed (95.2% below ¥5,000/month, 0.4% above ¥100,000/month), a pattern Zhang (2023) attributes to Rosen's (1981) "superstar effect," in which platform-scale distribution lets a small number of top performers capture disproportionate returns at near-zero marginal cost of reach. This asymmetry — labor-income risk for riders versus winner-take-most dynamics for streamers — is consistent with the relative $\sigma^2$ ordering calibrated in Table 1, though it is descriptive corroboration of distributional *shape*, not a calibration of $\sigma^2$'s magnitude; streamers' extreme skew plausibly reflects cross-worker heterogeneity in audience reach as much as within-worker output risk, a distinction the single-agent model of Section 4 does not separately identify.
 
 ---
 
-## 7.6 $A^*$ 对 $\theta$ 与 $k$ 的联合敏感性
+## 7.6 Joint Sensitivity of $A^*$ to $\theta$ and $k$
 
-第7.2节在其余参数保持基准值的情况下改变 $r$ 与 $\sigma^2$。此处我们进一步联合改变AI放大系数 $\theta$ 与努力成本凸性参数 $k$,因为相较于具有既定经验区间的 $r$ 与 $\sigma^2$(来自Chetty, 2006),$\theta$ 与 $k$ 的校准更为宽松。
+Section 7.2 varies $r$ and $\sigma^2$ while holding all else at baseline. Here we additionally vary the AI amplification coefficient $\theta$ and the effort-cost convexity parameter $k$ jointly, since $\theta$ and $k$ are calibrated more loosely than $r$ and $\sigma^2$ (which have established empirical ranges from Chetty, 2006).
 
-**表2. $A^*(\theta, k)$ 敏感性网格**(其余参数取第3.4节基准值)
+**Table 2. $A^*(\theta, k)$ sensitivity grid** (all other parameters at Section 3.4 baseline)
 
 | $\theta \backslash k$ | 0.70 | 0.85 | 1.00 | 1.15 | 1.30 |
 |---|---|---|---|---|---|
@@ -1025,344 +1051,344 @@ $$
 | 1.65 | 0.212 | 0.406 | 0.591 | 0.769 | 0.942 |
 | 1.80 | 0.194 | 0.372 | 0.541 | 0.705 | 0.863 |
 
-基准单元格($\theta=1.50$,$k=1.00$)还原出 $A^*\approx0.650$。与附录A.5的精确弹性结果($\partial\ln A^*/\partial\ln\theta=-1$)一致,沿行方向移动可见 $A^*$ 大致按 $1/\theta$ 比例下降。$A^*$ 对 $k$ 的敏感性相当(弹性约为2.05,是所有已校准参数中最敏感的)。即便在网格中最保守的角点($\theta=1.20$,$k=1.30$),$A^*$ 依然落在经验合理区间 $[0,3]$ 内,说明这一定性结论并非第3.4节具体校准取值的偶然产物。
+The baseline cell ($\theta=1.50$, $k=1.00$) recovers $A^*\approx0.650$. Consistent with the exact elasticity result of Appendix A.5 ($\partial\ln A^*/\partial\ln\theta=-1$), moving along a row shows $A^*$ falling roughly in proportion to $1/\theta$. $A^*$ is comparably sensitive to $k$ (elasticity $\approx2.05$, the most sensitive parameter calibrated). Even at the most conservative corner of the grid ($\theta=1.20$, $k=1.30$), $A^*$ remains within the empirically plausible range $[0,3]$, so the qualitative conclusion is not an artifact of the point calibration in Section 3.4.
 
-**表3. 基准校准下 $A^*$ 的弹性**(有限差分,$\pm1\%$扰动)
+**Table 3. Elasticities of $A^*$ at baseline calibration** (finite-difference, $\pm1\%$ perturbation)
 
-| 参数 | 弹性 $\partial\ln A^*/\partial\ln x$ | 说明 |
+| Parameter | Elasticity $\partial\ln A^*/\partial\ln x$ | Note |
 |---|---|---|
-| $\sigma^2$ | +0.213 | 与关于 $r$ 的弹性精确相等(附录A.6) |
-| $r$ | +0.213 | 与关于 $\sigma^2$ 的弹性精确相等(附录A.6) |
-| $C$ | $-1.000$ | 精确闭式结果(附录A.5) |
-| $\theta$ | $-1.000$ | 精确闭式结果(附录A.5) |
-| $k$ | +2.048 | 所有参数中敏感性最高 |
-| $F$ | +0.792 | 监控成本的传导效应 |
+| $\sigma^2$ | +0.213 | = elasticity w.r.t. $r$ exactly (Appendix A.6) |
+| $r$ | +0.213 | = elasticity w.r.t. $\sigma^2$ exactly (Appendix A.6) |
+| $C$ | $-1.000$ | exact, closed form (Appendix A.5) |
+| $\theta$ | $-1.000$ | exact, closed form (Appendix A.5) |
+| $k$ | +2.048 | largest sensitivity of any parameter |
+| $F$ | +0.792 | monitoring-cost pass-through |
 
-# 8. 结论与政策含义
+# 8. Conclusion and Policy Implications
 
-本文构建了一个AI增强型生产下薪酬设计的委托代理模型。通过将AI强度 $A$ 与AI增强效能系数 $C$ 嵌入有效人力资本:
+This paper develops a principal–agent model of compensation design under AI-augmented production. By embedding AI intensity $A$ and the coefficient of AI-augmentation effectiveness $C$ into effective human capital:
 
 $$
 \tilde{H} = h + \theta AC
 $$
 
-我们推导出时间制与计件制契约下最优努力、最优计件激励与企业利润的闭式表达式。
+we derive closed-form expressions for optimal effort, optimal piece-rate incentives, and firm profit under time-rate and piece-rate contracts.
 
-一个核心理论结果是,存在唯一的转型阈值 $A^*$,企业在该阈值处最优地从计时工资转向计件工资,且具有精确闭式 $A^*\propto 1/(\theta C)$。比较静态分析表明,该阈值随产出噪声与劳动者风险厌恶上升而提高(二者弹性相同),随AI增强效能系数上升而降低。该阈值可证明既不受劳动者保留效用具体设定方式的影响,也不受两种契约模式共有的、与努力无关的自动化渠道的影响。数值模拟证实了这些结果,并表明最低工资监管在经验相关的AI强度范围内会显著延缓——大致使所需AI强度提高2到3倍,但不会彻底阻止——契约转型,且该阈值在不同AI增强效能系数与可监控性的职业间存在系统性差异。
+A central theoretical result is the existence of a unique transformation threshold $A^*$ at which firms optimally switch from time-rate to piece-rate compensation, with an exact closed form $A^*\propto 1/(\theta C)$. Comparative statics show that the threshold increases in output noise and worker risk aversion (with identical elasticity for both) and decreases in the coefficient of AI-augmentation effectiveness. The threshold is provably invariant both to the specification of worker reservation utility and to any effort-independent automation channel common to both contract modes. Numerical simulations confirm these results and show that minimum-wage regulation substantially delays — roughly doubling to tripling the required AI intensity, though not categorically blocking — contract transformation within the empirically relevant AI-intensity range, and that the threshold varies systematically across occupations with different coefficients of AI-augmentation effectiveness and monitorability.
 
-有必要明确说明,像 $A^*\approx0.65$ 这样一个闭式数字,其实践价值究竟在哪里——正如符号表后"关于单位的说明"所言,它是一个标准化指数,企业无法直接从自己的账本上读出这个数。这个数字真正的价值,落在另外三处更有分量的地方。第一,本文把一个人人都能凭直觉说出的判断——"外卖骑手比工厂工人更早转向计件制"——变成了一个可以说清*为什么*的论断,拆解为三个可以分别测量、也可以分别被证伪的条件(高 $C$、低 $\sigma^2$、适中的 $r$),而不再是一个没有解释的经验排序。第二,第7.3节推导出的精确结果 $\gamma_c^*=1/2$,从数理上正面推翻了一种常见的政策直觉:人们容易以为,只要把最低工资提得足够高,就能挡住算法定价对劳动者的侵蚀,但本文证明,无论工资底线定得多高,都无法消除驱动 $A^*$ 的那个凸性激励机制本身——只有真正触及监控成本 $F$ 与激励斜率 $\gamma$ 本身的监管,才能做到这一点,而这恰恰是第3.6节所记录的、包括国际劳工组织在内的国际监管机构正在采取的方向。第三,附录A.5给出的 $\theta$ 与 $C$ 之间的精确可替代性,是一个甚至不需要计算出 $A^*$ 具体数值就能直接使用的政策设计结论:面向劳动者的AI技能培训,与面向企业的AI工具补贴,在边际上是加速同一转型的两种可以互相替代的政策杠杆——这足以指导一名需要在两者之间分配有限预算的监管者做出取舍。
-
----
-
-## 8.1 政策含义
-
-### (1)分行业差异化劳动监管
-
-AI渗透率高、增强效能强的行业(如数字内容创作)很可能已经处于 $A^*$ 之上,能够从产出导向型薪酬中受益。
-AI渗透率低或噪声高的行业仍处于 $A^*$ 之下,此时时间制薪酬是最优的。
-
-### (2)AI增强技能培训
-
-由于 $A^*$ 随 $C$ 上升而下降——事实上,它与 $\theta C$ 恰好成反比(附录A.5)——提升劳动者与AI工具协作能力的政策能够加速有益的契约转型,并且在边际上,与提升 $\theta$ 的技术升级完全可以相互替代。
-
-### (3)灵活就业中的最低工资设计
-
-具有约束力的工资底线提高了计件制薪酬下所需的基础工资,在基准校准下,会显著延缓——在测试的各种底线水平下大致使所需AI强度提高2到3倍(第7.3节)——而非彻底阻止转型。混合制度(最低收入保障、收入平滑机制)直觉上似乎能以比统一底线更小的效率代价保护劳动者。但本文自身的结果在这一点上提示应保持审慎,而非直接背书:附录B对两种契约模式的数理统一表明,在本文所校准的基准(零边际成本)执行技术下,企业的最优选择**从不**是保底工资与提成的内点混合——它始终是角点解,要么纯时间制,要么纯计件制(命题1)。这与中国平台配送与网约车行业中事实上占主导地位的"底薪加提成"混合薪酬存在直接张力(附录B.3)。我们并不将此解读为混合方案不可取的证据;相反,这提示本文的基准模型并非用来*设计*混合方案的合适工具,若要为观察到的混合薪酬提供理论依据,需要采用附录B.3中勾勒的两种更丰富的执行成本结构之一——这是在该模型能够自信地指导混合方案设计之前,一个具体、明确的扩展方向。
-
-### (4)效率-公平权衡,而非单方面的成本
-
-第7.3节的发现不应被解读为反对最低工资保护的论据。从效率角度看,延缓契约转型意味着放弃了在给定AI强度下、凸性AI增强型激励薪酬本可带来的生产率增益。但从公平与福利角度看,同一机制保护了风险厌恶的劳动者,使其免受无约束计件契约在 $\sigma^2$ 与 $A$ 上升时本会施加的那部分收入波动之害(第6.2节(i))——正如第8.2节所指出的,这也可能缓解本文单任务框架未能建模的多任务危害(例如速度与安全之间的权衡),这意味着此处勾勒的公平论据应被理解为一个下界。模型本身并不对监管者应如何权衡这些效应表态;它只是表明,这一权衡是结构性的,而非偶然的——工资底线无法被精细调节到既保留AI驱动激励薪酬的效率增益、又实现其劳动者保护目的,因为这两种效应都源于对 $\alpha$ 的同一约束。
-
-### (5)监管监控机制本身,而非只监管工资底线——来自四种趋同的监管传统的启示
-
-第3.6节表明,中国、美国、英国、欧盟,以及——截至2026年6月12日——在全球层面的国际劳工组织,各自以不同的监管工具,回应了同一次 $A$ 的上升:工资底线(中国)、叠加在持续算法灵活性之上的福利底线(加州第22号提案)、逐案认定的身份重新分类测试(英国*Uber v Aslam*案),以及对算法管理本身的直接监管(欧盟《平台工作指令》与如今的国际劳工组织第193号公约)。本文的模型自身提供了一个具体理由,说明为何"直接监管算法管理"这一路径可能触及了比单纯工资底线更具结构性意义的杠杆:第7.3节中中国的最低工资只作用于基础工资 $\alpha$,监控成本 $F$ 与激励斜率 $\gamma$ 并未受到触动;而欧盟指令与第193号公约的透明度与人工复核要求则提高了 $F$,并限制了 $\gamma$ 的设定空间——本文的比较静态分析(定理2、附录A.5)表明,这两条渠道都会将 $A^*$ 推向有利于劳动者保护的方向,且无需像第8.1节(4)所述那样,依赖那种一刀切的工资底线。因此,一项值得在中国现有工资底线之外(而非取而代之)试点的、互补且成本更低的政策杠杆是**算法透明度与劳动者数据权利**:要求平台披露派单、评分与激励算法如何将骑手的产出转化为报酬,并赋予劳动者对自动化评分或降权决定提出异议的权利。由于这类要求提高了运行纯产出监控系统的有效成本、却不直接限定基础工资,它作用于本文所建模刻画的机制的另一个边际——并且,正如第2.5节所讨论的,这也是本文模型仅凭效率理由就能推荐的政策(纠正劳动者无法核实或质疑监控技术本身这一问题),同时与剩余价值解读对"不受制约地控制测量技术本身"这一独立关切相一致。这已不再只是一个纯理论层面的建议:截至本文定稿之时,这正是国际社会以近乎一致的表决(406–8–36)刚刚选择的方向;而中国自身的监管演进——从2021年《指导意见》聚焦工资与工时,走向2026年3月《平台劳动规则和算法协商指引(试行)》(中华全国总工会等,2026)所确立的算法与劳动规则直接协商机制,截至2025年已覆盖15家主要平台、逾2000万名平台劳动者——是在任何关于是否批准第193号公约本身的未来决定之前,沿同一方向加以正式化的自然下一步。
+It is worth being explicit about what kind of practical value a closed-form number like $A^*\approx0.65$ actually offers, since — as the units note following the Notation table makes clear — it is a standardized index, not a quantity a firm could read off its own books. The value lies in three sharper places instead. First, the model turns an intuition anyone can state informally — "delivery riders went piece-rate faster than factory workers did" — into a claim about *why*, decomposed into three independently measurable and separately falsifiable conditions (high $C$, low $\sigma^2$, moderate $r$), rather than an unexplained ranking. Second, the exact result $\gamma_c^*=1/2$ derived in Section 7.3 overturns a common policy intuition on its own terms: it is tempting to assume that raising the minimum wage is by itself sufficient protection against algorithmic wage-setting, but this paper shows mathematically that no wage floor, however high, can eliminate the convex incentive-pay mechanism driving $A^*$ — only regulation reaching the monitoring cost $F$ and the incentive slope $\gamma$ directly can do that, which is precisely the shift Section 3.6 documents international regulators, up to and including the ILO, already making. Third, Appendix A.5's exact substitutability between $\theta$ and $C$ is a policy-design result usable without ever computing $A^*$'s numerical value: AI-skills training for workers and AI-tool subsidies for firms are, at the margin, interchangeable levers for accelerating the same transition, a conclusion a regulator allocating a fixed budget between the two can act on directly.
 
 ---
 
-## 8.2 局限性与未来研究方向
+## 8.1 Policy Implications
 
-1. 噪声假设为高斯分布;AI预测误差可能呈厚尾分布。
-2. 多主体扩展可用于分析AI下的团队生产。
-3. 动态模型可纳入关于AI工具的学习过程。
-4. 中国2021年《指导意见》中与工资底线一并强制要求的社会保险缴费(工伤保险、社保)未被建模为企业侧的单独成本;若将其纳入计件制下的额外固定成本,很可能会进一步强化第7.3节所记录的延缓效应,而非削弱它。
-5. 增强效能 $C$ 被处理为外生且不随时间变化,第7.5节的行业校准是示例性的,而非依据劳动者层面数据估计所得。让劳动者随时间内生地提升 $C$(使 $A^*$ 成为一个动态的、路径依赖的对象),以及用数据支持的取值替代行业校准,是自然的下一步。
-6. 第4.3节与第5.2节中的基准计件契约,在无约束情形下允许基础工资 $\alpha$ 任意为负。第7.3.1节证明,即便在更严格、更符合制度现实的约束 $\alpha\ge0$ 下,本文的核心凸性机制依然完整存续——阈值更高但仍为有限值。
-7. **隐藏信息。** 第4–5节将劳动者风险厌恶 $r$ 与AI增强效能系数 $C$ 处理为企业可观测的。实践中这些是私人信息,这将本文的单一阈值框架与Laffont and Tirole(1993)的甄别理论联系起来:一个无法观测劳动者类型的平台,通常无法对每位劳动者都实施第5.2节的完全信息契约,而需要一套满足自我选择约束的契约菜单。这会将定理1中的标量阈值 $A^*$ 替换为 $(A,r,C)$空间中的一个分离*区域*——这与第7.5节的劳动者层面异质性形成了自然的衔接,留待未来研究。
-8. **多任务问题。** 本文的单任务努力模型无法刻画对推动本文研究的平台劳动情境而言至关重要的问题:计件工资可能诱使骑手将努力从安全等未被计量的维度上转移出去,这与Holmstrom and Milgrom(1991)的多任务逻辑一脉相承。若正式引入第二个、不受奖励的努力维度 $a_2$,很可能会得到 $a_2$ 在 $A^*$ 之上随 $A$ 递减这一可检验的预测,但本文并未推导这一结果。如果这一渠道确实存在,它会强化、而非削弱第8.1节(4)中关于最低工资监管的公平论据,因为在约束生效的工资底线下削弱激励斜率 $\gamma$(第7.3.1节)也会同时抑制这种"安全努力替代"现象;因此那里勾勒的效率-公平权衡应被理解为一个下界。
-9. **与努力无关的自动化渠道。** 基准生产函数 $y=a\tilde H+\varepsilon$(第4.1节)将AI的全部贡献都导向了劳动者努力,因此每当 $a=0$ 时产出为零——这遗漏了独立于即时努力、对产出有贡献的AI组件(如路径优化)。附录C证明,只要这类项 $g(A)$ 在两种契约模式下以相同方式实现(命题2),本文的阈值结果就完全不受其影响——这是经验上合理的情形,因为派单算法通常无论薪酬结构如何都以相同方式运行。真正悬而未决、也更困难的情形,是自动化本身*内生于契约模式*(例如计件工资相较于计时工资更能刺激自动化投资),附录C精确地陈述了这一问题,但并未解决它。
-10. **AI强度 $A$ 是外生的;采用AI本身并未被建模为一项投资决策。** 本文回答的是"给定 $A$,哪种契约最优",而非"企业一开始应投入多少来提升 $A$"——获取AI能力是一项有其自身回收期的、面向未来的、代价高昂的资本决策,本文并未对此建模。与此相关,监控成本 $F$ 被假设为不随 $A$ 上升而变化,尽管更好的AI很可能在提升 $\theta$ 与 $C$ 的同时也降低监控成本;若让 $F$ 随 $A$ 下降,并不会推翻本文的机制——反而会将 $A^*$ 进一步压低,强化而非削弱本文的结论。
-11. **竞争性劳动力市场假设可能并不适用于平台零工。** 参与约束 $CE=\bar U$ 假设企业获取了劳动者外部选择之上的全部剩余,这与竞争性劳动力市场相符。相当一部分劳动经济学文献认为,平台可能对零工劳动者拥有*买方垄断*力量(外部选择有限、更换平台成本高),从而攫取超出竞争性IR约束所预测的租金。这不会改变本文的效率结果——平衡风险与激励的最优线性契约 $(\alpha^*,\gamma^*)$ 的推导独立于市场结构——但会强化第8.1节(4)中监管的福利论据:如果平台确实拥有买方垄断力量,那么工资底线在纠正市场势力扭曲的同时,也不仅仅是在重新分配本已被有效分享的剩余。我们将这一点标注为本文尚未处理的、结构上最重要的一个假设,它也是这一局限与第2.5节政治经济学解读重新衔接得最直接的地方:一个买方垄断的劳动力市场,正是第2.5节两种视角相互收敛的具体条件——因为一个攫取超出竞争性IR约束租金的企业,无论用哪种传统的语汇来说,都是在占有超出单纯风险分担所能正当化的、AI生产率红利中的更大份额。
+### (1) Differentiated labor regulation across industries
+
+Industries with high AI penetration and strong augmentation effectiveness (e.g., digital content creation) are likely above $A^*$ and benefit from output-based pay.
+Low-AI or high-noise industries remain below $A^*$, where time-rate compensation is optimal.
+
+### (2) AI-augmentation skills training
+
+Because $A^*$ decreases in $C$ — and, in fact, is exactly inversely proportional to $\theta C$ (Appendix A.5) — policies that enhance workers' ability to collaborate with AI tools can accelerate beneficial contract transformation, and are, at the margin, an exact substitute for technology upgrades that raise $\theta$.
+
+### (3) Minimum-wage design for flexible employment
+
+Binding wage floors raise the required base wage under piece-rate compensation and, under baseline calibration, substantially delay transformation — roughly doubling to tripling the AI intensity required across the range of floors tested (Section 7.3) — rather than blocking it outright. Hybrid systems (minimum income guarantees, earnings smoothing) intuitively look like they should protect workers at a smaller efficiency cost than a flat floor. Here this paper's own results urge caution rather than endorsement: the formal unification of the two contract modes in Appendix B shows that, under the baseline (zero-marginal-cost) enforcement technology calibrated in this paper, the firm's optimum is *never* an interior blend of a guaranteed base and a commission — it is always a corner, pure time-rate or pure piece-rate (Proposition 1). This sits in direct tension with the hybrid base-plus-commission pay that is in fact the empirically dominant structure in China's platform delivery and ride-hailing sector (Appendix B.3). We do not read this as evidence that hybrid schemes are undesirable; rather, it flags that this paper's baseline model is the wrong tool to *design* one, and that rationalizing observed hybrid pay requires one of the two richer enforcement-cost structures sketched in Appendix B.3 — a specific, stated direction for extending the model before it can speak to hybrid-scheme design with confidence.
+
+### (4) An efficiency–equity tradeoff, not a one-sided cost
+
+Section 7.3's finding should not be read as a case against minimum-wage protection. From an efficiency standpoint, delaying contract transformation forgoes the productivity gains that convex, AI-augmented incentive pay could deliver at a given AI intensity. But from an equity and welfare standpoint, the same mechanism protects risk-averse workers from exactly the income volatility that unconstrained piece-rate contracts would impose as $\sigma^2$ and $A$ rise (Section 6.2(i)) — and, as Section 8.2 notes, may also mitigate multitasking harms (e.g., speed-versus-safety tradeoffs) that this paper's single-task framework does not itself model, meaning the equity case sketched here should be read as a lower bound. The model does not take a stance on how a regulator should weigh these effects; it only shows that the tradeoff is structural, not incidental — a wage floor cannot be fine-tuned to preserve the efficiency gains of AI-driven incentive pay while also serving its worker-protection purpose, because both effects flow from the same constraint on $\alpha$.
+
+### (5) Regulate the monitoring mechanism, not only the wage floor — a lesson from four converging regulatory traditions
+
+Section 3.6 showed that China, the United States, the United Kingdom, the European Union, and — as of 12 June 2026 — the International Labour Organization at global scale have each responded to the same underlying rise in $A$ with a different regulatory instrument: a wage floor (China), a benefits floor layered on continued algorithmic flexibility (California's Proposition 22), a case-by-case reclassification test (the UK's *Uber v Aslam*), and direct regulation of algorithmic management itself (the EU's Platform Work Directive and, now, ILO Convention No. 193). This paper's own model offers one concrete reason to think the algorithmic-management approach targets a more structurally important lever than a wage floor alone: China's minimum wage in Section 7.3 operates only on the base wage $\alpha$, leaving the monitoring cost $F$ and the incentive slope $\gamma$ untouched, whereas the EU Directive's and Convention 193's transparency and human-review requirements raise $F$ and constrain how tightly $\gamma$ can be set — both channels this paper's comparative statics (Theorem 2, Appendix A.5) show move $A^*$ in the worker-protective direction, and do so without necessarily requiring the blunt, all-or-nothing wage floor that Section 8.1(4)'s tradeoff describes. A complementary, lower-cost policy lever therefore worth piloting alongside — not instead of — China's existing wage floor is **algorithmic transparency and worker data rights**: requiring platforms to disclose how dispatch, rating, and incentive algorithms translate a rider's output into pay, and giving workers a right to contest an automated rating or de-boosting decision. Because such a requirement raises the effective cost of running a purely output-monitored system without capping the base wage directly, it works on a different margin of the same mechanism this paper formalizes, and — per the discussion in Section 2.5 — it is also the policy this paper's model can recommend on efficiency grounds alone (correcting the worker's inability to verify or contest the monitoring technology) while remaining consistent with the surplus-value reading's separate concern about unchecked control over the measurement technology itself. This is no longer a purely theoretical suggestion: it is, as of this paper's finalization, the direction the international community itself has just chosen almost unanimously (406–8–36), and China's own regulatory evolution — from the 2021 *Guiding Opinions*' wage-and-hours focus toward the direct algorithm-and-labor-rules negotiation mechanism established by the March 2026 *Guidelines on Platform Labor Rules and Algorithm Negotiation (Trial)* (All-China Federation of Trade Unions et al., 2026), already covering more than 20 million platform workers across 15 major platforms as of 2025 — is a natural next step to formalize along the same lines, ahead of any future ratification decision on Convention 193 itself.
 
 ---
 
-## 8.3 结语
+## 8.2 Limitations and Future Research
 
-让我们回到第1节开篇提到的两位骑手。第4–7节的数理推演,回答了一个关于他们的、狭窄但精确的经济学问题:给定他们产出的噪声有多大、他们有多厌恶收入风险、AI究竟把他们一小时劳动的价值真实提升了多少,雇佣他们的企业在什么时候,不再按小时付费、转而按单付费,才变得*有利可图*。这是一个经济学问题,本文用一个闭式阈值、精确的弹性结果,以及一次经过独立中国企业面板数据(第3.5节)与美英欧零工经济监管实践(第3.6节)双重检验的数值校准,回答了它。
-
-但第2.5节论证过,而这里值得重申一遍:*有利可图*与*公平*并不是同一个问题,模型本身无法替读者判断二者孰轻孰重。无论把企业在 $A^*$ 之上不断扩大的AI生产率增益份额,读作对承担风险与监控成本的一种有效回报,还是读作马克思所说的、通过提升劳动生产率而榨取相对剩余价值的一个当代实例,底层的那个数字——同一个 $A^*$,同样的比较静态结果——都不会改变。改变的,只是决策者在第8.1节(4)的权衡中,给公平这一端赋予多大的权重,以及他们对第8.1节(5)所述算法透明度措施的重视程度和紧迫性。中国的平台经济,在2021年《指导意见》发布数年后仍在摸索其监管定位,并不需要在这两种解读之间一劳永逸地做出选择;本文认为,它也不必如此。一项延缓契约转型的工资底线,与一项提高不受问责的算法控制之成本的透明度要求,可以同时成立——出于不同的理由,来自不同的经济学传统——而无需任何一方在"一小时被算法定价的劳动到底值多少"这个问题上说服另一方。
+1. Noise is assumed Gaussian; AI prediction errors may be heavy-tailed.
+2. Multi-agent extensions could analyze team production under AI.
+3. Dynamic models could incorporate learning about AI tools.
+4. Social-insurance contributions (工伤保险、社保) mandated alongside wage floors under China's 2021 Guiding Opinions are not modeled as a separate firm-side cost; incorporating them as an additional fixed cost under piece-rate compensation would plausibly strengthen the delaying effect documented in Section 7.3 further, not weaken it.
+5. Augmentation effectiveness $C$ is treated as exogenous and time-invariant, and the sector calibrations in Section 7.5 are illustrative rather than estimated from worker-level data. Letting workers endogenously raise $C$ over time (making $A^*$ a dynamic, path-dependent object) and replacing the sector calibrations with data-informed values are natural next steps.
+6. The baseline piece-rate contract in Sections 4.3 and 5.2 permits an arbitrarily negative base wage $\alpha$ in the unconstrained case. Section 7.3.1 shows the paper's central convexity mechanism survives intact — with a higher but still finite threshold — even under the stricter, more institutionally realistic constraint $\alpha\ge0$.
+7. **Hidden information.** Sections 4–5 treat worker risk aversion $r$ and the coefficient of AI-augmentation effectiveness $C$ as observable to the firm. In practice these are private information, connecting this paper's single-threshold framework to the screening theory of Laffont and Tirole (1993): a platform that cannot observe a worker's type generally cannot implement the full-information contract of Section 5.2 for every worker, and would instead need a menu of contracts satisfying a self-selection constraint. This would replace the scalar threshold $A^*$ of Theorem 1 with a separation *region* in $(A,r,C)$-space — a natural bridge to the worker-level heterogeneity in Section 7.5, left to future work.
+8. **Multitasking.** This paper's single-task effort model cannot represent a concern central to the platform-labor context motivating it: piece-rate pay may induce riders to substitute effort away from unmeasured dimensions like safety, in the spirit of Holmstrom and Milgrom (1991)'s multitask logic. Formally introducing a second, unrewarded effort dimension $a_2$ would plausibly make $a_2$ decreasing in $A$ above $A^*$ — a testable prediction this paper does not derive. If this channel is real, it strengthens, rather than weakens, the equity case for minimum-wage regulation in Section 8.1(4), since dampening the incentive slope $\gamma$ under a binding floor (Section 7.3.1) would also blunt this safety-effort substitution; the efficiency–equity tradeoff sketched there should accordingly be read as a lower bound.
+9. **Effort-independent automation channel.** The baseline production function $y=a\tilde H+\varepsilon$ (Section 4.1) routes all of AI's contribution through worker effort, so output is zero whenever $a=0$ — omitting AI components (e.g. route optimization) that contribute to output independent of momentary effort. Appendix C shows the paper's threshold result is exactly invariant to any such term $g(A)$, provided it is realized identically under both contract modes (Proposition 2) — the empirically plausible case, since dispatch algorithms typically run the same way regardless of pay structure. The harder, genuinely open case is automation that is *endogenous to the contract mode* (e.g. piece-rate pay spurring more automation investment than time-rate pay), which Appendix C states precisely without resolving.
+10. **AI intensity $A$ is exogenous; adopting it is not itself modeled as an investment decision.** The paper answers "given $A$, which contract is optimal," not "how much should a firm spend to raise $A$ in the first place" — acquiring AI capability is a costly, forward-looking capital decision with its own payback period that this paper does not model. Relatedly, the monitoring cost $F$ is held fixed as $A$ rises, even though better AI plausibly lowers monitoring costs at the same time as it raises $\theta$ and $C$; letting $F$ fall in $A$ would not overturn the paper's mechanism — it would push $A^*$ lower still, reinforcing rather than weakening the result.
+11. **The competitive labor market assumption may not hold for platform gig work.** The participation constraint $CE=\bar U$ assumes the firm captures all surplus above the worker's outside option, consistent with a competitive labor market. A substantial labor-economics literature argues platforms may instead hold *monopsony* power over gig workers (limited outside options, high platform-switching costs), extracting rents beyond what a competitive IR constraint predicts. This would not change the paper's efficiency result — the optimal linear contract $(\alpha^*,\gamma^*)$ that balances risk and incentives is derived independently of market structure — but it would strengthen the welfare case for regulation in Section 8.1(4): if platforms hold monopsony power, a wage floor would then also be correcting a market-power distortion, not only redistributing efficiently-shared surplus. We flag this as the most structurally significant unaddressed assumption in the paper, and it is also the point at which this limitation reconnects most directly with Section 2.5's political-economy reading: a monopsonistic labor market is the specific condition under which the two lenses of Section 2.5 converge, since a firm extracting rents beyond a competitive IR constraint is, in the vocabulary of either tradition, capturing more of AI's productivity dividend than risk-sharing alone would justify.
 
 ---
 
-# 附录A. 补充证明
+## 8.3 Closing Reflection
 
-本附录给出:(i)劳动者努力选择与企业最优计件比例背后的二阶条件(A.0节);(ii)对 $\Pi_P^*(A)$ 全域凸性的显式验证,从而完成定理1的证明,该证明在正文中仅以渐近方式给出(A.1–A.2节);(iii)对 $\partial A^*/\partial C$ 的完整比较静态证明——并说明该符号依赖于校准取值,而非普适恒等式,在全部四个行业校准下均已验证(A.4节;A.3节仅指向第6.2节(ii)中已给出的关于 $\partial A^*/\partial r$ 的平行推导,以避免重复);以及(iv)四项进一步的结构性推论及其完整证明与数值验证(A.5–A.8节)。
+Return, for a moment, to the two riders of Section 1's opening image. The formal machinery of Sections 4–7 answers a narrow but precise question about them: given how noisy their output is, how much they dislike income risk, and how much AI genuinely raises what an hour of their labor is worth, at what point does it become *profitable* for the firm employing them to stop paying by the hour and start paying by the delivery. That is an economic question, and this paper answers it with a closed-form threshold, exact elasticities, and a numerical calibration disciplined by independent Chinese firm-panel evidence (Section 3.5) and by the parallel experience of gig-economy regulation in the United States, the United Kingdom, and the European Union (Section 3.6).
 
-## A.0 二阶条件(SOC)
+But Section 2.5 argued, and it is worth repeating here, that *profitable* and *fair* are not the same question, and the model cannot by itself tell a reader which one they should care more about. Whether one reads the firm's growing share of AI's productivity gain above $A^*$ as an efficient reward for bearing risk and monitoring cost, or as a modern instance of what Marx called the extraction of relative surplus value through rising labor productivity, the underlying number — the same $A^*$, the same comparative statics — does not change. What changes is only the weight a policymaker places on the equity side of Section 8.1(4)'s tradeoff, and how urgently they treat the algorithmic-transparency measures of Section 8.1(5). China's platform economy, still finding its regulatory footing a few years after the 2021 *Guiding Opinions*, is not choosing between these two readings once and for all; neither, this paper suggests, need it. A wage floor that slows contract transformation, and a transparency requirement that raises the cost of unaccountable algorithmic control, can both be justified — for different reasons, by different economic traditions — without either side needing to win the argument about what an algorithm-priced hour of labor is ultimately *worth*.
 
-**劳动者的努力选择。** 劳动者的问题是 $\max_a\{\gamma a\tilde H - \tfrac12 ka^2\}$。关于 $a$ 的二阶导数为 $-k<0$(对任意 $k>0$),因此 $a^*=\gamma\tilde H/k$ 刻画了一个严格全局最大值。
+---
 
-**企业的计件比例选择。** 由第5.2节,
+# Appendix A. Additional Proofs
+
+This appendix provides complete derivations for (i) the second-order conditions underlying the worker's effort choice and the firm's optimal piece rate (Section A.0); (ii) an explicit global-convexity verification of $\Pi_P^*(A)$ completing the proof of Theorem 1, which the main text only established asymptotically (Sections A.1–A.2); (iii) a full comparative-statics proof for $\partial A^*/\partial C$ — noting this sign is calibration-dependent rather than a universal identity — with verification across all sector calibrations (Section A.4; Section A.3 is a pointer to the parallel derivation for $\partial A^*/\partial r$ already given in Section 6.2(ii), to avoid duplication); and (iv) four further structural corollaries with complete proofs and numerical verification (Sections A.5–A.8).
+
+## A.0 Second-Order Conditions (SOC)
+
+**Worker's effort choice.** The worker's problem is $\max_a\{\gamma a\tilde H - \tfrac12 ka^2\}$. The second derivative with respect to $a$ is $-k<0$ for all $k>0$, so $a^*=\gamma\tilde H/k$ characterizes a strict global maximum.
+
+**Firm's piece-rate choice.** From Section 5.2,
 
 $$
 \Pi_P(\gamma) = \frac{\gamma\tilde H^2}{k} - \frac{\gamma^2\tilde H^2}{2k} - \frac{1}{2}r\gamma^2\sigma^2 - \bar U - F.
 $$
 
-这关于 $\gamma$ 是二次的,首项系数为
+This is quadratic in $\gamma$ with leading coefficient
 
 $$
 \frac{\partial^2\Pi_P}{\partial\gamma^2} = -\frac{\tilde H^2}{k} - r\sigma^2 < 0
 $$
 
-对任意 $\tilde H, k, r, \sigma^2 > 0$ 恒成立。因此 $\Pi_P(\gamma)$ 在其定义域上处处严格凹,$\gamma^*=\tilde H^2/(\tilde H^2+rk\sigma^2)$ 刻画了唯一的全局最大值点,确认 $\gamma^*\in(0,1)$。
+for all $\tilde H, k, r, \sigma^2 > 0$. Hence $\Pi_P(\gamma)$ is strictly concave everywhere on its domain, and $\gamma^*=\tilde H^2/(\tilde H^2+rk\sigma^2)$ characterizes the unique global maximizer, confirming $\gamma^*\in(0,1)$.
 
-## A.1 $\Pi_P^*(A)$ 的全域凸性(完成定理1的证明)
+## A.1 Global Convexity of $\Pi_P^*(A)$ (completing the proof of Theorem 1)
 
-正文通过 $\Pi_T$(线性)与 $\Pi_P^*$(二次)的渐近阶,建立了当 $A\to\infty$ 时 $G(A)\to+\infty$,并从"严格凸函数减去线性函数"陈述了唯一性。这要求 $\Pi_P^*(A)$ 在**整个**定义域 $[0,\bar A]$ 上凸,而不仅仅是渐近意义上凸。我们直接验证这一点。
+The main text establishes $G(A)\to+\infty$ as $A\to\infty$ via the asymptotic orders of $\Pi_T$ (linear) and $\Pi_P^*$ (quadratic), and states uniqueness from "a strictly convex function minus a linear function." This requires $\Pi_P^*(A)$ to be convex on the *entire* domain $[0,\bar A]$, not merely asymptotically. We verify this directly.
 
-记 $H=\tilde H(A)=h+\theta AC$,$b=rk\sigma^2$(一个正常数)。则
+Write $H=\tilde H(A)=h+\theta AC$ and $b=rk\sigma^2$ (a positive constant). Then
 
 $$
 \Pi_P^*(A) = \frac{H^4}{2k(H^2+b)} - \bar U - F.
 $$
 
-对 $A$ 求二阶导数(利用 $dH/dA=\theta C$ 为常数)并化简,得到
+Differentiating twice with respect to $A$ (using $dH/dA=\theta C$, a constant) and simplifying yields
 
 $$
 \frac{d^2\Pi_P^*}{dA^2} = (\theta C)^2\cdot\frac{H^2(H^4+3bH^2+6b^2)}{k(H^2+b)^3}.
 $$
 
-由于 $H>0$(因为 $h>0$ 且 $A,\theta,C\ge0$)且 $b>0$,括号内分子的每一项都严格为正,分母 $k(H^2+b)^3>0$。因此
+Since $H>0$ (as $h>0$ and $A,\theta,C\ge0$) and $b>0$, every term in the bracketed numerator is strictly positive, and the denominator $k(H^2+b)^3>0$. Hence
 
 $$
-\frac{d^2\Pi_P^*}{dA^2} > 0 \quad\text{对任意 } A\ge0,
+\frac{d^2\Pi_P^*}{dA^2} > 0 \quad\text{for all } A\ge0,
 $$
 
-确立了 $\Pi_P^*(A)$ 在整个定义域上严格凸。(该闭式表达式已在基准校准下 $A\in\{0,0.2,0.5,0.65,1,2,3,5,10\}$ 处与直接数值二阶差分核对,每一点均精确到小数点后五位。)
+establishing that $\Pi_P^*(A)$ is strictly convex on the entire domain. (This closed-form expression was verified against direct numerical second differencing at $A\in\{0,0.2,0.5,0.65,1,2,3,5,10\}$ under baseline calibration, matching to five decimal places at every point.)
 
-## A.2 存在性与唯一性(完成定理1)
+## A.2 Existence and Uniqueness (completing Theorem 1)
 
-由于 $\Pi_T(A)$ 仿射,$\Pi_P^*(A)$ 在 $[0,\bar A]$ 上严格凸(A.1节),$G(A)=\Pi_P^*(A)-\Pi_T(A)$ 本身严格凸。
+With $\Pi_T(A)$ affine and $\Pi_P^*(A)$ strictly convex on $[0,\bar A]$ (Section A.1), $G(A)=\Pi_P^*(A)-\Pi_T(A)$ is itself strictly convex.
 
-严格凸函数的下水平集 $\{A\in[0,\bar A]:G(A)<0\}$ 是一个区间:若 $G(A_1)<0$ 且 $G(A_2)<0$($A_1<A_2$),凸性意味着 $G(A)$ 在 $[A_1,A_2]$ 上位于连接这两点的弦以下,因而也在0以下。由于 $G(0)<0$(第6.1节第一步),该区间包含0,且作为一个区间,必然形如 $[0,A^*)$。由于 $G(A)\to+\infty$,该区间有界,因此存在有限的交点 $A^*$,满足 $G(A^*)=0$、$A<A^*$ 时 $G(A)<0$、$A>A^*$ 时 $G(A)>0$(严格凸性排除了 $G$ 在首次穿越零点后再次进入负值区间的可能)。这同时给出了存在性与唯一性。需要指出,"严格凸函数减去仿射函数恰好穿越零点一次"并非关于凸函数的一般性陈述——一个凸函数可以两次穿越零点——因此上述下水平集论证(将首次穿越点钉在 $G(0)<0$ 上)确实做了实质性的工作,而非仅仅是对凸性的复述。$\blacksquare$
+A strictly convex function's lower level set $\{A\in[0,\bar A]:G(A)<0\}$ is an interval: if $G(A_1)<0$ and $G(A_2)<0$ for $A_1<A_2$, convexity implies $G(A)$ lies below the chord connecting these points for all $A\in[A_1,A_2]$, and hence below $0$. Since $G(0)<0$ (Section 6.1, Step 1), this interval contains $0$ and, being an interval, takes the form $[0,A^*)$ for some $A^*$. Because $G(A)\to+\infty$, the interval is bounded, so a finite crossing point $A^*$ exists with $G(A^*)=0$, $G(A)<0$ for $A<A^*$, and $G(A)>0$ for $A>A^*$ (strict convexity precludes $G$ re-entering negative territory once past the first crossing). This gives existence and uniqueness simultaneously. Note that "strictly convex minus affine crosses zero exactly once" is not true as a general statement about convex functions — a convex function can cross zero twice — so the level-set argument above, which pins the first crossing to $G(0)<0$, is doing real work rather than merely restating convexity. $\blacksquare$
 
-### A.2.1 隐函数定理的非退化条件是自动满足的,而非额外假设
+### A.2.1 The IFT non-degeneracy condition is automatic, not an extra assumption
 
-定理2的比较静态分析将隐函数定理应用于 $G(A^*)=0$,需要 $\partial G/\partial A(A^*)\neq0$。这一条件直接来自上述论证,而非一个独立的正则性假设:若 $\partial G/\partial A(A^*)=0$,由于 $G$ 严格凸,$A^*$ 将是 $G$ 在 $[0,\bar A]$ 上的严格全局最小值点,从而对任意 $A\neq A^*$ 都有 $G(A)>G(A^*)=0$——特别是 $G(0)>0$,这与 $G(0)<0$ 矛盾。因此 $\partial G/\partial A(A^*)>0$ 必然成立,交点自动是横截的。
+Theorem 2's comparative statics apply the implicit function theorem to $G(A^*)=0$, requiring $\partial G/\partial A(A^*)\neq0$. This follows directly from the argument above rather than being an independent regularity condition: if $\partial G/\partial A(A^*)=0$, then since $G$ is strictly convex, $A^*$ would be a strict global minimizer of $G$ on $[0,\bar A]$, giving $G(A)>G(A^*)=0$ for every $A\neq A^*$ — in particular $G(0)>0$, contradicting $G(0)<0$. Hence $\partial G/\partial A(A^*)>0$ necessarily, and the crossing is automatically transversal.
 
-## A.3 关于风险厌恶 $r$ 的导数
+## A.3 Derivative with Respect to Risk Aversion $r$
 
-完整的导数与符号论证已在第6.2节(ii)中给出;为避免重复,此处不再重复。结果 $\partial A^*/\partial r>0$ 直接用于A.2.1的非退化论证与下文A.4节。
+The full derivative and sign argument are already given in Section 6.2(ii); we do not repeat them here to avoid duplication. The result, $\partial A^*/\partial r>0$, is used directly in A.2.1's non-degeneracy argument and A.4 below.
 
-## A.4 关于增强效能 $C$ 的导数(依赖校准取值的符号,已在各行业验证)
+## A.4 Derivative with Respect to Augmentation Effectiveness $C$ (calibration-dependent sign, verified across sectors)
 
-"$\Pi_P^*$ 关于 $A$ 的凸性确保 $\partial G/\partial C>0$"这一说法并不能仅从关于 $A$ 的凸性推出;$\Pi_P^*$ 关于 $A$ 的凸性并不能说明其与 $C$ 的交叉偏导数的符号。我们改为在均衡阈值处直接验证这一不等式。
+The claim "the convexity of $\Pi_P^*$ ensures $\partial G/\partial C>0$" does not follow from convexity in $A$ alone; convexity of $\Pi_P^*$ in $A$ says nothing about the sign of its cross-partial with $C$. We instead verify the inequality directly at the equilibrium threshold.
 
-对 $\Pi_P^*(A)$ 关于 $C$ 求导(固定 $A$,利用 $\partial H/\partial C=\theta A$):
+Differentiating $\Pi_P^*(A)$ with respect to $C$ (holding $A$ fixed, using $\partial H/\partial C=\theta A$):
 
 $$
 \frac{\partial\Pi_P^*}{\partial C} = \theta A\cdot\frac{H^3(H^2+2b)}{k(H^2+b)^2}
 $$
 
-对 $\Pi_T(A)$ 关于 $C$ 求导:
+and differentiating $\Pi_T(A)$ with respect to $C$:
 
 $$
 \frac{\partial\Pi_T}{\partial C} = a_0\theta A.
 $$
 
-因此
+Hence
 
 $$
 \frac{\partial G}{\partial C} = \theta A\cdot\left\{\frac{H^3(H^2+2b)}{k(H^2+b)^2} - a_0\right\}.
 $$
 
-对 $A>0$,$\partial G/\partial C$ 的符号与括号内项的符号一致。**这不是一个普适的代数恒等式**——它取决于 $A=A^*$ 处的参数取值。在基准校准下($h=2$,$\theta=1.5$,$k=1$,$r=1$,$\sigma^2=1$,$a_0=1$),在 $A^*\approx0.6496$($H\approx2.974$,$b=1$)处求值:
+For $A>0$, the sign of $\partial G/\partial C$ matches the sign of the bracketed term. **This is not a universal algebraic identity** — it depends on parameter values at $A=A^*$. Under baseline calibration ($h=2$, $\theta=1.5$, $k=1$, $r=1$, $\sigma^2=1$, $a_0=1$) evaluated at $A^*\approx0.6496$ ($H\approx2.974$, $b=1$):
 
 $$
 \frac{H^3(H^2+2b)}{k(H^2+b)^2} \approx 2.944 > a_0 = 1.0,
 $$
 
-因此在基准校准下,均衡阈值处 $\partial G/\partial C>0$,余量约为 $3$ 倍——不是一个临界情形。给定 $\partial G/\partial A(A^*)>0$(附录A.2.1),隐函数定理给出
+so $\partial G/\partial C>0$ at the equilibrium threshold under baseline calibration, with a margin of roughly $3\times$ — not a knife-edge result. Given $\partial G/\partial A(A^*)>0$ (Appendix A.2.1), the implicit function theorem gives
 
 $$
 \frac{\partial A^*}{\partial C} = -\frac{\partial G/\partial C}{\partial G/\partial A} < 0. \quad\blacksquare
 $$
 
-**行业层面的稳健性检验。** 由于这一不等式依赖于校准取值而非普适成立,我们在表1四个行业各自的均衡点上分别做了额外验证,而不仅仅是基准点:
+**Sector-level robustness check.** Because this inequality is calibration-dependent rather than universal, we additionally verified it at each of the four sector-specific equilibria of Table 1 (Section 7.5), not just the baseline point:
 
-| 行业 | $A^*$ | 左端项 $= H^3(H^2+2b)/(k(H^2+b)^2)$ | 相对 $a_0=1$ 的余量 |
+| Sector | $A^*$ | LHS $= H^3(H^2+2b)/(k(H^2+b)^2)$ | Margin over $a_0=1$ |
 |---|---|---|---|
-| 配送/网约车 | 0.466 | 2.832 | $2.83\times$ |
-| 直播主播 | 0.500 | 3.050 | $3.05\times$ |
-| 设计师/知识工作者 | 0.591 | 3.067 | $3.07\times$ |
-| 制造业 | 1.516 | 2.893 | $2.89\times$ |
+| Delivery/ride-hailing | 0.466 | 2.832 | $2.83\times$ |
+| Livestream hosts | 0.500 | 3.050 | $3.05\times$ |
+| Designers/knowledge | 0.591 | 3.067 | $3.07\times$ |
+| Manufacturing | 1.516 | 2.893 | $2.89\times$ |
 
-该不等式在每一个行业各自的均衡点上都以相当的余量成立,最小余量为配送/网约车行业的 $2.83\times$——值得注意的是,这并非校准 $C$ 值最低的行业(制造业,$C=0.4$):由于 $A^*$ 本身会在各行业间内生调整,制造业更高的均衡 $A^*\approx1.52$ 足以抬高 $\tilde H$,从而抵消其较低的 $C$,因此余量的排序并不简单地跟随 $C$ 的排序。这证实了 $\partial A^*/\partial C<0$ 并非仅在基准校准下才勉强成立的临界性质,尽管*哪个*行业余量最紧的具体机制,比"$C$ 最低"这一简单直觉更为微妙。
+The inequality holds comfortably at every sector's own equilibrium point, with a minimum margin of $2.83\times$ in the delivery/ride-hailing sector — notably not the sector with the weakest calibrated $C$ (manufacturing, $C=0.4$): because $A^*$ itself adjusts endogenously across sectors, manufacturing's much higher equilibrium $A^*\approx1.52$ raises $\tilde H$ enough to offset its low $C$, so the margin ordering does not simply track the $C$ ordering. This confirms $\partial A^*/\partial C<0$ is not a knife-edge property of the baseline calibration alone, though the mechanism behind *which* sector has the tightest margin is more subtle than "lowest $C$."
 
-**说明。** 由于这一步骤依赖于校准取值而非纯代数恒等式,精确的表述是:只要AI增强效能系数相对于时间制下强制执行的最低努力 $a_0$ 而言足够具有生产力——使得提升 $C$ 在凸性的计件制分支下创造的边际期权价值,大于在线性的时间制分支下创造的边际期权价值——这一结果就成立;在我们的基准校准以及所有行业校准下都舒适地满足,但这不是一个定理级别的普适结论。
+**Note.** Because this step depends on calibration rather than being a pure algebraic identity, the precise statement is: this holds whenever the coefficient of AI-augmentation effectiveness is productive enough, relative to the enforced minimum effort $a_0$ under time-rate pay, that raising $C$ creates more marginal option value under the convex piece-rate branch than under the linear time-rate branch — satisfied comfortably under our calibration and across all sector calibrations tested, but not a theorem-level universal claim.
 
-## A.5 推论:$A^*$ 对 $\theta C$ 的精确闭式依赖
+## A.5 Corollary: Exact Closed-Form Dependence of $A^*$ on $\theta C$
 
-$\Pi_T(A)$ 与 $\tilde H(A)$ 都只通过乘积 $\psi\equiv\theta C$ 依赖于 $\theta$ 和 $C$:
+Both $\Pi_T(A)$ and $\tilde H(A)$ depend on $\theta$ and $C$ only through the product $\psi\equiv\theta C$:
 
 $$
 \Pi_T(A) = a_0h + a_0\psi A - \bar U - \tfrac12 ka_0^2, \qquad \tilde H = h+\psi A.
 $$
 
-代入 $x\equiv\psi A$,均衡条件 $G(A^*)=0$ 变为一个纯粹关于 $x$ 的方程(其余参数固定),因此其解 $x^*$ 是一个常数,与 $\psi$ 具体如何分解为 $\theta$ 和 $C$ 无关。由于 $x^*=\psi A^*=\theta C\cdot A^*$,我们得到精确闭式
+Substituting $x\equiv\psi A$, the equilibrium condition $G(A^*)=0$ becomes an equation purely in $x$ (all other parameters fixed), so its solution $x^*$ is a constant independent of how $\psi$ is decomposed into $\theta$ and $C$. Since $x^*=\psi A^*=\theta C\cdot A^*$, we obtain the exact closed form
 
 $$
 A^* = \frac{x^*}{\theta C},
 $$
 
-其中基准校准下 $x^*\approx0.9744$。两个推论:
+where $x^*\approx0.9744$ under baseline calibration. Two corollaries:
 
-1. $\partial\ln A^*/\partial\ln\theta = \partial\ln A^*/\partial\ln C = -1$ 精确成立——在 $\pm1\%$、$\pm5\%$、$\pm10\%$、$\pm20\%$ 扰动下均已数值确认,弹性均为 $-1.0000$,精确到小数点后四位。
-2. 由于 $\theta$ 和 $C$ 以完全相同的方式进入模型,加倍其中任意一个对 $A^*$ 的影响完全相同:提升AI增强技能的培训与提高 $\theta$ 的技术升级,在边际上是加速契约转型的完全替代品(参见第8.1节(2))。
+1. $\partial\ln A^*/\partial\ln\theta = \partial\ln A^*/\partial\ln C = -1$ exactly — confirmed numerically at $\pm1\%$, $\pm5\%$, $\pm10\%$, and $\pm20\%$ perturbations, all returning elasticity $-1.0000$ to four decimal places.
+2. Since $\theta$ and $C$ enter identically, doubling either has an identical effect on $A^*$: AI-augmentation-skills training and technology upgrades that raise $\theta$ are, at the margin, perfect substitutes for accelerating contract transformation (cf. Section 8.1(2)).
 
-## A.6 推论:$r$ 与 $\sigma^2$ 的弹性相等
+## A.6 Corollary: Equal Elasticities for $r$ and $\sigma^2$
 
-由类似的论证,$r$ 与 $\sigma^2$ 只通过乘积 $b\equiv rk\sigma^2$ 进入模型。由于 $\partial\ln b/\partial\ln r = \partial\ln b/\partial\ln\sigma^2 = 1$ 恒等成立,且 $A^*$ 只通过 $b$ 依赖于 $r,\sigma^2$,可得
+By an analogous argument, $r$ and $\sigma^2$ enter the model only through the product $b\equiv rk\sigma^2$. Since $\partial\ln b/\partial\ln r = \partial\ln b/\partial\ln\sigma^2 = 1$ identically, and $A^*$ depends on $r,\sigma^2$ only via $b$, it follows that
 
 $$
 \frac{\partial\ln A^*}{\partial\ln r} = \frac{\partial\ln A^*}{\partial\ln\sigma^2}
 $$
 
-对任意参数取值精确成立。数值确认:基准校准下两个弹性均等于 $0.213$。劳动者风险厌恶与产出噪声方差是转型阈值的可互换驱动因素——两者中任一者加倍,对 $A^*$ 的比例影响完全相同。
+exactly, for any parameter values. Confirmed numerically: both elasticities equal $0.213$ under baseline calibration. Worker risk aversion and output-noise variance are interchangeable drivers of the transformation threshold — a doubling of either has exactly the same proportional effect on $A^*$.
 
-## A.7 推论:$A^*$ 对保留效用 $\bar U$ 具体设定方式的不变性
+## A.7 Corollary: Invariance of $A^*$ to the Specification of Reservation Utility $\bar U$
 
-正文将 $\bar U$ 处理为与 $A$ 无关的常数。我们证明这是一个无害的标准化处理,而非实质性限制:对*任意*设定 $\bar U(A)$——常数、递增、递减或关于 $A$ 非线性——阈值 $A^*$ 都保持不变。
+The main text treats $\bar U$ as a constant, independent of $A$. We show this is a harmless normalization, not a substantive restriction: for *any* specification $\bar U(A)$ — constant, increasing, decreasing, or nonlinear in $A$ — the threshold $A^*$ is unchanged.
 
-**证明。** $\Pi_T(A)$ 与 $\Pi_P^*(A)$ 都以系数为 $-1$ 的可加项形式包含 $\bar U(A)$:
+**Proof.** Both $\Pi_T(A)$ and $\Pi_P^*(A)$ contain $\bar U(A)$ as an additive term with coefficient $-1$:
 
 $$
 \Pi_T(A) = a_0\tilde H(A) - \bar U(A) - \tfrac12 ka_0^2, \qquad \Pi_P^*(A) = \frac{\tilde H(A)^4}{2k(\tilde H(A)^2+b)} - \bar U(A) - F.
 $$
 
-因此 $G(A) = \Pi_P^*(A) - \Pi_T(A)$ 中包含项 $-\bar U(A) - (-\bar U(A)) = 0$:**$\bar U(A)$ 被精确抵消**,无论其函数形式如何,因为同一位劳动者在任一契约模式下都面对同样的外部选择。$G(A)$,进而 $A^*$,因此完全独立于 $\bar U$ 如何随 $A$ 变化。$\blacksquare$
+Hence $G(A) = \Pi_P^*(A) - \Pi_T(A)$ contains the term $-\bar U(A) - (-\bar U(A)) = 0$: **$\bar U(A)$ cancels exactly**, regardless of its functional form, because the same worker faces the same outside option under either contract mode. $G(A)$, and hence $A^*$, is therefore completely independent of how $\bar U$ varies with $A$. $\blacksquare$
 
-我们对四种设定——$\bar U(A) = 1.0$(常数)、$1.0+0.3A$(线性)、$1.0+0.2A+0.1A^2$(二次)、$1.0+0.5\ln(1+A)$(凹函数)——进行了数值确认,四种设定均给出 $A^*=0.649633$,精确到小数点后六位。这直接回应了一个自然的一般均衡担忧:即便AI采用随其日益普及而提高了劳动者在全经济范围内的外部选择,这也不会影响*特定企业与特定劳动者之间*的契约模式阈值,因为两种契约模式都面对同一个竞争性劳动力市场。
+We confirmed this numerically for four specifications — $\bar U(A) = 1.0$ (constant), $1.0+0.3A$ (linear), $1.0+0.2A+0.1A^2$ (quadratic), and $1.0+0.5\ln(1+A)$ (concave) — all four returning $A^*=0.649633$ to six decimal places. This directly addresses a natural general-equilibrium concern: even if AI adoption raises workers' economy-wide outside options as it becomes more prevalent, this does not affect the contract-mode threshold *for a given firm and worker*, since both contract modes draw on the same competitive labor market.
 
-## A.8 数值检验:交互式组件参数极值处的存在性
+## A.8 Numerical Check: Existence at the Interactive Widget's Parameter Extremes
 
-第7.1节指出,图3–5所用的 $[0,3]$ 区间是一种绘图惯例,而非 $A^*$ 存在性所需的边界——定理1对任意正参数组合都成立,不需要对 $A$ 设置上界。我们在交互式组件滑块所允许的最不利参数角点处直接验证这一点:$C=0.1$(AI增强效能系数处于下限)、$\sigma^2=3$ 与 $r=3$(产出噪声与风险厌恶均处于上限)——这是对计件制契约最不利的参数组合。
+Section 7.1 notes that the $[0,3]$ range used in Figures 3–5 is a plotting convention, not a bound on where $A^*$ is shown to exist — Theorem 1 holds for any positive parameter combination, with no upper bound on $A$ required. We confirm this directly at the most adverse parameter corner the interactive widget's sliders allow: $C=0.1$ (the coefficient of AI-augmentation effectiveness at its floor), $\sigma^2=3$ and $r=3$ (output noise and risk aversion both at their ceiling) — the combination least favorable to piece-rate contracting.
 
-在这一角点处,$\Pi_T(A)$ 与 $\Pi_P^*(A)$ 都被大幅压低到基准水平以下(后者在 $[0,3]$ 的大部分区间内为负),交点被推到远超绘图区间之外:数值求根给出 $A^*\approx13.01$(无约束)与 $A^*_{MW}\approx13.43$(在 $W_{\min}=0$ 时)——两者均为有限值,与定理1一致,且都约为基准 $A^*\approx0.65$ 的20倍。这正是预期的方向:较弱的AI增强效能系数叠加高噪声与高风险厌恶,应当使企业最不愿转向产出导向型薪酬,因此阈值应当——事实上也确实——被推得很远,而非变得不存在。交互式组件在滑块设置到这一角点时,会实时显示这些数值。
+At this corner, both $\Pi_T(A)$ and $\Pi_P^*(A)$ are pushed well below their baseline levels (the latter negative over most of $[0,3]$), and the crossing point moves far outside the plotted range: root-finding gives $A^*\approx13.01$ (unconstrained) and $A^*_{MW}\approx13.43$ (at $W_{\min}=0$) — both finite, consistent with Theorem 1, and both about 20 times the baseline $A^*\approx0.65$. This is the expected direction: weak AI augmentation combined with high noise and high risk aversion should make firms most reluctant to switch to output-based pay, so the threshold should be — and is — pushed far out rather than becoming undefined. The interactive widget itself displays these values live when its sliders are set to this corner.
 
 ---
 
-# 附录B. 统一契约族及其局限
+# Appendix B. A Unified Contract Family and Its Limits
 
-本附录将第4.5节所提及的模式T与模式P之间的对应关系加以形式化,并本着学术诚实的精神,明确指出这一建模所得出的核心预测在何处偏离了观察到的薪酬实践。
+This appendix formalizes the correspondence between Mode T and Mode P gestured at in Section 4.5, and — in the interest of intellectual honesty — states plainly where this formalization's central prediction departs from observed compensation practice.
 
-## B.1 扩展契约空间
+## B.1 Extended Contract Space
 
-设企业选择一个三元组 $(\alpha,\gamma,a_{\min})$,其中 $a_{\min}\ge0$ 是通过直接的、基于出勤的监督所强制执行的努力下限——这是一种不同于、也不需要数字化产出监控的技术。给定 $(\gamma,a_{\min})$,劳动者的实际努力为
+Let the firm choose a triple $(\alpha,\gamma,a_{\min})$, where $a_{\min}\ge0$ is an enforced effort floor implemented through direct, attendance-style supervision — a technology distinct from, and not requiring, digital output monitoring. Given $(\gamma,a_{\min})$, the worker's realized effort is
 
 $$
 a(\gamma,a_{\min}) = \max\{a_{\min},\, \gamma\tilde H/k\}.
 $$
 
-企业当且仅当 $\gamma>0$ 时产生数字监控成本 $F$;通过出勤监督执行一个正的努力下限 $a_{\min}$,其边际成本为零,这与第4.2节模式T的原始设定一致(不引入单独的成本参数,因此第6–7节无需重新校准)。
+The firm incurs the digital monitoring cost $F$ if and only if $\gamma>0$; enforcing a positive floor $a_{\min}$ via attendance supervision is available at zero marginal cost, consistent with the original Mode T specification of Section 4.2 (no separate cost parameter is introduced, so Sections 6–7 require no recalibration).
 
-## B.2 命题1(T/P作为一种离散的机制选择)
+## B.2 Proposition 1 (T/P as a Discrete Regime Choice)
 
-*给定上述扩展契约空间,企业最优的 $(\alpha,\gamma,a_{\min})$ 始终是一个角点:要么(i)$\gamma=0$,$a_{\min}=a_0$(恰好是模式T),要么(ii)$a_{\min}=0$,$\gamma=\gamma^*=\tilde H^2/(\tilde H^2+rk\sigma^2)$(恰好是模式P)。任何内点组合都不会是最优的。*
+*Given the extended contract space above, the firm's optimal $(\alpha,\gamma,a_{\min})$ is always a corner: either (i) $\gamma=0$, $a_{\min}=a_0$ (Mode T exactly), or (ii) $a_{\min}=0$, $\gamma=\gamma^*=\tilde H^2/(\tilde H^2+rk\sigma^2)$ (Mode P exactly). No interior combination is ever optimal.*
 
-**证明。** 固定 $\gamma>0$。若 $a_{\min}\le\gamma\tilde H/k$,该努力下限是多余的(在此区间内利润与 $a_{\min}$ 无关),因此 $a_{\min}=0$ 是弱最优的。若 $a_{\min}>\gamma\tilde H/k$,实际努力等于 $a_{\min}$,与 $\gamma$ 无关,因此任何 $\gamma>0$ 都不会带来额外的努力,却仍会施加劳动者的风险成本 $\tfrac12 r\gamma^2\sigma^2$ 与固定成本 $F$;$\gamma=0$ 严格占优。因此最优解始终是一个角点。$\blacksquare$
+**Proof.** Fix $\gamma>0$. If $a_{\min}\le\gamma\tilde H/k$, the floor is redundant (profit is independent of $a_{\min}$ in this range), so $a_{\min}=0$ is weakly optimal. If $a_{\min}>\gamma\tilde H/k$, realized effort equals $a_{\min}$ regardless of $\gamma$, so any $\gamma>0$ purchases no additional effort while still imposing the worker's risk cost $\tfrac12 r\gamma^2\sigma^2$ and the fixed cost $F$; $\gamma=0$ strictly dominates. Hence the optimum is always a corner. $\blacksquare$
 
-## B.3 这一命题带来了什么,以及一个诚实的局限
+## B.3 What This Buys, and an Honest Limitation
 
-这为定理1中"角点解跳跃为内点解"的直觉提供了一个严格版本:$A^*$ 正是企业最优选择从这一两工具空间的纯T角点跳转到纯P角点的那个点。我们通过数值验证确认,这一跳转确实是一个真实的不连续性——在 $A=A^*\approx0.65$ 处,$\Pi_T(A^*)\approx1.474$,而 $\lim_{\gamma\to0^+}\Pi_P(\gamma;A^*)\approx-2.500$——证实这一跳跃是真实存在的,完全由固定成本 $F$ 驱动,与第6.1节的存在性论证一致。
+This gives a rigorous version of the "corner solution jumping to an interior solution" intuition for Theorem 1: $A^*$ is the point at which the firm's optimum switches from the pure-T corner to the pure-P corner of this two-instrument space. We verified numerically that this switch involves a genuine discontinuity — at $A=A^*\approx0.65$, $\Pi_T(A^*)\approx1.474$ while $\lim_{\gamma\to0^+}\Pi_P(\gamma;A^*)\approx-2.500$ — confirming the jump is real and driven entirely by the fixed cost $F$, consistent with the existence argument in Section 6.1.
 
-**局限。** 命题1的严格角点预测,是"基于出勤的努力执行,无论与 $\gamma$ 如何组合,其边际成本恒为零"这一假设的直接结果。在这一假设下,在正的激励强度之外再叠加一个正的努力下限 $a_{\min}$,要么是多余的,要么是严格占优的,这就机械地排除了任何内点式的混合。
+**Limitation.** Proposition 1's strict-corner prediction is a direct consequence of assuming attendance-based effort enforcement is available at *zero marginal cost* regardless of how it is combined with $\gamma$. Under this assumption, layering a positive $a_{\min}$ alongside a positive $\gamma$ is either redundant or strictly dominant, which mechanically rules out any interior blend. This is not a deep economic result about why hybrid pay is suboptimal — it is an artifact of the specific (frictionless) cost structure assumed for tractability.
 
-这一点之所以重要,是因为混合薪酬——保底工资叠加按单/按件提成——事实上是中国平台配送与网约车行业中经验上占主导地位的结构,而非命题1所预测的纯角点结果。我们看到两条留待未来研究的自然扩展路径,可用来容纳这一现实:
+This matters because hybrid compensation — a guaranteed base wage combined with per-order or per-unit commission — is the empirically dominant structure in much of China's platform delivery and ride-hailing sector, not the pure-corner outcome Proposition 1 predicts. We see two natural channels, left to future work, through which the model could be extended to accommodate this:
 
-1. **在激励薪酬之上叠加执行机制存在一个正的、凸性的成本**(例如,出勤监督与数字化产出追踪同时运行时,由于管理上的重复投入而变得更昂贵)——这会创造一个内点式的权衡,并可能使一个严格为正但低于 $a_0$ 的努力下限与 $\gamma\in(0,1)$ 相结合成为最优。
-2. **将 $a_{\min}$ 理解为部分保险而非纯粹的执行手段**:如果一个正的 $a_{\min}$ 在CARA效用下降低了劳动者的实际风险暴露(通过保证一份独立于产出实现结果的保底收入,而不只是简单地强制执行努力),它就会直接进入劳动者的确定性等价,而不仅仅通过 $\max\{\cdot\}$ 算子间接起作用,这可能使得对足够风险厌恶的劳动者而言,一份混合契约即便没有额外的监控成本也是最优的。
+1. **A positive, convex cost of layering enforcement on top of incentive pay** (e.g., attendance supervision becomes more expensive to run alongside digital output tracking, due to duplicated administrative overhead) would create an interior trade-off and could rationalize a strictly positive but sub-$a_0$ effort floor combined with $\gamma\in(0,1)$.
+2. **$a_{\min}$ as partial insurance rather than pure enforcement**: if a positive $a_{\min}$ lowers the worker's effective risk exposure under CARA utility (by guaranteeing a floor income independent of output realization, distinct from simply mandating effort), it would enter the worker's certainty equivalent directly rather than only through the $\max\{\cdot\}$ operator, potentially making a blended contract optimal for sufficiently risk-averse workers even without extra monitoring cost.
 
-我们在此并未正式展开这两条扩展路径,但将其标注为让命题1与观察到的混合薪酬结构相协调的最直接方式。
+We do not pursue either extension formally here, but flag this as the most direct way Proposition 1 could be reconciled with observed hybrid pay structures.
 
 ---
 
-# 附录C. 对不依赖努力的自动化渠道的稳健性检验
+# Appendix C. Robustness to an Effort-Independent Automation Channel
 
-生产函数 $y=a\tilde H+\varepsilon$(第4.1节)的一个自然质疑是,它把AI对产出的全部贡献都导向了劳动者努力 $a$——若 $a=0$,无论 $A$ 有多大,产出都为零。本附录直接检验这一担忧,将生产函数扩展为
+A natural critique of the production function $y=a\tilde H+\varepsilon$ (Section 4.1) is that it routes all of AI's contribution to output through worker effort $a$ — if $a=0$, output is zero regardless of $A$. This appendix tests that concern directly by extending the production function to
 
 $$
 y = a\tilde H(A) + g(A) + \varepsilon,
 $$
 
-其中 $g(A)$ 是一个与努力无关的自动化贡献——例如算法路径优化或自动化订单匹配,无论劳动者是否付出努力都会实现——并追问这一渠道是否会改变本文的核心阈值结果。
+where $g(A)$ is an effort-independent automation contribution — e.g., algorithmic route optimization or automated order matching, realized whether or not the worker exerts effort — and asking whether this channel changes the paper's central threshold result.
 
-## C.1 重新推导
+## C.1 Re-derivation
 
-**劳动者的问题。** 在工资 $w=\alpha+\gamma y = \alpha + \gamma(a\tilde H + g(A)) + \gamma\varepsilon$ 下,劳动者选择 $a$ 以最大化 $\alpha + \gamma a\tilde H + \gamma g(A) - \tfrac12 r\gamma^2\sigma^2 - \tfrac12 ka^2$。由于 $\gamma g(A)$ 与 $a$ 无关,它在一阶条件中完全消失:$a^*=\gamma\tilde H/k$,与第4.3节**完全相同**。
+**Worker's problem.** With wage $w=\alpha+\gamma y = \alpha + \gamma(a\tilde H + g(A)) + \gamma\varepsilon$, the worker chooses $a$ to maximize $\alpha + \gamma a\tilde H + \gamma g(A) - \tfrac12 r\gamma^2\sigma^2 - \tfrac12 ka^2$. Since $\gamma g(A)$ does not depend on $a$, it drops out of the first-order condition entirely: $a^*=\gamma\tilde H/k$, **unchanged** from Section 4.3.
 
-**参与约束。** $CE = \alpha + \gamma a^*\tilde H + \gamma g(A) - \tfrac12 r\gamma^2\sigma^2 - \tfrac12 k(a^*)^2 = \bar U$ 给出
+**Participation constraint.** $CE = \alpha + \gamma a^*\tilde H + \gamma g(A) - \tfrac12 r\gamma^2\sigma^2 - \tfrac12 k(a^*)^2 = \bar U$ gives
 
 $$
 \alpha = \bar U + \tfrac12 r\gamma^2\sigma^2 - \frac{\gamma^2\tilde H^2}{2k} - \gamma g(A).
 $$
 
-**企业利润。** $\Pi_P(\gamma) = (1-\gamma)(a^*\tilde H + g(A)) - \alpha - F$。代入并化简,$\alpha$ 中的 $-\gamma g(A)$ 项与 $(1-\gamma)g(A)$ 中的 $-\gamma g(A)$ 项相互抵消,剩下
+**Firm profit.** $\Pi_P(\gamma) = (1-\gamma)(a^*\tilde H + g(A)) - \alpha - F$. Substituting and simplifying, the $-\gamma g(A)$ term from $\alpha$ cancels against the $-\gamma g(A)$ term from $(1-\gamma)g(A)$, leaving
 
 $$
 \Pi_P(\gamma) = \frac{\gamma\tilde H^2}{k} - \frac{\gamma^2\tilde H^2}{2k} - \tfrac12 r\gamma^2\sigma^2 - \bar U - F + g(A),
 $$
 
-即**恰好是第4.3节原始的 $\Pi_P(\gamma)$,再加上 $g(A)$ 作为一个独立的可加项**。由于 $g(A)$ 与 $\gamma$ 无关,它不影响关于 $\gamma$ 的一阶条件,因此 $\gamma^*=\tilde H^2/(\tilde H^2+rk\sigma^2)$ 也**保持不变**,且
+i.e., **exactly the original $\Pi_P(\gamma)$ of Section 4.3, plus $g(A)$ as an independent additive term**. Since $g(A)$ does not depend on $\gamma$, it does not affect the first-order condition for $\gamma$, so $\gamma^*=\tilde H^2/(\tilde H^2+rk\sigma^2)$ is also **unchanged**, and
 
 $$
 \Pi_P^{g,*}(A) = \Pi_P^*(A) + g(A).
 $$
 
-**模式T。** 自动化贡献在计时制下同样会实现(算法无论契约模式如何都在运行),因此 $\Pi_T^g(A) = \Pi_T(A) + g(A)$。
+**Mode T.** The automation contribution is realized under time-rate pay as well (the algorithm runs regardless of contract mode), so $\Pi_T^g(A) = \Pi_T(A) + g(A)$.
 
-## C.2 命题2(对模式共有的自动化的不变性)
+## C.2 Proposition 2 (Invariance of $A^*$ to Mode-Common Automation)
 
-*对任意以相同方式进入 $\Pi_T(A)$ 与 $\Pi_P^*(A)$ 的函数 $g(A)$,转型阈值 $A^*$ 与定理1的原始值完全相同。*
+*For any function $g(A)$ that enters $\Pi_T(A)$ and $\Pi_P^*(A)$ identically, the transformation threshold $A^*$ is exactly unchanged from Theorem 1's original value.*
 
-**证明。** $G^g(A) = \Pi_P^{g,*}(A) - \Pi_T^g(A) = [\Pi_P^*(A)+g(A)] - [\Pi_T(A)+g(A)] = G(A)$,对任意函数形式的 $g$,都与原始利润差完全相同。由于 $A^*$ 由 $G(A^*)=0$ 定义,它不受影响。$\blacksquare$
+**Proof.** $G^g(A) = \Pi_P^{g,*}(A) - \Pi_T^g(A) = [\Pi_P^*(A)+g(A)] - [\Pi_T(A)+g(A)] = G(A)$, identical to the original profit difference for any functional form of $g$. Since $A^*$ is defined by $G(A^*)=0$, it is unaffected. $\blacksquare$
 
-我们对 $g(A) \in \{0.5A,\ 2A,\ 5A,\ 0.1A^2,\ 0.5A^2,\ A^2,\ 2\ln(1+A)\}$——线性、凸性与凹性设定,跨越较宽的量级范围——进行了数值验证,全部八种情形(含 $g(A)=0$ 基准)均给出 $A^*=0.649633$,精确到小数点后六位。
+This was verified numerically for $g(A) \in \{0.5A,\ 2A,\ 5A,\ 0.1A^2,\ 0.5A^2,\ A^2,\ 2\ln(1+A)\}$ — linear, convex, and concave specifications spanning a wide range of magnitudes — all eight returning $A^*=0.649633$ to six decimal places, matching the $g(A)=0$ baseline exactly.
 
-## C.3 推论:在此设定下,完全自动化从不占优
+## C.3 Corollary: Full Automation Never Dominates Under This Specification
 
-一个相关的问题是,足够大的 $g(A)$ 是否可能使企业完全放弃劳动者(只保留 $g(A)$)比任一契约模式都更有利可图。在模式T下,包含劳动者的利润为 $\Pi_T^g(A) = a_0\tilde H(A) + g(A) - \bar U - \tfrac12 ka_0^2$,而不含劳动者的纯自动化利润为 $\Pi_Z(A) = g(A)$。二者之差 $\Pi_T^g(A) - \Pi_Z(A) = a_0\tilde H(A) - \bar U - \tfrac12 ka_0^2$,**完全不依赖于** $g(A)$,且在基准校准下对所测试的每一个 $A$ 都严格为正(对线性情形 $g(A)=\mu A$,自动化系数 $\mu$ 高达20——远超任何合理校准——均已数值确认)。在此设定下,保留劳动者是一份只会增值、不会贬值的免费期权;完全自动化从不是最优的。
+A related question is whether sufficiently large $g(A)$ could make eliminating the worker entirely (retaining only $g(A)$) more profitable than either contract mode. Under Mode T, profit including the worker is $\Pi_T^g(A) = a_0\tilde H(A) + g(A) - \bar U - \tfrac12 ka_0^2$, while pure automation without a worker yields $\Pi_Z(A) = g(A)$. Their difference, $\Pi_T^g(A) - \Pi_Z(A) = a_0\tilde H(A) - \bar U - \tfrac12 ka_0^2$, does **not** depend on $g(A)$ at all, and is strictly positive under baseline calibration for every $A$ tested (confirmed numerically for automation coefficients up to $\mu=20$, far outside any plausible calibration, in the linear case $g(A)=\mu A$). Under this specification, keeping the worker is a free option that only adds value; full automation is never optimal.
 
-## C.4 这解决了什么,又留下了什么开放问题
+## C.4 What This Resolves, and What Remains Open
 
-命题2及上述推论表明,本文的核心机制对*模式共有*的自动化是稳健的——这是最自然的第一层扩展,也可以说是经验上更合理的基准情形,因为平台的派单或调度算法通常无论受影响劳动者的薪酬结构如何,都以相同方式运行。它们**没有**处理更困难的情形,即自动化收益本身*内生于契约模式*——例如,产出导向型薪酬相比时间制薪酬,可能给企业带来更强的动机去投资互补性自动化,使得 $g_P(A) > g_T(A)$ 系统性成立。在这种情形下,$G(A)$ 中的 $g(A)$ 项将不再相互抵消,$A^*$ 也可能发生变化。将这一模式依赖型扩展加以形式化——并刻画一旦 $g$ 从与劳动者*无关*转变为与劳动者*竞争*,在 $(A,\mu)$ 空间中完全自动化将占优于包含人力的生产的那条边界——正是本文分析留给未来工作的一个精确的开放问题。这也把此前"AI可能做的不止是放大努力"这一较为模糊的担忧,替换成了一个具体的、可证伪的建模缺口:*自动化贡献是否会因契约模式而系统性地不同,它是替代劳动者的产出,而非仅仅与之并存?*
+Propositions 2 and the corollary above show the paper's central mechanism is robust to *mode-common* automation — the most natural first-pass extension, and arguably the empirically plausible baseline case, since a platform's routing or dispatch algorithm typically runs identically regardless of how the affected worker happens to be paid. They do **not** address the harder case where automation returns are themselves *endogenous to the contract mode* — for instance, if output-based pay gives firms a stronger incentive to invest in complementary automation than time-based pay does, so that $g_P(A) > g_T(A)$ systematically. In that case the $g(A)$ terms would not cancel in $G(A)$, and $A^*$ could shift. Formalizing this mode-dependent extension — and characterizing the boundary in $(A,\mu)$-space at which full automation would dominate human-inclusive production once $g$ becomes worker-*competing* rather than worker-*independent* — is the precise open question this analysis leaves for future work. This replaces the earlier, vaguer concern "AI might do more than amplify effort" with a specific, falsifiable modeling gap: *does the automation contribution differ systematically by contract mode, and does it substitute for rather than sit alongside the worker's output?*
 
 ---
 
-# 参考文献
+# References
 
 Acemoglu, D., & Restrepo, P. (2018). *The Race Between Man and Machine*.
 
 All-China Federation of Trade Unions (ACFTU) [中华全国总工会]. (2023, March 27). *Results of the Ninth National Survey on the Status of China's Workforce* [第九次全国职工队伍状况调查结果发布] [Press release, as reported by Xinhua News Agency, citing *People's Daily*]. China Government Net. https://www.gov.cn/lianbo/2023-03/27/content_5748413.htm. *Note: the full survey report was not released as a standalone public document; the 84-million-worker figure is cited from this official press release and is reproduced in subsequent government documents. "New-form employment" (新就业形态) is the source term, commonly proxied as "platform workers" in English-language literature, though the two are not perfectly coterminous.*
 
-中华全国总工会、人力资源社会保障部、中国企业联合会/中国企业家协会、中华全国工商业联合会. (2026年3月). *平台劳动规则和算法协商指引(试行)* [Guidelines on Platform Labor Rules and Algorithm Negotiation (Trial)]。*说明:据全国总工会后续通报,截至2025年,已有15家主要平台企业依据该指引框架完成算法和劳动规则协商并签订专项协议,覆盖新就业形态劳动者逾2000万人。*
+All-China Federation of Trade Unions, Ministry of Human Resources and Social Security of the PRC, China Enterprise Confederation/China Enterprise Directors Association, & All-China Federation of Industry and Commerce. (2026, March). *Guidelines on Platform Labor Rules and Algorithm Negotiation (Trial)* [平台劳动规则和算法协商指引(试行)]. *Note: as of 2025, 15 major platform companies had concluded algorithm-and-labor-rules negotiation agreements under this framework, covering more than 20 million new-form-employment workers, per subsequent ACFTU reporting.*
 
 Braverman, H. (1974). *Labor and Monopoly Capital: The Degradation of Work in the Twentieth Century*. Monthly Review Press.
 
 Brynjolfsson, E., Li, D., & Raymond, L. (2025). Generative AI at work. *Quarterly Journal of Economics*, 140(2), 889–942.
 
-陈东、郭文光. (2023). 数字化转型、工资增长与企业间收入差距——兼论"灯塔工厂"的行业引导效应 [Digital transformation, wage growth and income gap across firms: also on the industry-leading effect of "lighthouse factory"]. *财经研究* (Journal of Finance and Economics), 49(4), 50–64.
+Chen, D. and Guo, W. (2023) 'Digital Transformation, Wage Growth and Income Gap Across Firms: Also on the Industry-Leading Effect of "Lighthouse Factory"', *Journal of Finance and Economics* (财经研究), 49(4), pp. 50–64.
 
-陈龙. (2020). "数字控制"下的劳动秩序——外卖骑手的劳动控制研究 ["Digital control" under algorithmic management: A study of labor control among food-delivery riders]. *社会学研究* (Sociological Studies), 35(6), 113–135.
+Chen, L. [陈龙]. (2020). "Digital control" under algorithmic management: A study of labor control among food-delivery riders ["数字控制"下的劳动秩序——外卖骑手的劳动控制研究]. *Sociological Studies* (社会学研究), 35(6), 113–135.
 
 Chen, Y. (2021). Online digital labour platforms in China: Working conditions, policy issues and prospects. ILO Working Paper 24 (Geneva, ILO).
 
@@ -1370,7 +1396,7 @@ Chetty, R. (2006). *A New Method for Estimating Risk Aversion*.
 
 China Academy of Information and Communications Technology (CAICT) [中国信息通信研究院]. (2018–2022). *China Digital Economy Development White Paper / Report* [中国数字经济发展白皮书/研究报告] [Annual series, 2018–2022 editions]. Beijing: CAICT. *Note: data on enterprise and industrial digitalization for 2018–2022 are drawn from five successive annual editions of this series. The title changed from* White Paper on China Digital Economy Development and Employment *(2018–2019) to* White Paper on China Digital Economy Development *(2020–2021) to* China Digital Economy Development Report *(2022 onward); the series is treated here as continuous. No single report covers all five years — this is a spliced time series, not one document.*
 
-China Association of Performing Arts. (2023). *China Network Performance (Live-streaming and Short Video) Industry Development Report (2022–2023)*[中国网络表演(直播与短视频)行业发展报告(2022~2023)].
+China Association of Performing Arts. (2023). *China Network Performance (Live-streaming and Short Video) Industry Development Report (2022–2023)* [中国网络表演（直播与短视频）行业发展报告（2022~2023）].
 
 Council of the European Union. (2024). *Directive (EU) 2024/2831 of the European Parliament and of the Council of 23 October 2024 on Improving Working Conditions in Platform Work*. Official Journal of the European Union.
 
@@ -1392,13 +1418,13 @@ Lazear, E. (2000). *Performance Pay and Productivity*.
 
 Marx, K. (1867). *Capital: A Critique of Political Economy, Volume I*.
 
-中华人民共和国人力资源和社会保障部、国家发展和改革委员会、交通运输部、应急管理部、国家市场监督管理总局、国家医疗保障局、最高人民法院、中华全国总工会. (2021). 《关于维护新就业形态劳动者劳动保障权益的指导意见》(人社部发〔2021〕56号,2021年7月16日印发). [Ministry of Human Resources and Social Security of the PRC et al. (2021). *Guiding Opinions on Safeguarding the Labor Rights and Interests of Workers in New Forms of Employment* (Ren She Bu Fa [2021] No. 56, issued July 16, 2021).]
+Ministry of Human Resources and Social Security of the PRC, National Development and Reform Commission, Ministry of Transport, Ministry of Emergency Management, State Administration for Market Regulation, National Healthcare Security Administration, Supreme People's Court, & All-China Federation of Trade Unions. (2021). *Guiding Opinions on Safeguarding the Labor Rights and Interests of Workers in New Forms of Employment* [关于维护新就业形态劳动者劳动保障权益的指导意见] (Ren She Bu Fa [2021] No. 56, issued July 16, 2021).
 
 Prendergast, C. (2002). *The Tenuous Tradeoff Between Risk and Incentives*.
 
-*加州第22号提案《保护应用程序驾驶员与服务法案》*(Proposition 22, Protect App-Based Drivers and Services Act)(2020),经加州选民于2020年11月3日投票通过;编入加州《商业与职业法典》(Cal. Bus. & Prof. Code) 第7448–7467条。
+*Proposition 22, Protect App-Based Drivers and Services Act* (2020), approved by California voters on November 3, 2020; codified at Cal. Bus. & Prof. Code §§ 7448–7467.
 
-*人物* [Renwu] magazine. (2020, September 8). *外卖骑手,困在系统里* [Delivery Riders, Trapped in the System].
+*人物* [Renwu] magazine. (2020, September 8). *外卖骑手，困在系统里* [Delivery Riders, Trapped in the System].
 
 Rosen, S. (1981). The Economics of Superstars. *American Economic Review*, 71(5), 845–858.
 
@@ -1408,10 +1434,6 @@ Shin, K. S., & Kang, I. S. (2026). What capital after labor? Forecasting the tal
 
 *Uber BV and others v Aslam and others* [2021] UKSC 5.
 
-张成刚. (2023年11月20日). *九成主播收入不如骑手?应客观理解新就业形态的职业价值* [Are nine in ten streamers really worse paid than riders? An objective view of new employment forms' occupational value]. 第一财经 (Yicai).
+Zhang, C. (2023, November 20). *Are Nine in Ten Streamers Really Worse Paid Than Riders? An Objective View of New Employment Forms' Occupational Value* [九成主播收入不如骑手？应客观理解新就业形态的职业价值]. Yicai (第一财经).
 
 Zhang, Z. (2026). The transformation from human surplus value to AI algorithmic surplus value: Logic of the critique of capital in the era of AI. *Humanities and Social Sciences Communications*, 13.
-
----
-
-*说明:本译文完整翻译了论文全部正文与三个附录(A、B、C)的叙述性文字及全部推导步骤,数学公式与表格数值保持原文不变。附录字母(A/B/C)、表格编号(表1-3)均与最新版英文正文一致。参考文献部分补充了正文第3.6节实质性讨论、但原参考文献列表遗漏的加州第22号提案与中国《关于维护新就业形态劳动者劳动保障权益的指导意见》(人社部发〔2021〕56号)两条文献,均已核实为真实、可查询的一手法律/政策文件。*
